@@ -1,0 +1,48 @@
+:root {
+  /* Colors */
+  --color-primary: #0A66C2; /* DSDL Blue */
+  --color-primary-hover: #08529B;
+  --color-secondary: #0F172A; /* Deep Navy */
+  --color-secondary-hover: #1E293B;
+  --color-accent: #FF7043; /* Warm Orange - use sparingly */
+  
+  --color-background: #FFFFFF;
+  --color-surface: #F8FAFC; /* Very Light Blue/Grey */
+  --color-surface-hover: #F1F5F9;
+  --color-border: #E2E8F0;
+  
+  /* Text */
+  --color-text-main: #0F172A;
+  --color-text-muted: #64748B;
+  --color-text-inverse: #FFFFFF;
+
+  /* Typography */
+  --font-family: 'Plus Jakarta Sans', sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-24: 6rem;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Shadows (very subtle) */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.05), 0 4px 6px -4px rgba(15, 23, 42, 0.05);
+}
