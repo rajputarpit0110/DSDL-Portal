@@ -10,6 +10,7 @@ import Home from '../pages/public/Home';
 import DomainDetail from '../pages/public/DomainDetail';
 
 import Login from '../pages/auth/Login';
+import Register from '../pages/auth/Register';
 
 // Auth Layout & Pages
 import ProtectedRoute from './ProtectedRoute';
@@ -35,6 +36,7 @@ const AppRoutes = () => {
 
       {/* Auth Pages (No layout) */}
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
       {/* Member Routes with Dashboard Layout */}
       <Route path="/member" element={

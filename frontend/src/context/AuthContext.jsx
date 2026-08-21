@@ -6,48 +6,80 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Check for saved user session in local storage (mock implementation)
-    const storedUser = localStorage.getItem('dsdl_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+  const fetchUser = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/me', {
+        credentials: 'include'
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }, []);
-
-  const login = (email, password) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Mock authentication logic
-        if (email === 'admin@dsdl.com') {
-          const adminUser = { id: 1, role: 'admin', name: 'Admin User', email };
-          setUser(adminUser);
-          localStorage.setItem('dsdl_user', JSON.stringify(adminUser));
-          resolve(adminUser);
-        } else if (email === 'member@dsdl.com') {
-          const memberUser = { id: 2, role: 'member', name: 'Member User', email };
-          setUser(memberUser);
-          localStorage.setItem('dsdl_user', JSON.stringify(memberUser));
-          resolve(memberUser);
-        } else if (email === 'lead@dsdl.com') {
-          const leadUser = { id: 3, role: 'lead', name: 'Domain Lead', email };
-          setUser(leadUser);
-          localStorage.setItem('dsdl_user', JSON.stringify(leadUser));
-          resolve(leadUser);
-        } else {
-          reject(new Error('Invalid credentials'));
-        }
-      }, 800);
-    });
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('dsdl_user');
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const login = async (email, password) => {
+    const response = await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+      credentials: 'include'
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setUser(data.user);
+      return data.user;
+    } else {
+      throw new Error(data.message || 'Login failed');
+    }
+  };
+
+  const register = async (userData) => {
+    const response = await fetch('http://localhost:5000/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+      credentials: 'include'
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setUser(data.user);
+      return data.user;
+    } else {
+      throw new Error(data.message || 'Registration failed');
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await fetch('http://localhost:5000/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setUser(null);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );
