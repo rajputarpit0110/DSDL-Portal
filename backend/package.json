@@ -9,7 +9,7 @@
     "seed:admin": "node src/seeds/seedAdmin.js",
     "seed:lead": "node src/seeds/seedLead.js",
     "seed:dev": "node src/seeds/seedDevelopmentData.js",
-    "setup": "node src/seeds/seedDevelopmentData.js && node src/seeds/seedAdmin.js && node src/seeds/seedLead.js"
+    "setup": "node src/seeds/seedDevelopmentData.js && node src/seeds/seedAdmin.js && node src/seeds/seedLead.js && node src/seeds/seedMember.js"
   },
   "keywords": [
     "mern",
