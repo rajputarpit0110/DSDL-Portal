@@ -17,6 +17,15 @@ yarn-error.log*
 dist/
 build/
 
+# Runtime database files
+backend/database/*.sqlite
+backend/database/*.sqlite-*
+backend/database/*.sqlite3
+backend/database/*.db
+*.sqlite
+*.sqlite3
+*.db
+
 # IDE/Editor files
 .vscode/
 .idea/

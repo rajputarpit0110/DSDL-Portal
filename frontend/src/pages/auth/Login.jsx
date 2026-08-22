@@ -108,13 +108,13 @@ const Login = () => {
               </Button>
             </form>
 
-            <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--color-border)', fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>
-              <p style={{ marginBottom: '0.5rem', fontWeight: '500' }}>Mock Credentials:</p>
-              <ul style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                <li>Admin: <code>admin@dsdl.com</code></li>
-                <li>Member: <code>member@dsdl.com</code></li>
-                <li>Password: Any</li>
-              </ul>
+            <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--color-border)', textAlign: 'center', fontSize: '0.875rem' }}>
+              <p style={{ color: 'var(--color-text-muted)' }}>
+                Don't have an account?{' '}
+                <Link to="/register" style={{ color: 'var(--color-primary)', fontWeight: '500', textDecoration: 'none' }}>
+                  Register here
+                </Link>
+              </p>
             </div>
           </Card>
         </div>

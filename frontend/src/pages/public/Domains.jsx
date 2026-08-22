@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from '../../common/Container';
-import SectionHeading from '../../common/SectionHeading';
 import DomainPreview from '../../home/DomainPreview';
-import { mockDomains } from '../../data/mockDomains';
+import { apiClient } from '../../utils/apiClient';
 
 const Domains = () => {
+  const [domains, setDomains] = useState([]);
+  
+  useEffect(() => {
+    apiClient.get('/domains').then(setDomains).catch(console.error);
+  }, []);
+
   return (
     <div style={{ padding: '4rem 0' }}>
-      <DomainPreview domains={mockDomains} />
+      <DomainPreview domains={domains} />
       <Container style={{ marginTop: '4rem' }}>
         <h3 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)', marginBottom: '1.5rem', textAlign: 'center' }}>Why Join a Domain?</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>

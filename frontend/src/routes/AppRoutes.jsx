@@ -10,6 +10,7 @@ import Home from '../pages/public/Home';
 import DomainDetail from '../pages/public/DomainDetail';
 
 import Login from '../pages/auth/Login';
+import Register from '../pages/auth/Register';
 
 // Auth Layout & Pages
 import ProtectedRoute from './ProtectedRoute';
@@ -30,11 +31,12 @@ const AppRoutes = () => {
       {/* Public Routes with Public Layout */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/domain/:domainId" element={<DomainDetail />} />
+        <Route path="/domains/:slug" element={<DomainDetail />} />
       </Route>
 
       {/* Auth Pages (No layout) */}
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
       {/* Member Routes with Dashboard Layout */}
       <Route path="/member" element={

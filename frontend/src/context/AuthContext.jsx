@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { apiClient } from '../utils/apiClient';
 
 const AuthContext = createContext(null);
 
@@ -6,48 +7,46 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Check for saved user session in local storage (mock implementation)
-    const storedUser = localStorage.getItem('dsdl_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+  const fetchUser = async () => {
+    try {
+      const data = await apiClient.get('/auth/me');
+      setUser(data.user);
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }, []);
-
-  const login = (email, password) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Mock authentication logic
-        if (email === 'admin@dsdl.com') {
-          const adminUser = { id: 1, role: 'admin', name: 'Admin User', email };
-          setUser(adminUser);
-          localStorage.setItem('dsdl_user', JSON.stringify(adminUser));
-          resolve(adminUser);
-        } else if (email === 'member@dsdl.com') {
-          const memberUser = { id: 2, role: 'member', name: 'Member User', email };
-          setUser(memberUser);
-          localStorage.setItem('dsdl_user', JSON.stringify(memberUser));
-          resolve(memberUser);
-        } else if (email === 'lead@dsdl.com') {
-          const leadUser = { id: 3, role: 'lead', name: 'Domain Lead', email };
-          setUser(leadUser);
-          localStorage.setItem('dsdl_user', JSON.stringify(leadUser));
-          resolve(leadUser);
-        } else {
-          reject(new Error('Invalid credentials'));
-        }
-      }, 800);
-    });
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('dsdl_user');
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const login = async (email, password) => {
+    const data = await apiClient.post('/auth/login', { email, password });
+    setUser(data.user);
+    return data.user;
+  };
+
+  const register = async (userData) => {
+    const data = await apiClient.post('/auth/register', userData);
+    setUser(data.user);
+    return data.user;
+  };
+
+  const logout = async () => {
+    try {
+      await apiClient.post('/auth/logout');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setUser(null);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );
