@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '../../common/Card';
-import { mockMembers } from '../../data/mockMembers';
-import { mockEvents } from '../../data/mockEvents';
-import { mockProjects } from '../../data/mockProjects';
+import { apiClient } from '../../utils/apiClient';
 import { Users, Calendar, Briefcase, Activity } from 'lucide-react';
 
 const AdminDashboard = () => {
+  const [stats, setStats] = useState({ members: 0, events: 0, projects: 0 });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [mRes, eRes, pRes] = await Promise.all([
+          apiClient.get('/members'),
+          apiClient.get('/events'),
+          apiClient.get('/projects')
+        ]);
+        setStats({
+          members: mRes?.length || 0,
+          events: eRes?.length || 0,
+          projects: pRes?.length || 0
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div>
@@ -20,7 +45,7 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Total Members</p>
-            <h3 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>{mockMembers.length}</h3>
+            <h3 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>{stats.members}</h3>
           </div>
         </Card>
         
@@ -30,7 +55,7 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Total Events</p>
-            <h3 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>{mockEvents.length}</h3>
+            <h3 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>{stats.events}</h3>
           </div>
         </Card>
 
@@ -40,7 +65,7 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Active Projects</p>
-            <h3 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>{mockProjects.length}</h3>
+            <h3 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>{stats.projects}</h3>
           </div>
         </Card>
 
@@ -60,13 +85,7 @@ const AdminDashboard = () => {
           <h3 style={{ fontSize: '1.125rem', color: 'var(--color-secondary)', marginBottom: '1rem' }}>Recent Activity</h3>
           <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem', listStyle: 'none', padding: 0 }}>
             <li style={{ fontSize: '0.9375rem', color: 'var(--color-text-main)', display: 'flex', gap: '0.5rem' }}>
-              <span style={{ color: '#0ea5e9' }}>•</span> Arpit registered for Hacktoberfest 2023.
-            </li>
-            <li style={{ fontSize: '0.9375rem', color: 'var(--color-text-main)', display: 'flex', gap: '0.5rem' }}>
-              <span style={{ color: '#0ea5e9' }}>•</span> Project "AI Study Buddy" was submitted.
-            </li>
-            <li style={{ fontSize: '0.9375rem', color: 'var(--color-text-main)', display: 'flex', gap: '0.5rem' }}>
-              <span style={{ color: '#0ea5e9' }}>•</span> New member joined: John Doe (Web Dev).
+              <span style={{ color: '#0ea5e9' }}>•</span> All services running normally.
             </li>
           </ul>
         </Card>

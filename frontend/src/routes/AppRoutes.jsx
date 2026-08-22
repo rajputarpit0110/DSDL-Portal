@@ -31,7 +31,7 @@ const AppRoutes = () => {
       {/* Public Routes with Public Layout */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/domain/:domainId" element={<DomainDetail />} />
+        <Route path="/domains/:slug" element={<DomainDetail />} />
       </Route>
 
       {/* Auth Pages (No layout) */}

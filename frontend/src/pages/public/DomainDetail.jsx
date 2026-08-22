@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { mockDomains } from '../../data/mockDomains';
+import { apiClient } from '../../utils/apiClient';
 import Container from '../../common/Container';
 import Card from '../../common/Card';
 import { Brain, Sparkles, BarChart, Monitor, ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 const DomainDetail = () => {
-  const { domainId } = useParams();
-  const domain = mockDomains.find(d => d.id === domainId);
+  const { slug } = useParams();
+  const [domain, setDomain] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    apiClient.get(`/domains/${slug}`)
+      .then(setDomain)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [slug]);
+
+  if (loading) return <div style={{ padding: '6rem 2rem', textAlign: 'center' }}>Loading...</div>;
 
   if (!domain) {
     return (
@@ -42,11 +52,11 @@ const DomainDetail = () => {
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
             <div style={{ color: 'var(--color-primary)' }}>
-              {getDomainIcon(domain.iconName)}
+              {getDomainIcon(domain.icon)}
             </div>
             <div>
               <h1 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{domain.name}</h1>
-              <p style={{ fontSize: '1.25rem', color: 'var(--color-text-main)', fontWeight: '500' }}>{domain.shortDesc}</p>
+              <p style={{ fontSize: '1.25rem', color: 'var(--color-text-main)', fontWeight: '500' }}>{domain.description}</p>
             </div>
           </div>
         </Container>
@@ -66,7 +76,7 @@ const DomainDetail = () => {
             <Card style={{ padding: '2.5rem' }}>
               <h2 style={{ fontSize: '1.25rem', color: 'var(--color-secondary)', marginBottom: '1.5rem' }}>Why You Should Join</h2>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {domain.whyJoin.map((reason, index) => (
+                {(domain.whyJoin || ['Specialized Mentorship', 'Collaborative Environment']).map((reason, index) => (
                   <li key={index} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: 'var(--color-text-main)', lineHeight: '1.6' }}>
                     <CheckCircle2 size={20} style={{ color: 'var(--color-primary)', flexShrink: 0, marginTop: '0.125rem' }} />
                     <span>{reason}</span>
@@ -78,7 +88,7 @@ const DomainDetail = () => {
             <Card style={{ padding: '2.5rem' }}>
               <h2 style={{ fontSize: '1.25rem', color: 'var(--color-secondary)', marginBottom: '1.5rem' }}>Example Projects</h2>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                {domain.examples.map((example, index) => (
+                {(domain.examples || ['Coming Soon']).map((example, index) => (
                   <li key={index} style={{ padding: '1rem', backgroundColor: 'var(--color-surface)', borderRadius: '8px', color: 'var(--color-text-main)', borderLeft: '4px solid var(--color-primary)' }}>
                     {example}
                   </li>

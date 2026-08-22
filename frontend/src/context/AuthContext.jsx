@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { apiClient } from '../utils/apiClient';
 
 const AuthContext = createContext(null);
 
@@ -8,15 +9,8 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/me', {
-        credentials: 'include'
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
+      const data = await apiClient.get('/auth/me');
+      setUser(data.user);
     } catch (error) {
       console.error('Failed to fetch user:', error);
       setUser(null);
@@ -30,47 +24,20 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const response = await fetch('http://localhost:5000/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-      credentials: 'include'
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      setUser(data.user);
-      return data.user;
-    } else {
-      throw new Error(data.message || 'Login failed');
-    }
+    const data = await apiClient.post('/auth/login', { email, password });
+    setUser(data.user);
+    return data.user;
   };
 
   const register = async (userData) => {
-    const response = await fetch('http://localhost:5000/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
-      credentials: 'include'
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      setUser(data.user);
-      return data.user;
-    } else {
-      throw new Error(data.message || 'Registration failed');
-    }
+    const data = await apiClient.post('/auth/register', userData);
+    setUser(data.user);
+    return data.user;
   };
 
   const logout = async () => {
     try {
-      await fetch('http://localhost:5000/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
-      });
+      await apiClient.post('/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
