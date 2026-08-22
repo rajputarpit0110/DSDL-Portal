@@ -101,70 +101,76 @@ DSDL-Portal/
 
 ## 🚀 Quick Start Guide
 
-Ready to code? Follow these steps to get the app running on your machine.
+> ⚠️ **For teammates cloning this project for the first time** — the `.env` file and the SQLite database are NOT pushed to Git (they're in `.gitignore`). You must create them yourself by following the steps below. This is normal and intentional.
 
 ### 1. Prerequisites
 - Install [Node.js](https://nodejs.org/) (v18+ recommended)
 - Install Git
 
 ### 2. Backend Setup
-1. Open a terminal and navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Set up your environment variables:
-   - Copy `.env.example` to `.env` (or create a `.env` file manually)
-   - Ensure you define `JWT_SECRET`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD`.
-4. Seed the database (This creates the tables, dummy data, and admin accounts):
-   ```bash
-   npm run seed:dev
-   node src/seeds/seedAdmin.js
-   node src/seeds/seedLead.js
-   ```
-5. Start the backend server (Runs on `http://localhost:5000` by default):
-   ```bash
-   npm run dev
-   ```
+
+```bash
+cd backend
+npm install
+```
+
+Copy the environment file:
+```bash
+# Windows
+copy .env.example .env
+
+# Mac / Linux
+cp .env.example .env
+```
+
+> ✅ The `.env.example` already has the correct dev credentials pre-filled. You don't need to change anything for local development.
+
+Seed the database (creates all tables + dummy data + Admin + Lead accounts) with one command:
+```bash
+npm run setup
+```
+
+Start the backend:
+```bash
+npm run dev
+# ✅ You should see: "Server running in development mode on port 8000"
+```
 
 ### 3. Frontend Setup
-1. Open a **new** terminal (keep the backend running) and navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the development server (Runs on `http://localhost:5173` by default):
-   ```bash
-   npm run dev
-   ```
+
+Open a **new terminal** (keep the backend running in the first one):
+```bash
+cd frontend
+npm install
+npm run dev
+# ✅ You should see: "VITE ready → Local: http://localhost:5173/"
+```
+
+Open **http://localhost:5173** in your browser. The app is live!
 
 ---
 
-## 🔐 Default Login Credentials
+## 🔐 Default Credentials
 
 If you ran the seed scripts during setup, you can access the dashboards immediately using these accounts:
 
-**Global Admin** (Full access to all systems):
-- **Email**: `admin@dsdl.local` (or whatever you set in `.env`)
-- **Password**: `CHANGE_THIS_PASSWORD`
+| Role | Email | Password | Dashboard |
+|---|---|---|---|
+| 🔑 **Admin** | `admin@dsdl.local` | `admin123` | `/admin/dashboard` |
+| 🎯 **Domain Lead** | `lead@dsdl.local` | `password123` | `/member/dashboard` |
+| 👤 **Member** | `member@dsdl.com` | `member123` | `/member/dashboard` |
 
-**Domain Lead** (Can approve projects and manage domain members):
-- **Email**: `lead@dsdl.local`
-- **Password**: `password123`
+> **💡 Tip:** The Login page at `/login` has a **"🚀 Quick Access"** section with one-click buttons to log in as Admin, Lead, or Member instantly — no typing required! Great for testing during development.
 
 ---
 
 ## 💡 How to Contribute as a Junior Member
 
-1. **Pick a Task**: Look at the "What's Next" section above. A great first task is to turn one of the mock button alerts (like "Submit Project") into a real React Form modal!
+1. **Pick a Task**: Look at the "What's Next" section in the [DOCUMENTATION.md](./DOCUMENTATION.md). A great first task is to turn one of the mock button alerts (like "Submit Project") into a real React Form modal!
 2. **Use Existing Components**: If you need a button or a card on the frontend, import `Button` or `Card` from `src/common/`. Do not reinvent the wheel.
-3. **Use the API Client**: To talk to the backend, import `apiClient` from `src/utils/apiClient.js`. 
+3. **Use the API Client**: To talk to the backend, import `apiClient` from `src/utils/apiClient.js`.
    - *Example:* `apiClient.post('/projects', formData)`
-4. **Ask Questions!**: If you aren't sure how a Service connects to a Repository, just ask me or seniors .
-H
+4. **Read the Docs**: Check out [DOCUMENTATION.md](./DOCUMENTATION.md) for a complete deep-dive on how every part of the project is built and connected.
+5. **Ask Questions!**: If you aren't sure how a Service connects to a Repository, just ask a senior member.
+
+Happy coding! 🎉

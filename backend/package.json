@@ -7,7 +7,9 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "seed:admin": "node src/seeds/seedAdmin.js",
-    "seed:dev": "node src/seeds/seedDevelopmentData.js"
+    "seed:lead": "node src/seeds/seedLead.js",
+    "seed:dev": "node src/seeds/seedDevelopmentData.js",
+    "setup": "node src/seeds/seedDevelopmentData.js && node src/seeds/seedAdmin.js && node src/seeds/seedLead.js"
   },
   "keywords": [
     "mern",
