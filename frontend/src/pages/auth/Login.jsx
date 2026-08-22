@@ -22,7 +22,21 @@ const Login = () => {
       if (user.role === 'admin') navigate('/admin/dashboard');
       else navigate('/member/dashboard');
     } catch (err) {
-      setError('Invalid credentials. Please check and try again.');
+      setError('Invalid email or password. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const quickLogin = async (quickEmail, quickPassword) => {
+    setError('');
+    setLoading(true);
+    try {
+      const user = await login(quickEmail, quickPassword);
+      if (user.role === 'admin') navigate('/admin/dashboard');
+      else navigate('/member/dashboard');
+    } catch (err) {
+      setError('Quick login failed. Make sure the backend is running.');
     } finally {
       setLoading(false);
     }
@@ -115,6 +129,36 @@ const Login = () => {
                   Register here
                 </Link>
               </p>
+            </div>
+
+            {/* Quick Login Buttons for Development/Testing */}
+            <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--color-border)' }}>
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', textAlign: 'center', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '600' }}>
+                🚀 Quick Access (Dev Mode)
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <button
+                  onClick={() => quickLogin('admin@dsdl.local', 'admin123')}
+                  disabled={loading}
+                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#1e293b', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                >
+                  🔑 Login as Admin
+                </button>
+                <button
+                  onClick={() => quickLogin('lead@dsdl.local', 'password123')}
+                  disabled={loading}
+                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#0f4c81', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                >
+                  🎯 Login as Domain Lead
+                </button>
+                <button
+                  onClick={() => quickLogin('member@dsdl.com', 'member123')}
+                  disabled={loading}
+                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#166534', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                >
+                  👤 Login as Member
+                </button>
+              </div>
             </div>
           </Card>
         </div>
