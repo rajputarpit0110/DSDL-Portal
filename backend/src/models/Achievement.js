@@ -3,7 +3,8 @@ const achievementSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
   date: String,
-  category: String
+  category: String,
+  image: String
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 achievementSchema.methods.toSafeObject = function() {
   const obj = this.toObject({ virtuals: true });

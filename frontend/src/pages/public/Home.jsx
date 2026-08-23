@@ -8,7 +8,11 @@ import AccordionGallery from '../../components/common/AccordionGallery';
 import DepthCarousel from '../../components/common/DepthCarousel';
 import Threads from '../../components/common/Threads';
 import { Brain, Sparkles, BarChart, Monitor, Calendar, Trophy, GitBranch, ChevronRight, Activity } from 'lucide-react';
+import { Brain, Sparkles, BarChart, Monitor, Calendar, Trophy, GitBranch, ChevronRight, Activity, Megaphone, Target, Rocket } from 'lucide-react';
 import { apiClient } from '../../utils/apiClient';
+import { mockAchievements } from '../../data/mockAchievements';
+import DriftWall from '../../components/DriftWall';
+import TextType from '../../components/TextType';
 
 const Home = () => {
   const [domains, setDomains] = useState([]);
@@ -17,7 +21,19 @@ const Home = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [members, setMembers] = useState([]);
   const [achievements, setAchievements] = useState([]);
-  
+  const [activeAchievement, setActiveAchievement] = useState(null);
+
+  const displayAchievements = achievements.length > 0 ? achievements.map((ach, idx) => ({
+    ...ach,
+    image: ach.image || mockAchievements[idx % mockAchievements.length]?.image || '/achievements/innotech22.png'
+  })) : mockAchievements;
+
+  useEffect(() => {
+    if (displayAchievements && displayAchievements.length > 0 && !activeAchievement) {
+      setActiveAchievement(displayAchievements[0]);
+    }
+  }, [displayAchievements, activeAchievement]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -86,6 +102,66 @@ const Home = () => {
             <p style={{ fontSize: '1.125rem', lineHeight: '1.8', color: 'var(--color-text-main)', fontWeight: '500' }}>
               Whether you need help fixing a bug, want to form a team for an upcoming hackathon, or just want to explore the latest tech trends with like-minded builders—DSDL is your community.
             </p>
+          </div>
+        </Container>
+      </section>
+
+      {/* 1.5. Announcements Section */}
+      <section id="announcements-typing" style={{ padding: '4rem 2rem', position: 'relative', zIndex: 1 }}>
+        <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{
+            width: '100%',
+            maxWidth: '650px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.04) 100%)',
+            padding: '2.5rem',
+            borderRadius: '24px',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
+            boxShadow: '0 10px 40px rgba(16, 185, 129, 0.06), inset 0 0 20px rgba(16, 185, 129, 0.02)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1.25rem',
+            position: 'relative',
+            overflow: 'hidden',
+            textAlign: 'center'
+          }}>
+            {/* Glow effect background */}
+            <div style={{
+              position: 'absolute',
+              top: '-50%',
+              left: '-50%',
+              width: '200%',
+              height: '200%',
+              background: 'radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 60%)',
+              pointerEvents: 'none',
+              zIndex: 0
+            }}></div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', zIndex: 1, color: 'var(--color-secondary)', fontWeight: '800', fontSize: '1.75rem', letterSpacing: '0.02em', marginBottom: '0.5rem' }}>
+              <Megaphone size={28} style={{ color: 'var(--color-primary)' }} /> Announcement and News
+            </div>
+
+            <div style={{ position: 'relative', zIndex: 1, minHeight: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <TextType 
+                text={[
+                  "📢 Club Recruitment Starting Soon!",
+                  "Stay Tuned • Registration Opening Soon 🚀"
+                ]}
+                typingSpeed={60}
+                deletingSpeed={30}
+                pauseDuration={2000}
+                loop={true}
+                showCursor={true}
+                cursorCharacter="|"
+                textColors={['var(--color-secondary)', 'var(--color-primary)']}
+                style={{
+                  fontSize: '1.8rem',
+                  fontWeight: '800',
+                  lineHeight: '1.4',
+                  fontFamily: 'system-ui, sans-serif'
+                }}
+              />
+            </div>
           </div>
         </Container>
       </section>
@@ -295,28 +371,6 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* 5. Announcements / News */}
-      <section id="announcements" style={{ padding: '6rem 2rem', backgroundColor: 'white', position: 'relative', zIndex: 1, borderTop: '1px solid var(--color-border)' }}>
-        <Container>
-          <SectionHeading title="Announcements & News" subtitle="Latest updates from DSDL" />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-            {announcements.slice(0, 3).map(news => (
-              <Card key={news.id} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                  <div style={{ backgroundColor: 'var(--color-primary-light)', padding: '0.75rem', borderRadius: '12px', color: 'var(--color-primary)' }}>
-                    <Activity size={24} />
-                  </div>
-                  <div>
-                    <h3 style={{ fontSize: '1.125rem', color: 'var(--color-secondary)', fontWeight: 'bold' }}>{news.title}</h3>
-                    <div style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>{new Date(news.publishedAt).toLocaleDateString()}</div>
-                  </div>
-                </div>
-                <p style={{ color: 'var(--color-text-main)', lineHeight: '1.6' }}>{news.summary || news.content}</p>
-              </Card>
-            ))}
-          </div>
-        </Container>
-      </section>
 
       {/* 6. Projects */}
       <section id="projects" style={{ padding: '6rem 2rem', backgroundColor: 'var(--color-surface)', position: 'relative', zIndex: 1 }}>
@@ -339,20 +393,150 @@ const Home = () => {
       {/* 6. Achievements */}
       <section id="achievements" style={{ padding: '6rem 2rem', position: 'relative', zIndex: 1 }}>
         <Container>
-          <SectionHeading title="Achievements" subtitle="Celebrating Our Wins" />
-          <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            {achievements.slice(0, 3).map((ach, i) => (
-              <div key={ach.id} style={{ display: 'flex', gap: '1.5rem', backgroundColor: 'var(--color-background)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
-                <div style={{ color: 'var(--color-primary)', backgroundColor: 'var(--color-surface)', padding: '1rem', borderRadius: '50%', height: 'fit-content', border: '1px solid var(--color-border)' }}>
-                  <Trophy size={24} />
+          <SectionHeading title="Our Achievements" subtitle="Celebrating Our Wins" />
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '3rem',
+            alignItems: 'stretch',
+            justifyContent: 'center',
+            marginTop: '3rem'
+          }}>
+            {/* Left Panel: Active achievement details */}
+            <div style={{
+              flex: '1 1 400px',
+              maxWidth: '550px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
+            }}>
+              {(activeAchievement || displayAchievements[0]) && (
+                <div style={{
+                  padding: '2.5rem',
+                  backgroundColor: 'var(--color-surface)',
+                  borderRadius: '20px',
+                  border: '1px solid var(--color-border)',
+                  boxShadow: '0 15px 30px rgba(0, 0, 0, 0.2)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1.25rem',
+                  transition: 'opacity 0.3s ease'
+                }}>
+                  {(activeAchievement || displayAchievements[0]).image && (
+                    <div style={{
+                      width: '100%',
+                      maxHeight: '340px',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      marginBottom: '1rem',
+                      backgroundColor: '#0a0a14',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: '1px solid var(--color-border)'
+                    }}>
+                      <img 
+                        src={(activeAchievement || displayAchievements[0]).image} 
+                        alt={(activeAchievement || displayAchievements[0]).title} 
+                        style={{
+                          maxWidth: '100%',
+                          maxHeight: '340px',
+                          width: 'auto',
+                          height: 'auto',
+                          objectFit: 'contain',
+                          display: 'block'
+                        }} 
+                      />
+                    </div>
+                  )}
+                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <span style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase',
+                      backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                      color: 'var(--color-primary)',
+                      padding: '0.35rem 0.85rem',
+                      borderRadius: '9999px',
+                      border: '1px solid rgba(16, 185, 129, 0.3)'
+                    }}>
+                      {(activeAchievement || displayAchievements[0]).category}
+                    </span>
+                    {(activeAchievement || displayAchievements[0]).date && (
+                      <span style={{
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        color: 'var(--color-text-muted)',
+                        backgroundColor: 'var(--color-background)',
+                        padding: '0.35rem 0.85rem',
+                        borderRadius: '9999px',
+                        border: '1px solid var(--color-border)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.25rem'
+                      }}>
+                        <Calendar size={12} /> {(activeAchievement || displayAchievements[0]).date}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 style={{
+                    fontSize: '2rem',
+                    fontWeight: '800',
+                    color: 'var(--color-secondary)',
+                    lineHeight: '1.25',
+                    background: 'linear-gradient(135deg, var(--color-secondary) 30%, var(--color-primary) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    margin: '0.5rem 0'
+                  }}>
+                    {(activeAchievement || displayAchievements[0]).title}
+                  </h3>
+
+                  <p style={{
+                    color: 'var(--color-text-main)',
+                    lineHeight: '1.75',
+                    fontSize: '1rem',
+                    fontWeight: '500',
+                    margin: 0
+                  }}>
+                    {(activeAchievement || displayAchievements[0]).description}
+                  </p>
                 </div>
-                <div>
-                  <h3 style={{ fontSize: '1.25rem', color: 'var(--color-secondary)', marginBottom: '0.25rem', fontWeight: 'bold' }}>{ach.title}</h3>
-                  <span style={{ fontSize: '0.875rem', color: 'var(--color-primary)', fontWeight: 'bold' }}>{ach.category} • {ach.date}</span>
-                  <p style={{ color: 'var(--color-text-main)', marginTop: '0.5rem', lineHeight: '1.6', fontWeight: '500' }}>{ach.description}</p>
-                </div>
-              </div>
-            ))}
+              )}
+            </div>
+
+            {/* Right Panel: DriftWall */}
+            <div style={{
+              flex: '1 1 400px',
+              maxWidth: '550px',
+              height: '500px',
+              position: 'relative',
+              borderRadius: '20px',
+              border: '1px solid var(--color-border)',
+              overflow: 'hidden',
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.35)',
+              backgroundColor: '#05030a'
+            }}>
+              <DriftWall
+                items={displayAchievements}
+                columns={3}
+                tileWidth={170}
+                tileHeight={120}
+                gap={14}
+                tilt={12}
+                turn={-10}
+                perspective={1000}
+                depth={100}
+                speed={35}
+                fade={0.6}
+                dim={0.45}
+                overlayColor="#05030a"
+                onActiveItemChange={(item) => {
+                  if (item) setActiveAchievement(item);
+                }}
+              />
+            </div>
           </div>
         </Container>
       </section>
