@@ -4,6 +4,9 @@ import Container from '../../common/Container';
 import SectionHeading from '../../common/SectionHeading';
 import Card from '../../common/Card';
 import Badge from '../../common/Badge';
+import AccordionGallery from '../../components/common/AccordionGallery';
+import DepthCarousel from '../../components/common/DepthCarousel';
+import Threads from '../../components/common/Threads';
 import { Brain, Sparkles, BarChart, Monitor, Calendar, Trophy, GitBranch, ChevronRight, Activity } from 'lucide-react';
 import { apiClient } from '../../utils/apiClient';
 
@@ -90,46 +93,201 @@ const Home = () => {
       {/* 3. Domains */}
       <section id="domains" style={{ padding: '6rem 2rem', backgroundColor: 'var(--color-surface)', position: 'relative', zIndex: 1 }}>
         <Container>
-          <SectionHeading title="Tech Domains" subtitle="Areas We Explore & Teach" />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
-            {domains.map(domain => (
-              <Link to={`/domains/${domain.slug}`} key={domain.id} style={{ textDecoration: 'none' }}>
-                <Card style={{ padding: '2rem', display: 'flex', flexDirection: 'column', height: '100%', transition: 'transform 0.2s', cursor: 'pointer', backgroundColor: 'var(--color-background)' }} 
-                      onMouseOver={e => e.currentTarget.style.transform = 'translateY(-5px)'}
-                      onMouseOut={e => e.currentTarget.style.transform = 'none'}>
-                  <div style={{ color: 'var(--color-primary)', marginBottom: '1.5rem' }}>
-                    {getDomainIcon(domain.icon)}
-                  </div>
-                  <h3 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)', marginBottom: '1rem', fontWeight: 'bold' }}>{domain.name}</h3>
-                  <p style={{ color: 'var(--color-text-main)', lineHeight: '1.6', flex: 1, fontWeight: '500' }}>{domain.description}</p>
-                  <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-primary)', fontWeight: 'bold' }}>
-                    Learn More <ChevronRight size={18} />
-                  </div>
-                </Card>
-              </Link>
-            ))}
+          <SectionHeading title="Technical Domains" subtitle="Explore Our Core Technology Tracks & Mentorship Areas" />
+          
+          <div style={{ marginTop: '2rem', width: '100%' }}>
+            <AccordionGallery
+              items={
+                domains && domains.length > 0
+                  ? domains.map(d => {
+                      const slugOrName = (d.slug || d.name || '').toLowerCase();
+                      let img = 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1000&q=80';
+                      if (slugOrName.includes('web')) {
+                        img = 'https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=1000&q=80';
+                      } else if (slugOrName.includes('dsa') || slugOrName.includes('algo') || slugOrName.includes('data structure')) {
+                        img = 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1000&q=80';
+                      } else if (slugOrName.includes('deep') || slugOrName.includes('neural') || slugOrName.includes('nlp')) {
+                        img = 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1000&q=80';
+                      } else if (slugOrName.includes('android') || slugOrName.includes('app') || slugOrName.includes('mobile')) {
+                        img = 'https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1000&q=80';
+                      } else if (slugOrName.includes('machine') || slugOrName.includes('ml') || slugOrName.includes('ai')) {
+                        img = 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1000&q=80';
+                      }
+
+                      return {
+                        image: d.image || img,
+                        label: d.name,
+                        link: `/domains/${d.slug || d.id}`,
+                        alt: d.name
+                      };
+                    })
+                  : [
+                      {
+                        image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1000&q=80',
+                        label: 'Machine Learning',
+                        link: '/domains/machine-learning',
+                        alt: 'Machine Learning'
+                      },
+                      {
+                        image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=1000&q=80',
+                        label: 'Web Development',
+                        link: '/domains/web-development',
+                        alt: 'Web Development'
+                      },
+                      {
+                        image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1000&q=80',
+                        label: 'DSA',
+                        link: '/domains/dsa',
+                        alt: 'Data Structures and Algorithms'
+                      },
+                      {
+                        image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1000&q=80',
+                        label: 'Deep Learning',
+                        link: '/domains/deep-learning',
+                        alt: 'Deep Learning'
+                      },
+                      {
+                        image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1000&q=80',
+                        label: 'Android Development',
+                        link: '/domains/android-development',
+                        alt: 'Android Development'
+                      }
+                    ]
+              }
+              defaultIndex={2}
+              expandRatio={0.5}
+              trigger="hover"
+              height={480}
+              accentColor="var(--color-primary, #0A66C2)"
+              overlayColor="#0a0e17"
+              radius={16}
+            />
           </div>
         </Container>
       </section>
 
       {/* 4. Events */}
-      <section id="events" style={{ padding: '6rem 2rem', position: 'relative', zIndex: 1 }}>
-        <Container>
-          <SectionHeading title="Club Events" subtitle="Hackathons, Workshops & Meetups" />
-          <div style={{ display: 'grid', gap: '1.5rem', maxWidth: '800px', margin: '0 auto' }}>
+      <section id="events" style={{ padding: '6rem 2rem', position: 'relative', zIndex: 1, backgroundColor: '#060a12', color: '#ffffff', overflow: 'hidden' }}>
+        {/* Interactive WebGL Threads Animation Background */}
+        <Threads
+          color={[0.22, 0.74, 0.97]}
+          amplitude={1.2}
+          distance={0.2}
+          enableMouseInteraction={true}
+        />
+
+        <Container style={{ position: 'relative', zIndex: 2 }}>
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div style={{ marginBottom: '0.85rem' }}>
+              <span style={{
+                color: 'var(--color-primary, #38bdf8)',
+                fontSize: '0.875rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                backgroundColor: 'rgba(10, 102, 194, 0.15)',
+                padding: '0.35rem 1rem',
+                borderRadius: '999px',
+                border: '1px solid rgba(56, 189, 248, 0.3)'
+              }}>
+                LIFE AT DSDL
+              </span>
+            </div>
+            <h2 style={{
+              fontSize: 'clamp(2.4rem, 4vw, 3.25rem)',
+              fontWeight: 800,
+              maxWidth: '850px',
+              margin: '0 auto',
+              color: '#ffffff',
+              letterSpacing: '-0.02em',
+              textShadow: '0 4px 20px rgba(10, 102, 194, 0.4)'
+            }}>
+              Club Events & <span style={{ color: 'var(--color-primary, #38bdf8)', background: 'linear-gradient(135deg, #38bdf8 0%, #60a5fa 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Moments</span>
+            </h2>
+            <p style={{
+              color: 'rgba(255, 255, 255, 0.85)',
+              fontSize: '1.2rem',
+              maxWidth: '750px',
+              margin: '1rem auto 0 auto',
+              fontWeight: 500,
+              lineHeight: 1.6
+            }}>
+              Explore Our Bootcamps, Expert Sessions & Hackathons in 3D Depth
+            </p>
+          </div>
+          
+          {/* Interactive 3D Depth Carousel of Events */}
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '520px',
+            margin: '1rem 0 1rem 0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <DepthCarousel
+              items={[
+                { image: '/events/event-induction.png', alt: 'DSDL Student Induction Programme' },
+                { image: '/events/event-ai-bootcamp.png', alt: 'AI Bootcamp Session Day 1' },
+                { image: '/events/event-speaker-sumit.png', alt: 'TFUG x DSDL Collaboration Speaker Sumit Tyagi' },
+                { image: '/events/event-group-photo.png', alt: 'DSDL Club Community Group' },
+                { image: '/events/event-stickers-swag.png', alt: 'DSDL Tech Vision Stickers & Swag' },
+                { image: '/events/event-workshop-audience.png', alt: 'Hands-on Tech Workshop Audience' },
+                { image: '/events/event-speaker-session.png', alt: 'Keynote Speaker & AI Mentorship' },
+                { image: '/events/event-session.png', alt: 'Collaborative Lab Session' }
+              ]}
+              cardWidth={320}
+              cardHeight={400}
+              depth={220}
+              spread={90}
+              tilt={22}
+              tiltDirection="right"
+              perspective={1400}
+              visibleCards={4}
+              falloff={0.2}
+              blur={6}
+              autoplay={true}
+              autoplayDelay={3500}
+              loop={true}
+              showControls={true}
+              showIndicators={true}
+            />
+          </div>
+
+          {/* Bottom Subtitle / Tagline below the image carousel */}
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <p style={{
+              fontSize: '1.05rem',
+              color: 'rgba(255, 255, 255, 0.75)',
+              fontWeight: 500,
+              maxWidth: '650px',
+              margin: '0 auto',
+              padding: '0.6rem 1.5rem',
+              borderRadius: '999px',
+              backgroundColor: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              display: 'inline-block'
+            }}>
+              ✨ Celebrating our club’s achievements, events, and memorable moments.
+            </p>
+          </div>
+
+          {/* Event Cards Listing */}
+          <div style={{ display: 'grid', gap: '1.5rem', maxWidth: '850px', margin: '0 auto' }}>
             {events.slice(0, 3).map(event => (
-              <Card key={event.id} style={{ padding: '1.5rem', display: 'flex', gap: '1.5rem', alignItems: 'center', backgroundColor: 'var(--color-background)' }}>
-                <div style={{ backgroundColor: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', textAlign: 'center', minWidth: '80px', border: '1px solid var(--color-border)' }}>
+              <Card key={event.id} style={{ padding: '1.75rem', display: 'flex', gap: '1.5rem', alignItems: 'center', backgroundColor: '#0d1322', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <div style={{ backgroundColor: 'rgba(10, 102, 194, 0.15)', padding: '1rem', borderRadius: '14px', textAlign: 'center', minWidth: '85px', border: '1px solid rgba(10, 102, 194, 0.3)' }}>
                   <Calendar size={24} style={{ color: 'var(--color-primary)', marginBottom: '0.5rem' }} />
-                  <div style={{ fontWeight: 'bold', color: 'var(--color-secondary)' }}>{new Date(event.date).toLocaleDateString()}</div>
+                  <div style={{ fontWeight: 'bold', color: '#ffffff', fontSize: '0.9rem' }}>{new Date(event.date).toLocaleDateString()}</div>
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-                    <h3 style={{ fontSize: '1.25rem', color: 'var(--color-secondary)', fontWeight: 'bold' }}>{event.title}</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                    <h3 style={{ fontSize: '1.25rem', color: '#ffffff', fontWeight: 'bold' }}>{event.title}</h3>
                     <Badge variant="primary">{event.type}</Badge>
                   </div>
-                  <p style={{ color: 'var(--color-text-main)', marginBottom: '0.5rem' }}>{event.description}</p>
-                  <div style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>{event.startTime} • {event.venue}</div>
+                  <p style={{ color: 'rgba(255, 255, 255, 0.75)', marginBottom: '0.5rem', fontSize: '0.95rem' }}>{event.description}</p>
+                  <div style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.85rem' }}>{event.startTime} • {event.venue}</div>
                 </div>
               </Card>
             ))}
