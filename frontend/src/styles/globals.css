@@ -124,6 +124,16 @@ h3 {
 }
 
 /* Responsive adjustments */
+@media (max-width: 900px) {
+  .desktop-nav-links,
+  .desktop-nav-actions {
+    display: none !important;
+  }
+  .mobile-nav-toggle {
+    display: inline-flex !important;
+  }
+}
+
 @media (max-width: 768px) {
   h1 {
     font-size: 2.25rem;
@@ -135,3 +145,4 @@ h3 {
     padding: 0 var(--spacing-4);
   }
 }
+
