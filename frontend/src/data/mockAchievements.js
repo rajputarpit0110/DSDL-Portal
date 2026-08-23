@@ -1,23 +1,50 @@
 export const mockAchievements = [
   {
     id: 1,
-    title: '1st Runner-Up at Smart India Hackathon',
-    year: '2025',
-    category: 'National Hackathon',
-    description: 'The DSDL Alpha team secured the 1st runner-up position for building an AI-based agriculture yield predictor.'
+    title: 'Innotech-22 Winner',
+    date: '2022-11-18',
+    category: 'Societal Category',
+    description: 'Rohit and Vartul, with Rohit being a member of the DSDL Club, showcased their prowess at Innotech-22, winning accolades for their innovative contributions. Their victory underscores the impact of collaboration and the cutting-edge insights fostered within technology-focused clubs, reaffirming their commitment to excellence in the field.',
+    image: '/achievements/innotech22.png'
   },
   {
     id: 2,
-    title: 'Best Tech Club of the Year',
-    year: '2024',
-    category: 'College Award',
-    description: 'Awarded by KIET Group of Institutions for conducting maximum technical workshops and real-world projects.'
+    title: 'TechHacks 3.0',
+    date: '2023-01-06',
+    category: 'Hackathon',
+    description: 'Kanisk Jaiswal, a key member of the DSDL Club, achieved the 1st Runner-Up position with cash prize of 10k at Techhacks 3.0, Chitkara University held on 5-6 January 2023. Collaborating with the talented team of Piyush Sharma, Khushi Sachdev, and Sampada, they showcased exceptional skills and innovation. Congratulations to the DSDL Club for yet another remarkable triumph in the dynamic world of technology.',
+    image: '/achievements/techhacks30.png'
   },
   {
     id: 3,
-    title: 'Top 10 Globally in Kaggle Competition',
-    year: '2024',
-    category: 'Data Science',
-    description: 'Our core member ranked 8th in the global Kaggle prediction challenge.'
+    title: 'NASA Space Apps',
+    date: '2022-10-03',
+    category: 'Global Hackathon',
+    description: 'Kanisk Jaiswal, a standout member of the DSDL Club, led the team to become the global nominee and secure an impressive 3rd position in the Greater Noida region with cash prize of 5K held on 2nd-3rd October 2022. Collaborating with the talented team of Shivansh Pandey, Garima Shukla, Manas and their innovative prowess shone brightly.',
+    image: '/achievements/nasaspaceapps.png'
+  },
+  {
+    id: 4,
+    title: 'Ideathon ISABVP',
+    date: '2023-03-15',
+    category: 'Ideathon',
+    description: 'Anuj Gupta, Manisha Maurya a standout members of the DSDL Club, led the team to secure the 3rd position in the ideathon organized by ISABVP. Alongside the talented team of Akshat Srivastava and Ira Nafees for their innovative performance.',
+    image: '/achievements/ideathonisabvp.png'
+  },
+  {
+    id: 5,
+    title: 'Best Tech Club of the Year',
+    date: '2024-06-15',
+    category: 'College Award',
+    description: 'Awarded by KIET Group of Institutions for conducting maximum technical workshops and real-world projects.',
+    image: '/achievements/besttechclub.jpg'
+  },
+  {
+    id: 6,
+    title: '1st Runner-Up at Smart India Hackathon',
+    date: '2025-12-15',
+    category: 'National Hackathon',
+    description: 'The DSDL Alpha team secured the 1st runner-up position for building an AI-based agriculture yield predictor.',
+    image: '/achievements/sih2025_stage.jpg'
   }
 ];
