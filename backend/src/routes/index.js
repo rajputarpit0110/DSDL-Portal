@@ -9,6 +9,7 @@ const projectRoutes = require('./projectRoutes');
 const teamRoutes = require('./teamRoutes');
 const achievementRoutes = require('./achievementRoutes');
 const uploadRoutes = require('./uploadRoutes');
+const notificationRoutes = require('./notificationRoutes');
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.use('/projects', projectRoutes);
 router.use('/teams', teamRoutes);
 router.use('/achievements', achievementRoutes);
 router.use('/upload', uploadRoutes);
+router.use('/notifications', notificationRoutes);
 
 module.exports = router;

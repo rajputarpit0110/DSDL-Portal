@@ -1,66 +1,52 @@
-# DSDL Club Official Portal
+# DSDL Technical Club Portal
 
-Welcome to the **Data Science & Deep Learning (DSDL)** Club Portal! This platform serves as a central hub for managing club domains, organizing events, tracking member projects, showcasing achievements, and facilitating team collaborations.
-
-This document is designed to help **junior members and new contributors** understand how the project is built, what technologies we use, what has been completed so far, and how you can contribute!
+The official management portal for the Data Science & Deep Learning (DSDL) Club at KIET Group of Institutions.
 
 ---
 
-## 🛠️ The Tech Stack (What & Why)
+## 🛠 Tech Stack
 
-We use a modern, decoupled Client-Server architecture. This means our Frontend (what the user sees) and Backend (the server and database) are two completely separate applications that talk to each other over an API.
+### Frontend
+- **React.js (Vite)**: Lightning-fast, modern UI development.
+- **React Router (v6)**: Client-side routing with nested layouts and role-based protection.
+- **Lucide React**: Beautiful, consistent iconography.
+- **CSS Modules & Global Styles**: Custom theming without heavy UI libraries.
 
-### Frontend (Client-Side)
-- **React.js**: The core library for building our user interfaces.
-- **Vite**: Our build tool and development server. It is extremely fast and replaces older tools like Create React App (Webpack).
-- **React Router (`react-router-dom`)**: Handles navigation. It allows us to have different pages (like `/login`, `/admin/dashboard`) without reloading the browser.
-- **Pure CSS / CSS Variables**: We are purposefully **not** using heavy UI libraries (like Bootstrap or Material UI) or utility classes (like Tailwind) to keep the project lightweight and help juniors master fundamental CSS.
-- **Lucide React**: Our icon library. It provides clean, scalable SVG icons.
-- **Native Fetch API (`apiClient.js`)**: Instead of `axios`, we use a custom wrapper around the native browser `fetch` to handle API calls, attach authentication tokens, and handle file uploads smoothly.
-
-### Backend (Server-Side)
-- **Node.js & Express.js**: The engine and framework for our backend API. It handles incoming HTTP requests from the frontend and sends back JSON data.
-- **SQLite3**: Our current relational database. We chose SQLite for development because it requires zero setup (it just creates a `.sqlite` file in the folder). *Note: The code is structured so we can easily swap this out for PostgreSQL or MongoDB in the future.*
-- **JSON Web Tokens (JWT)**: Used for authentication. When a user logs in, they get a token stored in their browser cookies to keep them logged in.
-- **Bcrypt.js**: Used to securely hash and salt user passwords before saving them to the database.
-- **Multer**: A middleware used to handle `multipart/form-data`, which allows users to upload files (like profile pictures or event banners) to our server.
+### Backend (Node.js & Express)
+- **Express.js**: Robust API routing and middleware management.
+- **MongoDB Atlas & Mongoose**: Fully managed NoSQL cloud database for scalable data storage.
+- **JSON Web Tokens (JWT)**: Secure cookie-based authentication.
+- **Bcrypt.js**: Secure password hashing.
 
 ---
 
-## 📊 Project Status: What's Done?
+## 🚀 Project Status
 
-We have successfully completed the massive foundational work for both the Backend API and the Frontend UI.
+The DSDL Portal architecture is complete and highly structured. We recently executed a full migration from SQLite to **MongoDB Atlas**, meaning our application is now production-ready and fully operational.
 
 ### ✅ Completed Features
-1. **Core Architecture**: The layered backend structure and the frontend routing setup are fully complete.
-2. **Authentication System**: Register, Login, and Role-Based Access Control (Admin vs Lead vs Member).
-3. **Domain Management**: Domains (AI/ML, Web Dev, etc.) can be viewed and members belong to them.
-4. **Member Profiles**: Users have profiles and the backend can list members.
-5. **Event Management API & UI**: Admins can create events. The frontend successfully fetches and displays upcoming and past events.
-6. **Project Submission API & UI**: Members can see projects, and leads/admins can manage project statuses.
-7. **Team Formation API & UI**: Members can see their peers, and leads can manage domain teams.
-8. **Announcements System**: Admins can broadcast announcements which appear on the Member Dashboard.
-9. **Achievements System**: Global achievements and awards can be fetched and displayed on the public Home page and member dashboards.
-10. **File Upload Infrastructure**: The backend is configured to accept image uploads and serve them statically.
-
-### 🚧 What's Next? (Pending Work)
-While the pages exist and data is loading from the database, **some interactive UI flows need to be built**:
-- **Forms & Modals**: The buttons for "Register for Event", "Submit Project Proposal", and "Edit Role" currently show mock alerts. We need to build the React forms that actually send the `POST` requests to the API.
-- **File Upload UI**: We need to add file picker inputs to the frontend so users can upload their avatars or project banners.
-- **Profile Editing**: Building the settings page for members to update their details.
+1. **Core Architecture**: Enterprise-grade Layered Backend Architecture (Routes → Controllers → Services → Repositories → Models).
+2. **MongoDB Atlas Integration**: Complete transition to NoSQL document schemas, maintaining strict relationships via References.
+3. **Master Admin Dashboard**: Fully wired UI featuring:
+   - Live analytical metrics fetching.
+   - Activity Audit Logs.
+   - **Notification Engine**: Programmatic notification generation when events or announcements are created.
+   - Dynamic Modals for Member and Event creation.
+   - Export Reports.
+4. **Member & Lead Dashboards**: Secure, role-isolated portals for standard members and domain leads to manage their tasks.
+5. **Entity Management API & UI**: Full CRUD flows for Domains, Events, Projects, Announcements, and Teams.
 
 ---
 
-## 🏗️ How the Code Works (Architecture)
+## 🏗 How the Code Works (Layered Architecture)
 
-To keep our code clean as it grows, we follow a strict **Layered Architecture** on the Backend. If you are adding a new feature (like "Blogs"), you must follow this flow:
+To maintain a scalable and clean codebase, the backend adheres to a strict **Layered Architecture**. If you are building a new feature, you must follow this flow:
 
-1. **Route (`routes/blogRoutes.js`)**: Catches the HTTP request (e.g., `POST /api/blogs`) and checks permissions using middleware. Passes the request to the Controller.
-2. **Controller (`controllers/blogController.js`)**: Extracts data from `req.body` or `req.params`. **Never write database queries or complex logic here.** It passes the extracted data to the Service.
-3. **Service (`services/blogService.js`)**: The "Brain". Handles business logic (e.g., "Is this title too long?", "Does this user have permission?"). It calls the Repository to get/save data.
-4. **Repository (`repositories/blogRepository.js`)**: The only place where we write SQL queries. It interacts directly with the Database.
-
-**Why do we do this?** If we ever switch from SQLite to MongoDB, we only have to rewrite the *Repositories*. The Controllers and Services stay exactly the same!
+1. **Route (`routes/`)**: Catches the HTTP request (e.g., `POST /api/events`) and validates authentication/roles via middleware. Passes to the Controller.
+2. **Controller (`controllers/`)**: Extracts payload data (`req.body`, `req.params`) and sends the final JSON response. **Never write database queries or business logic here.**
+3. **Service (`services/`)**: The "Brain". Handles all business rules (e.g., "Is registration still open?", "Trigger a notification to users"). Calls the Repository.
+4. **Repository (`repositories/`)**: Data access layer. This is the **only** place where we interact with Mongoose/MongoDB.
+5. **Model (`models/`)**: Mongoose schemas defining the structure of our NoSQL documents.
 
 ---
 
@@ -69,43 +55,40 @@ To keep our code clean as it grows, we follow a strict **Layered Architecture** 
 ```text
 DSDL-Portal/
 ├── backend/
-│   ├── database/        # SQLite database file (.sqlite) lives here
-│   ├── uploads/         # Uploaded images & banners are saved here
 │   ├── src/
 │   │   ├── controllers/ # Step 2: Extracts HTTP data
-│   │   ├── middleware/  # Security checks (Auth, Roles, Uploads)
-│   │   ├── models/      # Data schema blueprints
-│   │   ├── repositories/# Step 4: SQL Database Queries
+│   │   ├── database/    # MongoDB connection setup
+│   │   ├── middleware/  # Security checks (Auth, Roles, Error Handlers)
+│   │   ├── models/      # Step 5: Mongoose Schemas (User, Event, Domain, etc.)
+│   │   ├── repositories/# Step 4: MongoDB Queries
 │   │   ├── routes/      # Step 1: API Endpoints definition
-│   │   ├── seeds/       # Scripts to populate fake dummy data for testing
+│   │   ├── seeds/       # Scripts to populate dummy data
 │   │   ├── services/    # Step 3: Business Logic & Rules
-│   │   └── utils/       # Helpers like ApiResponse formatters
-│   └── server.js        # The entry point that boots up Express
+│   │   ├── utils/       # Helpers (ApiResponse, Error handling, JWT setup)
+│   │   └── server.js    # Express entry point
+│   └── package.json
 │
 └── frontend/
-    ├── public/          # Static assets & logos
-    └── src/
-        ├── common/      # Reusable UI components (Buttons, Cards, Badges)
-        ├── context/     # Global State (AuthContext keeps track of who is logged in)
-        ├── layout/      # Navbars, Sidebars, and Page Wrappers
-        ├── pages/       # The actual screen views
-        │   ├── admin/   # Admin dashboard screens
-        │   ├── auth/    # Login and Registration screens
-        │   ├── member/  # Authenticated member screens (Events, Projects)
-        │   └── public/  # Unauthenticated marketing pages (Home, About)
-        ├── routes/      # AppRoutes.js decides which page loads on which URL
-        └── utils/       # apiClient.js (used to fetch data from the backend)
+    ├── src/
+    │   ├── components/  # Feature-specific components (Modals, NotificationBell)
+    │   ├── common/      # Reusable UI elements (Buttons, Cards, Badges)
+    │   ├── context/     # Global State (AuthContext)
+    │   ├── layout/      # Navbars, Sidebars, and Wrappers
+    │   ├── pages/       # Screen views (Admin, Auth, Member, Public)
+    │   ├── routes/      # AppRoutes.js defining React Router logic
+    │   └── utils/       # apiClient.js (HTTP wrapper for backend communication)
+    └── package.json
 ```
 
 ---
 
-## 🚀 Quick Start Guide
+## 🏃 Quick Start Guide
 
-> ⚠️ **For teammates cloning this project for the first time** — the `.env` file and the SQLite database are NOT pushed to Git (they're in `.gitignore`). You must create them yourself by following the steps below. This is normal and intentional.
+> ⚠️ **For teammates cloning this project:** The `.env` file is ignored by Git for security. You must create it manually!
 
 ### 1. Prerequisites
-- Install [Node.js](https://nodejs.org/) (v18+ recommended)
-- Install Git
+- [Node.js](https://nodejs.org/) (v18+)
+- Git
 
 ### 2. Backend Setup
 
@@ -114,63 +97,44 @@ cd backend
 npm install
 ```
 
-Copy the environment file:
-```bash
-# Windows
-copy .env.example .env
+**Create the environment file:**
+Duplicate `.env.example` and rename it to `.env`. The `.env.example` file contains the development MongoDB Atlas connection string (`MONGO_URI`). Ensure this matches exactly.
 
-# Mac / Linux
-cp .env.example .env
-```
-
-> ✅ The `.env.example` already has the correct dev credentials pre-filled. You don't need to change anything for local development.
-
-Seed the database (creates all tables + dummy data + Admin + Lead accounts) with one command:
+**Seed the database:**
+To populate the database with initial domains, dummy events, and sample admin/lead accounts, run:
 ```bash
 npm run setup
 ```
 
-Start the backend:
+**Start the backend server:**
 ```bash
 npm run dev
-# ✅ You should see: "Server running in development mode on port 8000"
 ```
+You should see: `✅ MongoDB Atlas Connected` and `Server running in development mode on port 8000`.
 
 ### 3. Frontend Setup
 
-Open a **new terminal** (keep the backend running in the first one):
+Open a **new terminal** (keep the backend running in the first terminal):
 ```bash
 cd frontend
 npm install
 npm run dev
-# ✅ You should see: "VITE ready → Local: http://localhost:5173/"
 ```
 
 Open **http://localhost:5173** in your browser. The app is live!
 
 ---
 
-## 🔐 Default Credentials
+## 🔑 Default Credentials
 
-If you ran the seed scripts during setup, you can access the dashboards immediately using these accounts:
+If you ran the `npm run setup` command successfully, you can access the dashboards immediately:
 
 | Role | Email | Password | Dashboard |
 |---|---|---|---|
-| 🔑 **Admin** | `admin@dsdl.local` | `admin123` | `/admin/dashboard` |
-| 🎯 **Domain Lead** | `lead@dsdl.local` | `password123` | `/member/dashboard` |
+| 👑 **Admin** | `admin@dsdl.local` | `admin123` | `/admin/dashboard` |
+| 🛠 **Domain Lead** | `lead@dsdl.local` | `password123` | `/member/dashboard` |
 | 👤 **Member** | `member@dsdl.com` | `member123` | `/member/dashboard` |
 
-> **💡 Tip:** The Login page at `/login` has a **"🚀 Quick Access"** section with one-click buttons to log in as Admin, Lead, or Member instantly — no typing required! Great for testing during development.
+> 💡 **Tip:** The Login page features a **"Quick Access"** section with one-click buttons to instantly log in as an Admin, Lead, or Member during local development.
 
----
-
-## 💡 How to Contribute as a Junior Member
-
-1. **Pick a Task**: Look at the "What's Next" section in the [DOCUMENTATION.md](./DOCUMENTATION.md). A great first task is to turn one of the mock button alerts (like "Submit Project") into a real React Form modal!
-2. **Use Existing Components**: If you need a button or a card on the frontend, import `Button` or `Card` from `src/common/`. Do not reinvent the wheel.
-3. **Use the API Client**: To talk to the backend, import `apiClient` from `src/utils/apiClient.js`.
-   - *Example:* `apiClient.post('/projects', formData)`
-4. **Read the Docs**: Check out [DOCUMENTATION.md](./DOCUMENTATION.md) for a complete deep-dive on how every part of the project is built and connected.
-5. **Ask Questions!**: If you aren't sure how a Service connects to a Repository, just ask a senior member.
-
-Happy coding! 🎉
+Happy coding! 🚀

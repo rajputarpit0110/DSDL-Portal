@@ -27,7 +27,30 @@ class EventService {
       throw new ApiError(409, 'Event with this slug/title already exists');
     }
 
-    return await eventRepository.create({ ...data, slug, organizerId });
+    const newEvent = await eventRepository.create({ ...data, slug, organizerId });
+    
+    // Notify users
+    try {
+      const userRepository = require('../repositories/userRepository');
+      const notificationRepository = require('../repositories/notificationRepository');
+      const users = await userRepository.findAll();
+      for (const user of users) {
+        if (user.id !== organizerId) {
+          await notificationRepository.create({
+            receiver: user.id,
+            type: 'EVENT',
+            title: 'New Event: ' + newEvent.title,
+            message: 'A new event has been scheduled. Check it out!',
+            relatedEntity: 'Event',
+            relatedEntityId: newEvent.id
+          });
+        }
+      }
+    } catch(err) {
+      console.error('Failed to notify users of new event', err);
+    }
+    
+    return newEvent;
   }
 
   async updateEvent(id, data) {

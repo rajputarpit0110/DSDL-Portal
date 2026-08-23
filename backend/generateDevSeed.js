@@ -1,3 +1,9 @@
+const fs = require('fs');
+const path = require('path');
+
+const filePath = path.join('src', 'seeds', 'seedDevelopmentData.js');
+
+const newContent = `
 require('dotenv').config();
 const { connectDB } = require('../database/mongo/connection');
 const domainRepository = require('../repositories/domainRepository');
@@ -24,7 +30,7 @@ const seedDevelopmentData = async () => {
       const exists = await domainRepository.findBySlug(d.slug);
       if (!exists) {
         await domainRepository.create(d);
-        console.log(`Created domain: ${d.name}`);
+        console.log(\`Created domain: \${d.name}\`);
       }
     }
 
@@ -61,7 +67,7 @@ const seedDevelopmentData = async () => {
       const exists = await eventRepository.findBySlug(e.slug);
       if (!exists) {
         await eventRepository.create(e);
-        console.log(`Created event: ${e.title}`);
+        console.log(\`Created event: \${e.title}\`);
       }
     }
 
@@ -93,7 +99,7 @@ const seedDevelopmentData = async () => {
       const exists = await announcementRepository.findBySlug(a.slug);
       if (!exists) {
         await announcementRepository.create(a);
-        console.log(`Created announcement: ${a.title}`);
+        console.log(\`Created announcement: \${a.title}\`);
       }
     }
 
@@ -119,7 +125,7 @@ const seedDevelopmentData = async () => {
         const exists = await projectRepository.findBySlug(p.slug);
         if (!exists) {
           await projectRepository.create(p);
-          console.log(`Created project: ${p.title}`);
+          console.log(\`Created project: \${p.title}\`);
         }
       }
 
@@ -137,7 +143,7 @@ const seedDevelopmentData = async () => {
       if (!existingTeam) {
         const newTeam = await teamRepository.create(sampleTeam);
         await teamRepository.addMember(newTeam.id || newTeam._id, adminUser.id || adminUser._id, 'LEADER');
-        console.log(`Created team: ${newTeam.name}`);
+        console.log(\`Created team: \${newTeam.name}\`);
       }
     }
 
@@ -161,7 +167,7 @@ const seedDevelopmentData = async () => {
       const exists = existing.some(ach => ach.title === a.title);
       if (!exists) {
         await achievementRepository.create(a);
-        console.log(`Created achievement: ${a.title}`);
+        console.log(\`Created achievement: \${a.title}\`);
       }
     }
 
@@ -173,3 +179,7 @@ const seedDevelopmentData = async () => {
   }
 };
 seedDevelopmentData();
+`;
+
+fs.writeFileSync(filePath, newContent.trim());
+console.log('Successfully updated seedDevelopmentData.js');

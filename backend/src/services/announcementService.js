@@ -32,7 +32,32 @@ class AnnouncementService {
         slug = `${slug}-${Math.floor(Math.random() * 1000)}`;
     }
 
-    return await announcementRepository.create({ ...data, slug, authorId });
+    const newAnnouncement = await announcementRepository.create({ ...data, slug, authorId });
+    
+    // Notify users if it's published immediately
+    if (newAnnouncement.status === 'published') {
+      try {
+        const userRepository = require('../repositories/userRepository');
+        const notificationRepository = require('../repositories/notificationRepository');
+        const users = await userRepository.findAll();
+        for (const user of users) {
+          if (user.id !== authorId) {
+            await notificationRepository.create({
+              receiver: user.id,
+              type: 'ANNOUNCEMENT',
+              title: 'New Announcement: ' + newAnnouncement.title,
+              message: 'Check out the new announcement on the portal.',
+              relatedEntity: 'Announcement',
+              relatedEntityId: newAnnouncement.id
+            });
+          }
+        }
+      } catch(err) {
+        console.error('Failed to notify users', err);
+      }
+    }
+    
+    return newAnnouncement;
   }
 
   async updateAnnouncement(id, data) {
@@ -71,7 +96,31 @@ class AnnouncementService {
     }
     const newStatus = publishStatus ? 'published' : 'draft';
     const publishedAt = publishStatus ? new Date().toISOString() : null;
-    return await announcementRepository.update(id, { ...item, status: newStatus, publishedAt });
+    const updated = await announcementRepository.update(id, { ...item, status: newStatus, publishedAt });
+    
+    if (publishStatus) {
+      try {
+        const userRepository = require('../repositories/userRepository');
+        const notificationRepository = require('../repositories/notificationRepository');
+        const users = await userRepository.findAll();
+        for (const user of users) {
+          if (user.id !== item.authorId) {
+            await notificationRepository.create({
+              receiver: user.id,
+              type: 'ANNOUNCEMENT',
+              title: 'New Announcement: ' + updated.title,
+              message: 'Check out the new announcement on the portal.',
+              relatedEntity: 'Announcement',
+              relatedEntityId: updated.id
+            });
+          }
+        }
+      } catch(err) {
+        console.error('Failed to notify users', err);
+      }
+    }
+    
+    return updated;
   }
 }
 

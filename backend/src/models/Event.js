@@ -1,24 +1,24 @@
-class Event {
-  constructor(row) {
-    this.id = row.id;
-    this.title = row.title;
-    this.slug = row.slug;
-    this.description = row.description;
-    this.type = row.type;
-    this.date = row.date;
-    this.startTime = row.start_time;
-    this.endTime = row.end_time;
-    this.venue = row.venue;
-    this.onlineLink = row.online_link;
-    this.organizerId = row.organizer_id;
-    this.registrationDeadline = row.registration_deadline;
-    this.maxParticipants = row.max_participants;
-    this.registrationRequired = Boolean(row.registration_required);
-    this.status = row.status;
-    this.bannerImage = row.banner_image;
-    this.createdAt = row.created_at;
-    this.updatedAt = row.updated_at;
-  }
-}
-
-module.exports = Event;
+const mongoose = require('mongoose');
+const eventSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
+  description: String,
+  type: { type: String, required: true },
+  date: Date,
+  startTime: String,
+  endTime: String,
+  venue: String,
+  onlineLink: String,
+  organizerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  registrationDeadline: Date,
+  maxParticipants: Number,
+  registrationRequired: { type: Boolean, default: false },
+  status: { type: String, default: 'draft' },
+  bannerImage: String
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
+eventSchema.methods.toSafeObject = function() {
+  const obj = this.toObject({ virtuals: true });
+  delete obj._id; delete obj.__v;
+  return obj;
+};
+module.exports = mongoose.model('Event', eventSchema);

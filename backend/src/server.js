@@ -1,6 +1,6 @@
 require('dotenv').config();
 const app = require('./app');
-const { connectDB } = require('./database/sqlite/connection');
+const { connectDB } = require('./database/mongo/connection');
 
 const PORT = process.env.PORT || 8000;
 

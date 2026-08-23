@@ -1,23 +1,17 @@
-class User {
-  constructor({ id, name, email, password_hash, enrollment_number, branch, year, role, is_active, created_at, updated_at }) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.passwordHash = password_hash;
-    this.enrollmentNumber = enrollment_number;
-    this.branch = branch;
-    this.year = year;
-    this.role = role;
-    this.isActive = Boolean(is_active);
-    this.createdAt = created_at;
-    this.updatedAt = updated_at;
-  }
-
-  // Helper method to safely return user without password hash
-  toSafeObject() {
-    const { passwordHash, ...safeUser } = this;
-    return safeUser;
-  }
-}
-
-module.exports = User;
+const mongoose = require('mongoose');
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true, lowercase: true },
+  passwordHash: { type: String, required: true },
+  enrollmentNumber: String,
+  branch: String,
+  year: Number,
+  role: { type: String, default: 'member' },
+  isActive: { type: Boolean, default: true }
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
+userSchema.methods.toSafeObject = function() {
+  const obj = this.toObject({ virtuals: true });
+  delete obj.passwordHash; delete obj._id; delete obj.__v;
+  return obj;
+};
+module.exports = mongoose.model('User', userSchema);

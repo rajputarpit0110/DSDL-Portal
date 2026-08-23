@@ -19,6 +19,8 @@ const Sidebar = () => {
     { path: '/admin/users', label: 'Manage Users', icon: <Users size={20} /> },
     { path: '/admin/events', label: 'Manage Events', icon: <Calendar size={20} /> },
     { path: '/admin/projects', label: 'Global Projects', icon: <Briefcase size={20} /> },
+    { path: '/admin/domains', label: 'Manage Domains', icon: <Users size={20} /> },
+    { path: '/admin/announcements', label: 'Announcements', icon: <Award size={20} /> },
   ];
 
   const links = user?.role === 'admin' ? adminLinks : memberLinks;

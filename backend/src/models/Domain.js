@@ -1,15 +1,15 @@
-class Domain {
-  constructor({ id, name, slug, description, icon, image_url, lead_id, created_at, updated_at }) {
-    this.id = id;
-    this.name = name;
-    this.slug = slug;
-    this.description = description;
-    this.icon = icon;
-    this.imageUrl = image_url;
-    this.leadId = lead_id;
-    this.createdAt = created_at;
-    this.updatedAt = updated_at;
-  }
-}
-
-module.exports = Domain;
+const mongoose = require('mongoose');
+const domainSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
+  description: String,
+  icon: String,
+  imageUrl: String,
+  leadId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
+domainSchema.methods.toSafeObject = function() {
+  const obj = this.toObject({ virtuals: true });
+  delete obj._id; delete obj.__v;
+  return obj;
+};
+module.exports = mongoose.model('Domain', domainSchema);

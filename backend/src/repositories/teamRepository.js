@@ -1,152 +1,46 @@
-const { getDB } = require('../database/sqlite/connection');
 const Team = require('../models/Team');
+const TeamMembership = require('../models/TeamMembership');
 const TeamRequest = require('../models/TeamRequest');
 
 class TeamRepository {
   async findAll() {
-    const db = getDB();
-    const rows = await db.all(`
-      SELECT t.*, d.name as domain_name, u.name as leader_name
-      FROM teams t
-      LEFT JOIN domains d ON t.domain_id = d.id
-      LEFT JOIN users u ON t.leader_id = u.id
-      ORDER BY t.created_at DESC
-    `);
-    return rows.map(row => new Team(row));
+    const teams = await Team.find().populate('domainId').populate('leaderId').sort({ createdAt: -1 });
+    return teams.map(t => this._mapWithRelations(t));
   }
-
   async findById(id) {
-    const db = getDB();
-    const row = await db.get(`
-      SELECT t.*, d.name as domain_name, u.name as leader_name
-      FROM teams t
-      LEFT JOIN domains d ON t.domain_id = d.id
-      LEFT JOIN users u ON t.leader_id = u.id
-      WHERE t.id = ?
-    `, [id]);
-    return row ? new Team(row) : null;
+    const t = await Team.findById(id).populate('domainId').populate('leaderId');
+    return t ? this._mapWithRelations(t) : null;
   }
-
   async findBySlug(slug) {
-    const db = getDB();
-    const row = await db.get(`
-      SELECT t.*, d.name as domain_name, u.name as leader_name
-      FROM teams t
-      LEFT JOIN domains d ON t.domain_id = d.id
-      LEFT JOIN users u ON t.leader_id = u.id
-      WHERE t.slug = ?
-    `, [slug]);
-    return row ? new Team(row) : null;
+    const t = await Team.findOne({ slug }).populate('domainId').populate('leaderId');
+    return t ? this._mapWithRelations(t) : null;
   }
-
-  async create(data) {
-    const db = getDB();
-    const result = await db.run(
-      `INSERT INTO teams (
-        name, slug, description, domain_id, leader_id, status, max_members
-      ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [
-        data.name, data.slug, data.description, data.domainId, 
-        data.leaderId, data.status || 'active', data.maxMembers || 10
-      ]
-    );
-    
-    return this.findById(result.lastID);
+  async create(data) { const t = new Team(data); await t.save(); return this.findById(t._id); }
+  async update(id, data) { await Team.findByIdAndUpdate(id, data); return this.findById(id); }
+  async delete(id) { await Team.findByIdAndDelete(id); return true; }
+  _mapWithRelations(t) {
+    const obj = t.toSafeObject();
+    obj.domain_name = t.domainId ? t.domainId.name : null;
+    obj.leader_name = t.leaderId ? t.leaderId.name : null;
+    return obj;
   }
-
-  async update(id, data) {
-    const db = getDB();
-    await db.run(
-      `UPDATE teams SET 
-        name = ?, slug = ?, description = ?, domain_id = ?, leader_id = ?, 
-        status = ?, max_members = ?, updated_at = CURRENT_TIMESTAMP
-       WHERE id = ?`,
-      [
-        data.name, data.slug, data.description, data.domainId, data.leaderId,
-        data.status, data.maxMembers, id
-      ]
-    );
-    return this.findById(id);
-  }
-
-  async delete(id) {
-    const db = getDB();
-    await db.run('DELETE FROM teams WHERE id = ?', [id]);
-    return true;
-  }
-
-  // Memberships
-  async addMember(teamId, userId, role = 'MEMBER') {
-    const db = getDB();
-    await db.run(
-      'INSERT INTO team_memberships (team_id, user_id, role) VALUES (?, ?, ?)',
-      [teamId, userId, role]
-    );
-  }
-
-  async removeMember(teamId, userId) {
-    const db = getDB();
-    await db.run(
-      'DELETE FROM team_memberships WHERE team_id = ? AND user_id = ?',
-      [teamId, userId]
-    );
-  }
-
+  
+  async addMember(teamId, userId, role = 'MEMBER') { const tm = new TeamMembership({ teamId, userId, role }); await tm.save(); }
+  async removeMember(teamId, userId) { await TeamMembership.findOneAndDelete({ teamId, userId }); }
   async getMembers(teamId) {
-    const db = getDB();
-    return await db.all(`
-      SELECT tm.role, tm.joined_at, u.id as user_id, u.name, u.email
-      FROM team_memberships tm
-      JOIN users u ON tm.user_id = u.id
-      WHERE tm.team_id = ?
-    `, [teamId]);
+    const members = await TeamMembership.find({ teamId }).populate('userId', 'name email');
+    return members.map(m => ({
+      role: m.role, joined_at: m.joinedAt, user_id: m.userId.id, name: m.userId.name, email: m.userId.email
+    }));
   }
-
-  async countMembers(teamId) {
-    const db = getDB();
-    const result = await db.get(
-      'SELECT COUNT(*) as count FROM team_memberships WHERE team_id = ?',
-      [teamId]
-    );
-    return result.count;
-  }
-
-  // Requests
-  async createRequest(teamId, userId, message) {
-    const db = getDB();
-    await db.run(
-      'INSERT INTO team_join_requests (team_id, user_id, message) VALUES (?, ?, ?)',
-      [teamId, userId, message]
-    );
-  }
-
-  async updateRequestStatus(teamId, userId, status) {
-    const db = getDB();
-    await db.run(
-      'UPDATE team_join_requests SET status = ? WHERE team_id = ? AND user_id = ?',
-      [status, teamId, userId]
-    );
-  }
-
-  async getRequest(teamId, userId) {
-    const db = getDB();
-    const row = await db.get(
-      'SELECT * FROM team_join_requests WHERE team_id = ? AND user_id = ?',
-      [teamId, userId]
-    );
-    return row ? new TeamRequest(row) : null;
-  }
-
+  async countMembers(teamId) { return await TeamMembership.countDocuments({ teamId }); }
+  
+  async createRequest(teamId, userId, message) { const req = new TeamRequest({ teamId, userId, message }); await req.save(); }
+  async updateRequestStatus(teamId, userId, status) { await TeamRequest.findOneAndUpdate({ teamId, userId }, { status }); }
+  async getRequest(teamId, userId) { return await TeamRequest.findOne({ teamId, userId }); }
   async getRequests(teamId) {
-    const db = getDB();
-    const rows = await db.all(`
-      SELECT r.*, u.name as user_name
-      FROM team_join_requests r
-      JOIN users u ON r.user_id = u.id
-      WHERE r.team_id = ?
-    `, [teamId]);
-    return rows.map(row => new TeamRequest(row));
+    const reqs = await TeamRequest.find({ teamId }).populate('userId', 'name');
+    return reqs.map(r => { const obj = r.toSafeObject(); obj.user_name = r.userId ? r.userId.name : null; return obj; });
   }
 }
-
 module.exports = new TeamRepository();

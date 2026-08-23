@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Bell, User } from 'lucide-react';
+import { User } from 'lucide-react';
+import NotificationBell from '../components/common/NotificationBell';
 
 const DashboardHeader = () => {
   const { user, logout } = useAuth();
@@ -10,10 +11,7 @@ const DashboardHeader = () => {
         <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Welcome back, {user?.name.split(' ')[0]}</h2>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-        <div style={{ position: 'relative', cursor: 'pointer' }}>
-          <Bell size={20} color='var(--color-text-muted)' />
-          <div style={{ position: 'absolute', top: '-4px', right: '-4px', width: '8px', height: '8px', backgroundColor: '#e11d48', borderRadius: '50%' }}></div>
-        </div>
+        <NotificationBell />
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'var(--color-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <User size={18} color='var(--color-primary)' />
