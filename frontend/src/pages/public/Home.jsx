@@ -7,7 +7,6 @@ import Badge from '../../common/Badge';
 import AccordionGallery from '../../components/common/AccordionGallery';
 import DepthCarousel from '../../components/common/DepthCarousel';
 import Threads from '../../components/common/Threads';
-import { Brain, Sparkles, BarChart, Monitor, Calendar, Trophy, GitBranch, ChevronRight, Activity } from 'lucide-react';
 import { Brain, Sparkles, BarChart, Monitor, Calendar, Trophy, GitBranch, ChevronRight, Activity, Megaphone, Target, Rocket } from 'lucide-react';
 import { apiClient } from '../../utils/apiClient';
 import { mockAchievements } from '../../data/mockAchievements';
