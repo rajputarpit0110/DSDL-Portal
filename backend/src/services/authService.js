@@ -3,32 +3,48 @@ const userRepository = require('../repositories/userRepository');
 const ApiError = require('../utils/apiError');
 
 class AuthService {
-  async registerUser({ name, email, password, enrollmentNumber, branch, year }) {
+  async registerUser({ name, email, password, enrollmentNumber, branch, year, role }) {
     if (!name || !email || !password) {
       throw new ApiError(400, 'Name, email, and password are required');
     }
 
-    if (password.length < 8) {
-      throw new ApiError(400, 'Password must be at least 8 characters');
+    if (password.length < 6) {
+      throw new ApiError(400, 'Password must be at least 6 characters');
     }
 
     const existingUser = await userRepository.findByEmail(email);
     if (existingUser) {
-      throw new ApiError(409, 'User already exists with this email');
+      throw new ApiError(409, 'A user with this email already exists');
     }
 
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
 
     const newUser = await userRepository.create({
-      name,
-      email,
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
       passwordHash,
       enrollmentNumber,
       branch,
       year,
-      role: 'member' // Hardcode member role for all registrations
+      role: role || 'member'
     });
+
+    try {
+      const MemberProfile = require('../models/MemberProfile');
+      await MemberProfile.findOneAndUpdate(
+        { userId: newUser._id || newUser.id },
+        { 
+          userId: newUser._id || newUser.id,
+          branch,
+          year,
+          visibility: 'public'
+        },
+        { upsert: true, new: true }
+      );
+    } catch (e) {
+      console.warn('Could not auto-create member profile:', e.message);
+    }
 
     return newUser.toSafeObject();
   }

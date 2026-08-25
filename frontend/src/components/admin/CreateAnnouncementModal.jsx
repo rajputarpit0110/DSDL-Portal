@@ -1,29 +1,32 @@
 import React, { useState } from 'react';
-import { CalendarPlus, Calendar, MapPin, Type, X, Loader2 } from 'lucide-react';
+import { Megaphone, Type, FileText, AlertTriangle, Eye, X, Loader2 } from 'lucide-react';
 import { apiClient } from '../../utils/apiClient';
 import Alert from '../../common/Alert';
 import { useToast } from '../../context/ToastContext';
 
-const CreateEventModal = ({ onClose, onSuccess }) => {
+const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess }) => {
   const toast = useToast();
+  const isEditing = Boolean(announcementToEdit);
+
   const [formData, setFormData] = useState({
-    title: '',
-    type: 'WORKSHOP',
-    date: '',
-    startTime: '10:00 AM',
-    venue: '',
-    description: '',
+    title: announcementToEdit?.title || '',
+    summary: announcementToEdit?.summary || '',
+    content: announcementToEdit?.content || '',
+    type: announcementToEdit?.type || 'NEWS',
+    priority: announcementToEdit?.priority || 'NORMAL',
+    status: announcementToEdit?.status || 'published',
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const validate = () => {
     if (!formData.title.trim()) {
-      setError('Please provide an event title.');
+      setError('Please provide an announcement title.');
       return false;
     }
-    if (!formData.date) {
-      setError('Please choose an event date.');
+    if (!formData.content.trim()) {
+      setError('Please provide announcement content.');
       return false;
     }
     return true;
@@ -37,13 +40,24 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
 
     setLoading(true);
     try {
-      await apiClient.post('/events', formData);
-      toast.success(`Event "${formData.title}" created successfully!`);
+      const payload = {
+        ...formData,
+        summary: formData.summary.trim() || formData.title,
+        publishedAt: formData.status === 'published' ? new Date().toISOString() : undefined,
+      };
+
+      if (isEditing) {
+        await apiClient.put(`/announcements/${announcementToEdit.id || announcementToEdit._id}`, payload);
+        toast.success(`Announcement "${formData.title}" updated successfully!`);
+      } else {
+        await apiClient.post('/announcements', payload);
+        toast.success(`Announcement "${formData.title}" published successfully!`);
+      }
       onSuccess();
     } catch (err) {
-      const message = err.message || 'Failed to create event. Please try again.';
-      setError(message);
-      toast.error(message);
+      const msg = err.message || `Failed to ${isEditing ? 'update' : 'create'} announcement.`;
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -69,7 +83,9 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
           backgroundColor: '#ffffff',
           borderRadius: '16px',
           width: '100%',
-          maxWidth: '500px',
+          maxWidth: '540px',
+          maxHeight: '90vh',
+          overflowY: 'auto',
           padding: '2rem',
           boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
         }}
@@ -91,14 +107,14 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
                 flexShrink: 0,
               }}
             >
-              <CalendarPlus size={22} />
+              <Megaphone size={22} />
             </div>
             <div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--color-secondary)', margin: 0 }}>
-                Create New Event
+                {isEditing ? 'Edit Announcement' : 'Create New Announcement'}
               </h3>
               <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginTop: '0.2rem' }}>
-                Organize a workshop, hackathon, or meetup.
+                {isEditing ? 'Modify announcement information.' : 'Broadcast news, opportunities, or urgent alerts to club members.'}
               </p>
             </div>
           </div>
@@ -128,15 +144,16 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
         )}
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
+          {/* Title */}
           <div>
             <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
-              Event Title <span style={{ color: '#ef4444' }}>*</span>
+              Title <span style={{ color: '#ef4444' }}>*</span>
             </label>
             <div style={{ position: 'relative' }}>
               <Type size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
               <input
                 required
-                placeholder="e.g., Intro to Machine Learning"
+                placeholder="e.g. Hackathon 2026 Registrations Open!"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 style={{
@@ -152,64 +169,118 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          {/* Type, Priority, Status 3-col Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
             <div>
-              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
-                Event Type
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+                Type
               </label>
               <select
                 value={formData.type}
                 onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                 style={{
                   width: '100%',
-                  padding: '0.75rem 1rem',
-                  borderRadius: '10px',
+                  padding: '0.65rem 0.5rem',
+                  borderRadius: '8px',
                   border: '1px solid var(--color-border)',
-                  fontSize: '0.925rem',
+                  fontSize: '0.85rem',
                   outline: 'none',
                   backgroundColor: '#ffffff',
                   boxSizing: 'border-box',
                 }}
               >
-                <option value="WORKSHOP">Workshop</option>
-                <option value="HACKATHON">Hackathon</option>
-                <option value="MEETUP">Meetup</option>
-                <option value="WEBINAR">Webinar</option>
+                <option value="NEWS">News</option>
+                <option value="UPDATE">Update</option>
+                <option value="ALERT">Alert</option>
+                <option value="EVENT">Event</option>
+                <option value="OPPORTUNITY">Opportunity</option>
+                <option value="ACHIEVEMENT">Achievement</option>
               </select>
             </div>
 
             <div>
-              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
-                Date <span style={{ color: '#ef4444' }}>*</span>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+                Priority
               </label>
-              <input
-                required
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              <select
+                value={formData.priority}
+                onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
                 style={{
                   width: '100%',
-                  padding: '0.75rem 1rem',
-                  borderRadius: '10px',
+                  padding: '0.65rem 0.5rem',
+                  borderRadius: '8px',
                   border: '1px solid var(--color-border)',
-                  fontSize: '0.925rem',
+                  fontSize: '0.85rem',
                   outline: 'none',
+                  backgroundColor: '#ffffff',
                   boxSizing: 'border-box',
                 }}
-              />
+              >
+                <option value="NORMAL">Normal</option>
+                <option value="LOW">Low</option>
+                <option value="HIGH">High</option>
+                <option value="URGENT">Urgent</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+                Status
+              </label>
+              <select
+                value={formData.status}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                style={{
+                  width: '100%',
+                  padding: '0.65rem 0.5rem',
+                  borderRadius: '8px',
+                  border: '1px solid var(--color-border)',
+                  fontSize: '0.85rem',
+                  outline: 'none',
+                  backgroundColor: '#ffffff',
+                  boxSizing: 'border-box',
+                }}
+              >
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
             </div>
           </div>
 
+          {/* Short Summary */}
           <div>
             <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
-              Venue / Location
+              Short Summary / Teaser
+            </label>
+            <input
+              placeholder="One-line summary for banners and dashboard widgets..."
+              value={formData.summary}
+              onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
+              style={{
+                width: '100%',
+                padding: '0.75rem 1rem',
+                borderRadius: '10px',
+                border: '1px solid var(--color-border)',
+                fontSize: '0.925rem',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          {/* Full Content */}
+          <div>
+            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+              Full Announcement Content <span style={{ color: '#ef4444' }}>*</span>
             </label>
             <div style={{ position: 'relative' }}>
-              <MapPin size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
-              <input
-                placeholder="e.g. Audi 2 / Lab 4 / Google Meet"
-                value={formData.venue}
-                onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
+              <FileText size={18} style={{ position: 'absolute', left: '1rem', top: '0.85rem', color: 'var(--color-text-muted)' }} />
+              <textarea
+                required
+                rows={4}
+                placeholder="Write the full announcement message, details, and guidelines..."
+                value={formData.content}
+                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 style={{
                   width: '100%',
                   padding: '0.75rem 1rem 0.75rem 2.6rem',
@@ -218,12 +289,15 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
                   fontSize: '0.925rem',
                   outline: 'none',
                   boxSizing: 'border-box',
+                  fontFamily: 'inherit',
+                  resize: 'vertical',
                 }}
               />
             </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.75rem' }}>
+          {/* Action buttons */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
             <button
               type="button"
               onClick={onClose}
@@ -261,10 +335,10 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
               {loading ? (
                 <>
                   <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
-                  Creating...
+                  {isEditing ? 'Saving...' : 'Posting...'}
                 </>
               ) : (
-                'Create Event'
+                isEditing ? 'Save Changes' : (formData.status === 'published' ? 'Publish Announcement' : 'Save as Draft')
               )}
             </button>
           </div>
@@ -274,4 +348,4 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
   );
 };
 
-export default CreateEventModal;
+export default CreateAnnouncementModal;
