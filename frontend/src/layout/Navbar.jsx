@@ -21,6 +21,7 @@ const Navbar = () => {
     { label: 'Domains', path: '/#domains' },
     { label: 'Events', path: '/#events' },
     { label: 'Projects', path: '/#projects' },
+    { label: 'Achievements', path: '/#achievements' },
     { label: 'Team', path: '/#team' },
   ];
 
@@ -37,7 +38,8 @@ const Navbar = () => {
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        width: '100%'
+        width: '100%',
+        transform: 'translateZ(0)'
       }}>
         {/* Brand Logos */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
@@ -105,7 +107,7 @@ const Navbar = () => {
               <Link to="/login" style={{ color: 'var(--color-text-main)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600, fontSize: '0.9rem', padding: '0.45rem 0.85rem' }}>
                 <LogIn size={16} /> Login
               </Link>
-              <button onClick={() => navigate('/register')} className="btn btn-primary" style={{ padding: '0.5rem 1.15rem', fontSize: '0.875rem', fontWeight: 600, borderRadius: 'var(--color-radius-xl)' }}>
+              <button onClick={() => navigate('/register')} className="btn btn-primary" style={{ padding: '0.5rem 1.15rem', fontSize: '0.875rem', fontWeight: 600, borderRadius: 'var(--radius-sm)' }}>
                 Register Now →
               </button>
             </>

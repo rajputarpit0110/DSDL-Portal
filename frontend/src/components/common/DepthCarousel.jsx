@@ -62,22 +62,26 @@ const DepthCarousel = ({
 
   const [active, setActive] = useState(0);
 
-  onChangeRef.current = onChange;
-  cfgRef.current = {
-    count,
-    depth,
-    spread,
-    tilt,
-    tiltDirection,
-    visibleCards,
-    falloff,
-    blur,
-    duration,
-    ease,
-    loop,
-    cardWidth,
-    autoplayDelay
-  };
+  const isVisibleRef = useRef(true);
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+    cfgRef.current = {
+      count,
+      depth,
+      spread,
+      tilt,
+      tiltDirection,
+      visibleCards,
+      falloff,
+      blur,
+      duration,
+      ease,
+      loop,
+      cardWidth,
+      autoplayDelay
+    };
+  }, [onChange, count, depth, spread, tilt, tiltDirection, visibleCards, falloff, blur, duration, ease, loop, cardWidth, autoplayDelay]);
 
   const layout = useCallback(pos => {
     const cfg = cfgRef.current;
@@ -100,25 +104,35 @@ const DepthCarousel = ({
       const az = Math.abs(d);
       const shown = az <= cfg.visibleCards + 0.5;
 
+      if (!shown) {
+        el.style.display = 'none';
+        continue;
+      }
+
+      el.style.display = 'block';
+
       const tz = -cfg.depth * d;
       const tx = dir * cfg.spread * d;
       const ry = dir * cfg.tilt * clamp(d, 0, 1);
 
       let opacity = d < 0 ? Math.max(0, 1 + d) : 1;
-      if (!shown) opacity = 0;
 
       const brightness = Math.max(0.15, 1 - back * cfg.falloff);
       const blurPx = cfg.blur > 0 ? Math.min(cfg.blur, (back / Math.max(1, cfg.visibleCards)) * cfg.blur) : 0;
       const zi = Math.round(2000 - d * 20);
 
-      el.style.transform = `translate(-50%, -50%) scale(${sc}) translateX(${tx.toFixed(2)}px) translateZ(${tz.toFixed(2)}px) rotateY(${ry.toFixed(3)}deg)`;
-      el.style.opacity = opacity.toFixed(3);
-      el.style.filter = `brightness(${brightness.toFixed(3)}) blur(${blurPx.toFixed(2)}px)`;
+      el.style.transform = `translate3d(-50%, -50%, 0) scale(${sc}) translateX(${tx.toFixed(1)}px) translateZ(${tz.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)`;
+      el.style.opacity = opacity.toFixed(2);
+      el.style.filter = blurPx > 0.2
+        ? `brightness(${brightness.toFixed(2)}) blur(${blurPx.toFixed(1)}px)`
+        : brightness < 0.99
+          ? `brightness(${brightness.toFixed(2)})`
+          : 'none';
       el.style.zIndex = String(zi);
       el.style.pointerEvents = shown && opacity > 0.05 ? 'auto' : 'none';
 
       const ov = overlayRefs.current[i];
-      if (ov) ov.style.opacity = clamp(back * cfg.falloff * 1.25, 0, 0.86).toFixed(3);
+      if (ov) ov.style.opacity = clamp(back * cfg.falloff * 1.25, 0, 0.86).toFixed(2);
     }
   }, []);
 
@@ -196,15 +210,18 @@ const DepthCarousel = ({
     const onWheel = e => {
       const cfg = cfgRef.current;
       if (cfg.count < 2) return;
-      e.preventDefault();
-      tweenRef.current?.kill();
-      const raw = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      const delta = e.deltaMode === 1 ? raw * 24 : raw;
-      const step = clamp(delta / (cfg.cardWidth * 0.9), -0.6, 0.6);
-      posRef.current += step;
-      layout(posRef.current);
-      if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
-      wheelTimerRef.current = setTimeout(() => setFocus(Math.round(posRef.current), true), 130);
+      
+      // Only capture explicit horizontal wheel/swipe gestures, leave vertical scrolling free and smooth
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 5) {
+        e.preventDefault();
+        tweenRef.current?.kill();
+        const delta = e.deltaMode === 1 ? e.deltaX * 24 : e.deltaX;
+        const step = clamp(delta / (cfg.cardWidth * 0.9), -0.6, 0.6);
+        posRef.current += step;
+        layout(posRef.current);
+        if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
+        wheelTimerRef.current = setTimeout(() => setFocus(Math.round(posRef.current), true), 130);
+      }
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => {
@@ -318,9 +335,21 @@ const DepthCarousel = ({
     root?.addEventListener('mouseleave', onLeave);
     root?.addEventListener('focusin', onFocusIn);
     root?.addEventListener('focusout', onFocusOut);
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry?.isIntersecting ?? true;
+        if (!isVisible) stop();
+        else start();
+      },
+      { threshold: 0 }
+    );
+    if (root) observer.observe(root);
+
     start();
     return () => {
       stop();
+      observer.disconnect();
       root?.removeEventListener('mouseenter', onEnter);
       root?.removeEventListener('mouseleave', onLeave);
       root?.removeEventListener('focusin', onFocusIn);

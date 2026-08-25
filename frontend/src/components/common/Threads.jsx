@@ -125,13 +125,22 @@ const Threads = ({ color = [0.04, 0.4, 0.76], amplitude = 1, distance = 0, enabl
   const animationFrameId = useRef(0);
 
   const propsRef = useRef({ color, amplitude, distance, enableMouseInteraction });
-  propsRef.current = { color, amplitude, distance, enableMouseInteraction };
+  
+  useEffect(() => {
+    propsRef.current = { color, amplitude, distance, enableMouseInteraction };
+  }, [color, amplitude, distance, enableMouseInteraction]);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const renderer = new Renderer({ alpha: true });
+    const renderer = new Renderer({
+      alpha: true,
+      antialias: false,
+      powerPreference: 'high-performance',
+      depth: false,
+      stencil: false
+    });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
@@ -160,7 +169,7 @@ const Threads = ({ color = [0.04, 0.4, 0.76], amplitude = 1, distance = 0, enabl
     function resize() {
       const { clientWidth, clientHeight } = container;
       if (!clientWidth || !clientHeight) return;
-      const baseDpr = Math.min(window.devicePixelRatio || 1, 2);
+      const baseDpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const longestSide = Math.max(clientWidth, clientHeight) * baseDpr;
       const dpr = longestSide > MAX_RENDER_DIM ? (baseDpr * MAX_RENDER_DIM) / longestSide : baseDpr;
       renderer.dpr = dpr;
@@ -172,22 +181,32 @@ const Threads = ({ color = [0.04, 0.4, 0.76], amplitude = 1, distance = 0, enabl
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
     resize();
 
     const currentMouse = [0.5, 0.5];
     let targetMouse = [0.5, 0.5];
 
+    let containerRect = null;
+    function updateRect() {
+      if (container) containerRect = container.getBoundingClientRect();
+    }
+    updateRect();
+
     function handleMouseMove(e) {
-      const rect = container.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = 1.0 - (e.clientY - rect.top) / rect.height;
-      targetMouse = [x, y];
+      if (!containerRect) updateRect();
+      if (!containerRect || containerRect.width === 0 || containerRect.height === 0) return;
+      const x = (e.clientX - containerRect.left) / containerRect.width;
+      const y = 1.0 - (e.clientY - containerRect.top) / containerRect.height;
+      targetMouse = [Math.max(0, Math.min(1, x)), Math.max(0, Math.min(1, y))];
     }
     function handleMouseLeave() {
       targetMouse = [0.5, 0.5];
     }
-    window.addEventListener('mousemove', handleMouseMove);
+
+    container.addEventListener('mousemove', handleMouseMove, { passive: true });
+    container.addEventListener('mouseleave', handleMouseLeave, { passive: true });
+    window.addEventListener('scroll', updateRect, { passive: true });
 
     let isVisible = true;
     const intersectionObserver = new IntersectionObserver(
@@ -229,7 +248,9 @@ const Threads = ({ color = [0.04, 0.4, 0.76], amplitude = 1, distance = 0, enabl
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', updateRect);
+      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('mouseleave', handleMouseLeave);
       if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };

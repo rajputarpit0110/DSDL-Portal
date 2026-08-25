@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Container from '../../common/Container';
 import SectionHeading from '../../common/SectionHeading';
@@ -22,10 +22,12 @@ const Home = () => {
   const [achievements, setAchievements] = useState([]);
   const [activeAchievement, setActiveAchievement] = useState(null);
 
-  const displayAchievements = achievements.length > 0 ? achievements.map((ach, idx) => ({
-    ...ach,
-    image: ach.image || mockAchievements[idx % mockAchievements.length]?.image || '/achievements/innotech22.png'
-  })) : mockAchievements;
+  const displayAchievements = useMemo(() => {
+    return achievements.length > 0 ? achievements.map((ach, idx) => ({
+      ...ach,
+      image: ach.image || mockAchievements[idx % mockAchievements.length]?.image || '/achievements/innotech22.png'
+    })) : mockAchievements;
+  }, [achievements]);
 
   useEffect(() => {
     if (displayAchievements && displayAchievements.length > 0 && !activeAchievement) {
@@ -71,7 +73,7 @@ const Home = () => {
     <div style={{ backgroundColor: 'var(--color-background)', position: 'relative' }}>
       
       {/* Global Subtle Grey Grid Background */}
-      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px)', backgroundSize: '40px 40px', pointerEvents: 'none', zIndex: 0 }}></div>
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px)', backgroundSize: '40px 40px', pointerEvents: 'none', zIndex: 0, transform: 'translateZ(0)', willChange: 'transform' }}></div>
 
       {/* 1. Hero / Banner */}
       <section id="hero" style={{ padding: '8rem 2rem', backgroundColor: 'var(--color-background)', textAlign: 'center', position: 'relative', zIndex: 1 }}>
