@@ -40,9 +40,7 @@ const MemberEvents = () => {
             </div>
             
             <div>
-              {event.status === 'UPCOMING' ? (
-                <Button variant="primary" onClick={() => alert('Registration flow coming soon!')} style={{ padding: '0.5rem 1.5rem' }}>Register</Button>
-              ) : (
+              {event.status !== 'UPCOMING' && (
                 <Button onClick={() => alert('This event has already passed.')} style={{ padding: '0.5rem 1.5rem', backgroundColor: '#e2e8f0', color: '#64748b', cursor: 'not-allowed' }}>Past</Button>
               )}
             </div>

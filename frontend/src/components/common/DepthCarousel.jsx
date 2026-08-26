@@ -3,11 +3,11 @@ import gsap from 'gsap';
 import './DepthCarousel.css';
 
 const DEFAULT_ITEMS = [
-  { image: '/events/event-induction.png', alt: 'DSDL Student Induction Programme' },
+  { image: '/events/event-induction.png', alt: 'KRIVA Student Induction Programme' },
   { image: '/events/event-ai-bootcamp.png', alt: 'AI Bootcamp Session' },
-  { image: '/events/event-speaker-sumit.png', alt: 'TFUG x DSDL Collaboration Speaker Sumit Tyagi' },
-  { image: '/events/event-group-photo.png', alt: 'DSDL Club Group Photo' },
-  { image: '/events/event-stickers-swag.png', alt: 'DSDL Tech Vision Stickers & Swag' },
+  { image: '/events/event-speaker-sumit.png', alt: 'TFUG x KRIVA Collaboration Speaker Sumit Tyagi' },
+  { image: '/events/event-group-photo.png', alt: 'KRIVA Club Group Photo' },
+  { image: '/events/event-stickers-swag.png', alt: 'KRIVA Tech Vision Stickers & Swag' },
   { image: '/events/event-workshop-audience.png', alt: 'Hands-on Tech Workshop Audience' },
   { image: '/events/event-speaker-session.png', alt: 'Keynote Speaker & AI Mentorship' },
   { image: '/events/event-session.png', alt: 'Coding & AI Hands-on Lab' }

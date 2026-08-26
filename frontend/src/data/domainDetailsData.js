@@ -90,14 +90,14 @@ export const domainDetailsData = {
       { stage: '4. Production DevOps & Scaling', description: 'Docker containerization, CI/CD GitHub Actions, Redis caching, cloud deployment on AWS/Vercel.' }
     ],
     whyJoin: [
-      'Collaborate on the official DSDL portal and college production software used by thousands of students',
+      'Collaborate on the official KRIVA portal and college production software used by thousands of students',
       'Build rich, interactive web apps and portfolio-defining full-stack projects',
       'Learn industry-standard clean architecture, Git team workflows, and code review standards',
       'Fast-track preparation for full-stack, frontend, and backend software engineering roles'
     ],
     examples: [
       'Real-Time Collaborative Code Editor with WebSockets & WebRTC',
-      'DSDL Portal & Community Event Ticket Booking Management Platform',
+      'KRIVA Portal & Community Event Ticket Booking Management Platform',
       'High-Concurrency E-Commerce Microservices Engine with Redis Caching',
       'Interactive Student Portfolio & Resume Builder with Live Previews'
     ]

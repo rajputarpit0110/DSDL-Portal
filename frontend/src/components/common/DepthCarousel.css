@@ -133,7 +133,7 @@
 
 .depth-carousel__dot.is-active {
   width: 22px;
-  background: var(--color-primary, #0A66C2);
+  background: var(--color-primary, #dc2626);
 }
 
 @media (prefers-reduced-motion: reduce) {

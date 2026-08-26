@@ -1,0 +1,76 @@
+.tilted-tiles-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+  background-color: var(--color-background, #05030a);
+}
+
+/* Perspective wrapper to give 3D depth to the grid */
+.tilted-tiles-perspective {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  transform-style: preserve-3d;
+}
+
+/* The actual tilted grid */
+.tilted-tiles-grid {
+  display: flex;
+  gap: 24px;
+  transform-style: preserve-3d;
+  padding: 2rem;
+}
+
+/* Drifting Columns */
+.tilted-tiles-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transform-style: preserve-3d;
+}
+
+/* Single Tile Card */
+.tilted-tiles-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: var(--color-surface, #12121e);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 3px 10px rgba(0, 0, 0, 0.2);
+  transform-style: preserve-3d;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tilted-tiles-card:hover {
+  border-color: var(--color-primary, #dc2626);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(220, 38, 38, 0.2);
+}
+
+.tilted-tiles-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* Atmospheric overlay for modern depth */
+.tilted-tiles-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.7));
+  pointer-events: none;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.tilted-tiles-card:hover .tilted-tiles-card-overlay {
+  opacity: 0.5;
+}

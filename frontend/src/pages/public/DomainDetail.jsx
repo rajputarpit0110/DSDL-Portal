@@ -152,7 +152,7 @@ const DomainDetail = () => {
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(180deg, rgba(10,15,29,0.7) 0%, rgba(10,15,29,0.95) 100%)'
+          background: 'linear-gradient(180deg, rgba(10,3,3,0.7) 0%, rgba(10,3,3,0.95) 100%)'
         }}></div>
 
         <Container style={{ position: 'relative', zIndex: 2 }}>
@@ -162,17 +162,17 @@ const DomainDetail = () => {
             <span style={{ color: 'rgba(255,255,255,0.4)' }}>/</span>
             <Link to="/#domains" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Domains</Link>
             <span style={{ color: 'rgba(255,255,255,0.4)' }}>/</span>
-            <span style={{ color: 'var(--color-primary, #38bdf8)', fontWeight: 600 }}>{domain.name}</span>
+            <span style={{ color: 'var(--color-primary, #dc2626)', fontWeight: 600 }}>{domain.name}</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxWidth: '850px' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem' }}>
               <div style={{
-                backgroundColor: 'rgba(10, 102, 194, 0.25)',
-                color: '#60a5fa',
+                backgroundColor: 'rgba(220, 38, 38, 0.25)',
+                color: '#f87171',
                 padding: '0.75rem',
                 borderRadius: '14px',
-                border: '1px solid rgba(96, 165, 250, 0.3)',
+                border: '1px solid rgba(248, 113, 113, 0.3)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
@@ -205,7 +205,7 @@ const DomainDetail = () => {
                     fontSize: '0.8125rem',
                     textDecoration: 'none',
                     fontWeight: 600,
-                    backgroundColor: item.slug === (domain.slug || slug) ? 'var(--color-primary, #0A66C2)' : 'rgba(255,255,255,0.08)',
+                    backgroundColor: item.slug === (domain.slug || slug) ? 'var(--color-primary, #dc2626)' : 'rgba(255,255,255,0.08)',
                     color: '#ffffff',
                     transition: 'all 0.2s',
                     border: item.slug === (domain.slug || slug) ? '1px solid transparent' : '1px solid rgba(255,255,255,0.1)'

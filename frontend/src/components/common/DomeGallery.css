@@ -62,7 +62,7 @@
   inset: 0;
   border-radius: var(--tile-radius);
   overflow: hidden;
-  background: #1e293b;
+  background: var(--panel-solid, #170707);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }

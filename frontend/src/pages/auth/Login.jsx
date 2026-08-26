@@ -50,7 +50,7 @@ const Login = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 1 }}>
           <img src="/logo/kiet-logo.webp" alt="KIET" style={{ height: '50px', objectFit: 'contain' }} />
           <div style={{ width: '1px', height: '40px', backgroundColor: 'var(--color-border)' }}></div>
-          <img src="/logo/dsdl-logo.webp" alt="DSDL" style={{ height: '50px', objectFit: 'contain' }} />
+          <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '50px', objectFit: 'contain' }} />
         </div>
         <div style={{ marginTop: 'auto', marginBottom: 'auto', zIndex: 1 }}>
           <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem', lineHeight: '1.2', fontWeight: 'bold' }}>Empowering <br /> Future Engineers</h1>
@@ -59,7 +59,7 @@ const Login = () => {
           </p>
         </div>
         <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>© {new Date().getFullYear()} DSDL Club. All rights reserved.</p>
+          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>© {new Date().getFullYear()} KRIVA Club. All rights reserved.</p>
           <Link to="/" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontWeight: 'bold' }}>
             ← Back to Public Site
           </Link>
@@ -71,7 +71,7 @@ const Login = () => {
         <div style={{ width: '100%', maxWidth: '400px' }}>
           
           <div className="show-on-mobile" style={{ display: 'none', marginBottom: '3rem', textAlign: 'center' }}>
-            <img src="/logo/dsdl-logo.webp" alt="DSDL" style={{ height: '50px' }} />
+            <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '50px' }} />
           </div>
 
           <div style={{ marginBottom: '2.5rem' }}>
@@ -94,7 +94,7 @@ const Login = () => {
                   <input 
                     type='email' 
                     required
-                    placeholder='name@dsdl.com' 
+                    placeholder='name@kriva.com' 
                     value={email} 
                     onChange={e => setEmail(e.target.value)} 
                     style={{ width: '100%', padding: '0.75rem 1rem 0.75rem 2.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', outline: 'none', fontSize: '1rem', fontFamily: 'inherit' }} 
@@ -138,23 +138,23 @@ const Login = () => {
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <button
-                  onClick={() => quickLogin('admin@dsdl.local', 'admin123')}
+                  onClick={() => quickLogin('admin@kriva.local', 'admin123')}
                   disabled={loading}
-                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#1e293b', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--panel-solid)', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
                 >
                   🔑 Login as Admin
                 </button>
                 <button
-                  onClick={() => quickLogin('lead@dsdl.local', 'password123')}
+                  onClick={() => quickLogin('lead@kriva.local', 'password123')}
                   disabled={loading}
-                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#0f4c81', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--accent-dim)', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
                 >
                   🎯 Login as Domain Lead
                 </button>
                 <button
-                  onClick={() => quickLogin('member@dsdl.com', 'member123')}
+                  onClick={() => quickLogin('member@kriva.com', 'member123')}
                   disabled={loading}
-                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#166534', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: '#166534', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
                 >
                   👤 Login as Member
                 </button>

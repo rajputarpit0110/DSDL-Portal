@@ -26,10 +26,10 @@ const Navbar = () => {
 
   return (
     <>
-      <nav style={{ 
-        padding: '0.85rem 1.5rem', 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <nav style={{
+        padding: '0.85rem 1.5rem',
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'center',
         borderBottom: '1px solid var(--color-border)',
         backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -43,7 +43,7 @@ const Navbar = () => {
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
           <img src="/logo/kiet-logo.webp" alt="KIET" style={{ height: '36px', objectFit: 'contain' }} />
           <div style={{ width: '1px', height: '32px', backgroundColor: 'var(--color-border)' }}></div>
-          <img src="/logo/dsdl-logo.webp" alt="DSDL" style={{ height: '36px', objectFit: 'contain' }} />
+          <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '36px', objectFit: 'contain' }} />
         </Link>
 
         {/* Desktop Navigation Links */}
@@ -105,9 +105,6 @@ const Navbar = () => {
               <Link to="/login" style={{ color: 'var(--color-text-main)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600, fontSize: '0.9rem', padding: '0.45rem 0.85rem' }}>
                 <LogIn size={16} /> Login
               </Link>
-              <button onClick={() => navigate('/register')} className="btn btn-primary" style={{ padding: '0.5rem 1.15rem', fontSize: '0.875rem', fontWeight: 600, borderRadius: 'var(--color-radius-xl)' }}>
-                Register Now →
-              </button>
             </>
           )}
         </div>
@@ -228,13 +225,6 @@ const Navbar = () => {
                 >
                   Login to Portal
                 </Link>
-                <button
-                  onClick={() => { setMobileOpen(false); navigate('/register'); }}
-                  className="btn btn-primary"
-                  style={{ padding: '0.85rem', fontSize: '1rem', fontWeight: 600, textAlign: 'center' }}
-                >
-                  Register Now →
-                </button>
               </>
             )}
           </div>

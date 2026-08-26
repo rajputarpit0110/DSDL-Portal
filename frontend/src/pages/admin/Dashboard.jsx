@@ -50,7 +50,7 @@ const AdminDashboard = () => {
       {showCreateEvent && <CreateEventModal onClose={() => setShowCreateEvent(false)} onSuccess={() => { setShowCreateEvent(false); window.location.reload(); }} />}
       <div>
         <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)', marginBottom: '0.5rem' }}>Admin Overview</h2>
-        <p style={{ color: 'var(--color-text-muted)' }}>High-level metrics for DSDL operations.</p>
+        <p style={{ color: 'var(--color-text-muted)' }}>High-level metrics for KRIVA operations.</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>

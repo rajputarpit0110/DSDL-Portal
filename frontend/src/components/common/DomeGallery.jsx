@@ -2,11 +2,11 @@ import { useEffect, useMemo, useRef, useCallback } from 'react';
 import './DomeGallery.css';
 
 const DEFAULT_IMAGES = [
-  { src: '/events/event-induction.png', alt: 'DSDL Student Induction Programme' },
+  { src: '/events/event-induction.png', alt: 'KRIVA Student Induction Programme' },
   { src: '/events/event-ai-bootcamp.png', alt: 'AI Bootcamp Session Day 1' },
-  { src: '/events/event-speaker-sumit.png', alt: 'TFUG x DSDL Collaboration Speaker Sumit Tyagi' },
-  { src: '/events/event-group-photo.png', alt: 'DSDL Club Community Group' },
-  { src: '/events/event-stickers-swag.png', alt: 'DSDL Tech Vision Stickers & Swag' },
+  { src: '/events/event-speaker-sumit.png', alt: 'TFUG x KRIVA Collaboration Speaker Sumit Tyagi' },
+  { src: '/events/event-group-photo.png', alt: 'KRIVA Club Community Group' },
+  { src: '/events/event-stickers-swag.png', alt: 'KRIVA Tech Vision Stickers & Swag' },
   { src: '/events/event-workshop-audience.png', alt: 'Hands-on Tech Workshop Audience' },
   { src: '/events/event-speaker-session.png', alt: 'Keynote Speaker & AI Mentorship' },
   { src: '/events/event-session.png', alt: 'Collaborative Lab Session' },

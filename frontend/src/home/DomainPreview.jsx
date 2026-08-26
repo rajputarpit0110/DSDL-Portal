@@ -65,7 +65,7 @@ const DomainPreview = ({ domains }) => {
   return (
     <section style={{ backgroundColor: 'var(--color-surface)', padding: '5rem 2rem' }}>
       <Container style={{ textAlign: 'center' }}>
-        <SectionHeading badge='TECHNICAL DOMAINS' title='Areas You Can Explore Through DSDL' subtitle='Discover technologies that align with your interests during recruitment and active club workshops.' />
+        <SectionHeading badge='TECHNICAL DOMAINS' title='Areas You Can Explore Through KRIVA' subtitle='Discover technologies that align with your interests during recruitment and active club workshops.' />
         <div style={{ marginTop: '2.5rem', width: '100%' }}>
           <AccordionGallery
             items={items}
@@ -73,8 +73,8 @@ const DomainPreview = ({ domains }) => {
             expandRatio={0.52}
             trigger="hover"
             height={460}
-            accentColor="var(--color-primary, #0A66C2)"
-            overlayColor="#0a0e17"
+            accentColor="var(--color-primary, #dc2626)"
+            overlayColor="#0a0303"
             radius={16}
           />
         </div>

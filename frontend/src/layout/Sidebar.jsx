@@ -28,7 +28,7 @@ const Sidebar = () => {
   return (
     <aside style={{ width: '250px', backgroundColor: 'var(--color-secondary)', color: 'white', display: 'flex', flexDirection: 'column', height: '100vh', position: 'sticky', top: 0 }}>
       <div style={{ padding: '2rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <h2 style={{ color: 'white', fontSize: '1.25rem', marginBottom: '0.25rem' }}>DSDL Portal</h2>
+        <h2 style={{ color: 'white', fontSize: '1.25rem', marginBottom: '0.25rem' }}>KRIVA Portal</h2>
         <p style={{ color: '#94a3b8', fontSize: '0.875rem' }}>{user?.role.toUpperCase()} VIEW</p>
       </div>
       <nav style={{ flex: 1, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
