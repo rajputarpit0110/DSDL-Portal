@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { apiClient } from '../../utils/apiClient';
 import Container from '../../common/Container';
-import Card from '../../common/Card';
-import Badge from '../../common/Badge';
 import { domainDetailsData } from '../../data/domainDetailsData';
 import {
   Brain,
@@ -19,10 +17,66 @@ import {
   MapPin,
   Rocket,
   Cpu,
-  Terminal,
-  ExternalLink,
-  ChevronRight
+  Terminal
 } from 'lucide-react';
+
+const domainThemes = {
+  'machine-learning': {
+    accent: '#38bdf8', // Sky Blue / Cyan
+    accentBg: 'rgba(14, 165, 233, 0.15)',
+    accentBorder: 'rgba(56, 189, 248, 0.35)',
+    accentSolid: '#0284c7',
+    badgeText: '#7dd3fc',
+    buttonBg: '#0369a1',
+    buttonBorder: '#38bdf8',
+    buttonHover: '#0284c7',
+    glow: 'rgba(14, 165, 233, 0.4)'
+  },
+  'deep-learning': {
+    accent: '#a78bfa', // Purple / Violet
+    accentBg: 'rgba(139, 92, 246, 0.15)',
+    accentBorder: 'rgba(167, 139, 250, 0.35)',
+    accentSolid: '#7c3aed',
+    badgeText: '#c4b5fd',
+    buttonBg: '#6d28d9',
+    buttonBorder: '#a78bfa',
+    buttonHover: '#7c3aed',
+    glow: 'rgba(139, 92, 246, 0.4)'
+  },
+  'android-development': {
+    accent: '#2dd4bf', // Teal / Mint
+    accentBg: 'rgba(20, 184, 166, 0.15)',
+    accentBorder: 'rgba(45, 212, 191, 0.35)',
+    accentSolid: '#0d9488',
+    badgeText: '#5eead4',
+    buttonBg: '#0f766e',
+    buttonBorder: '#2dd4bf',
+    buttonHover: '#0d9488',
+    glow: 'rgba(20, 184, 166, 0.4)'
+  },
+  'web-development': {
+    accent: '#4ade80', // Green / Emerald
+    accentBg: 'rgba(34, 197, 94, 0.15)',
+    accentBorder: 'rgba(74, 222, 128, 0.35)',
+    accentSolid: '#16a34a',
+    badgeText: '#86efac',
+    buttonBg: '#15803d',
+    buttonBorder: '#4ade80',
+    buttonHover: '#16a34a',
+    glow: 'rgba(34, 197, 94, 0.4)'
+  },
+  'dsa': {
+    accent: '#facc15', // Yellow / Amber
+    accentBg: 'rgba(234, 179, 8, 0.15)',
+    accentBorder: 'rgba(250, 204, 21, 0.35)',
+    accentSolid: '#ca8a04',
+    badgeText: '#fef08a',
+    buttonBg: '#a16207',
+    buttonBorder: '#facc15',
+    buttonHover: '#ca8a04',
+    glow: 'rgba(234, 179, 8, 0.4)'
+  }
+};
 
 const DomainDetail = () => {
   const { slug } = useParams();
@@ -41,8 +95,10 @@ const DomainDetail = () => {
     return s;
   };
 
+  const normalizedKey = resolveSlug(slug);
+  const currentTheme = domainThemes[normalizedKey] || domainThemes['machine-learning'];
+
   useEffect(() => {
-    const normalizedKey = resolveSlug(slug);
     const localData = domainDetailsData[normalizedKey];
 
     // Try fetching from backend first, fallback to comprehensive local domain dataset
@@ -68,12 +124,12 @@ const DomainDetail = () => {
         }
       })
       .finally(() => setLoading(false));
-  }, [slug]);
+  }, [slug, normalizedKey]);
 
   if (loading) {
     return (
       <div style={{ padding: '8rem 2rem', textAlign: 'center', backgroundColor: 'var(--color-background)', minHeight: '80vh' }}>
-        <div style={{ display: 'inline-block', width: '40px', height: '40px', border: '3px solid var(--color-border)', borderTopColor: 'var(--color-primary)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+        <div style={{ display: 'inline-block', width: '40px', height: '40px', border: '3px solid var(--color-border)', borderTopColor: currentTheme.accent, borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
         <p style={{ marginTop: '1rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>Loading domain overview...</p>
       </div>
     );
@@ -82,9 +138,18 @@ const DomainDetail = () => {
   if (!domain) {
     return (
       <div style={{ padding: '8rem 2rem', textAlign: 'center', backgroundColor: 'var(--color-background)', minHeight: '80vh' }}>
-        <h2 style={{ fontSize: '2rem', color: 'var(--color-secondary)', marginBottom: '1rem' }}>Domain Not Found</h2>
+        <h2 style={{ fontSize: '2rem', color: 'var(--color-text-main)', marginBottom: '1rem' }}>Domain Not Found</h2>
         <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>The domain you are looking for does not exist or has been moved.</p>
-        <Link to="/#domains" className="btn btn-primary">
+        <Link
+          to="/#domains"
+          className="btn"
+          style={{
+            backgroundColor: currentTheme.buttonBg,
+            border: `1px solid ${currentTheme.buttonBorder}`,
+            color: '#ffffff',
+            boxShadow: `0 4px 14px ${currentTheme.glow}`
+          }}
+        >
           <ArrowLeft size={18} style={{ marginRight: '0.5rem' }} /> Back to Domains
         </Link>
       </div>
@@ -114,28 +179,28 @@ const DomainDetail = () => {
   };
 
   const allDomainsList = [
-    { name: 'Machine Learning', slug: 'machine-learning' },
-    { name: 'Web Development', slug: 'web-development' },
-    { name: 'DSA', slug: 'dsa' },
-    { name: 'Deep Learning', slug: 'deep-learning' },
-    { name: 'Android Development', slug: 'android-development' }
+    { name: 'Machine Learning', slug: 'machine-learning', theme: domainThemes['machine-learning'] },
+    { name: 'Deep Learning', slug: 'deep-learning', theme: domainThemes['deep-learning'] },
+    { name: 'Android Development', slug: 'android-development', theme: domainThemes['android-development'] },
+    { name: 'Web Development', slug: 'web-development', theme: domainThemes['web-development'] },
+    { name: 'DSA', slug: 'dsa', theme: domainThemes['dsa'] }
   ];
 
   return (
     <div style={{ backgroundColor: 'var(--color-background)', minHeight: '100vh', paddingBottom: '6rem', position: 'relative' }}>
       
       {/* Subtle Grid Background */}
-      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px)', backgroundSize: '40px 40px', pointerEvents: 'none', zIndex: 0 }}></div>
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize: '40px 40px', pointerEvents: 'none', zIndex: 0 }}></div>
 
       {/* Hero Header Section with Image Overlay */}
       <div style={{
         position: 'relative',
-        backgroundColor: '#0a0f1d',
+        backgroundColor: '#070b14',
         color: '#ffffff',
         padding: '5rem 2rem 6rem 2rem',
         overflow: 'hidden',
         zIndex: 1,
-        borderBottom: '1px solid rgba(255,255,255,0.1)'
+        borderBottom: '1px solid var(--color-border)'
       }}>
         {domain.coverImage && (
           <div style={{
@@ -144,7 +209,7 @@ const DomainDetail = () => {
             backgroundImage: `url(${domain.coverImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            opacity: 0.25,
+            opacity: 0.2,
             filter: 'blur(3px)',
             transform: 'scale(1.05)'
           }}></div>
@@ -152,7 +217,7 @@ const DomainDetail = () => {
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(180deg, rgba(10,3,3,0.7) 0%, rgba(10,3,3,0.95) 100%)'
+          background: 'linear-gradient(180deg, rgba(7,11,20,0.7) 0%, rgba(10,3,3,0.95) 100%)'
         }}></div>
 
         <Container style={{ position: 'relative', zIndex: 2 }}>
@@ -162,26 +227,35 @@ const DomainDetail = () => {
             <span style={{ color: 'rgba(255,255,255,0.4)' }}>/</span>
             <Link to="/#domains" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Domains</Link>
             <span style={{ color: 'rgba(255,255,255,0.4)' }}>/</span>
-            <span style={{ color: 'var(--color-primary, #dc2626)', fontWeight: 600 }}>{domain.name}</span>
+            <span style={{ color: currentTheme.accent, fontWeight: 600 }}>{domain.name}</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxWidth: '850px' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem' }}>
               <div style={{
-                backgroundColor: 'rgba(220, 38, 38, 0.25)',
-                color: '#f87171',
+                backgroundColor: currentTheme.accentBg,
+                color: currentTheme.accent,
                 padding: '0.75rem',
                 borderRadius: '14px',
-                border: '1px solid rgba(248, 113, 113, 0.3)',
+                border: `1px solid ${currentTheme.accentBorder}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
                 {getDomainIcon(domain.icon)}
               </div>
-              <Badge variant="primary" style={{ padding: '0.35rem 0.85rem', fontSize: '0.8125rem', letterSpacing: '0.05em' }}>
+              <span style={{
+                padding: '0.35rem 0.85rem',
+                fontSize: '0.8125rem',
+                letterSpacing: '0.05em',
+                fontWeight: 700,
+                borderRadius: '9999px',
+                backgroundColor: currentTheme.accentBg,
+                color: currentTheme.badgeText,
+                border: `1px solid ${currentTheme.accentBorder}`
+              }}>
                 {domain.badge || 'Technical Track'}
-              </Badge>
+              </span>
             </div>
 
             <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.75rem)', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.02em' }}>
@@ -192,28 +266,32 @@ const DomainDetail = () => {
               {domain.tagline || domain.description}
             </p>
 
-            {/* Quick Switcher Tabs */}
+            {/* Quick Switcher Tabs with per-domain unique theme colors */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginTop: '1rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
               <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', alignSelf: 'center', marginRight: '0.5rem' }}>Other Domains:</span>
-              {allDomainsList.map((item) => (
-                <Link
-                  key={item.slug}
-                  to={`/domains/${item.slug}`}
-                  style={{
-                    padding: '0.4rem 0.85rem',
-                    borderRadius: '8px',
-                    fontSize: '0.8125rem',
-                    textDecoration: 'none',
-                    fontWeight: 600,
-                    backgroundColor: item.slug === (domain.slug || slug) ? 'var(--color-primary, #dc2626)' : 'rgba(255,255,255,0.08)',
-                    color: '#ffffff',
-                    transition: 'all 0.2s',
-                    border: item.slug === (domain.slug || slug) ? '1px solid transparent' : '1px solid rgba(255,255,255,0.1)'
-                  }}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {allDomainsList.map((item) => {
+                const isActive = item.slug === normalizedKey;
+                return (
+                  <Link
+                    key={item.slug}
+                    to={`/domains/${item.slug}`}
+                    style={{
+                      padding: '0.4rem 0.85rem',
+                      borderRadius: '8px',
+                      fontSize: '0.8125rem',
+                      textDecoration: 'none',
+                      fontWeight: 600,
+                      backgroundColor: isActive ? item.theme.buttonBg : 'rgba(255,255,255,0.06)',
+                      color: isActive ? '#ffffff' : 'var(--color-text-main)',
+                      transition: 'all 0.2s',
+                      border: isActive ? `1px solid ${item.theme.buttonBorder}` : '1px solid rgba(255,255,255,0.1)',
+                      boxShadow: isActive ? `0 2px 10px ${item.theme.glow}` : 'none'
+                    }}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </Container>
@@ -224,12 +302,12 @@ const DomainDetail = () => {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2.5rem' }}>
           
           {/* 1. Overview Card */}
-          <Card style={{ padding: '2.5rem', backgroundColor: '#ffffff', borderRadius: '16px', boxShadow: 'var(--shadow-md)' }}>
+          <div style={{ padding: '2.5rem', backgroundColor: 'var(--panel-solid)', borderRadius: '16px', border: '1px solid var(--color-border)', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-              <BookOpen size={24} style={{ color: 'var(--color-primary)' }} />
-              <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)', fontWeight: 700 }}>Domain Overview</h2>
+              <BookOpen size={24} style={{ color: currentTheme.accent }} />
+              <h2 style={{ fontSize: '1.5rem', color: 'var(--color-text-main)', fontWeight: 700 }}>Domain Overview</h2>
             </div>
-            <p style={{ color: 'var(--color-text-main)', fontSize: '1.125rem', lineHeight: '1.8', fontWeight: 400 }}>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '1.125rem', lineHeight: '1.8', fontWeight: 400 }}>
               {domain.description}
             </p>
 
@@ -243,8 +321,8 @@ const DomainDetail = () => {
                     <span
                       key={idx}
                       style={{
-                        backgroundColor: 'var(--color-surface)',
-                        color: 'var(--color-secondary)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                        color: 'var(--color-text-main)',
                         border: '1px solid var(--color-border)',
                         padding: '0.4rem 0.85rem',
                         borderRadius: '8px',
@@ -255,20 +333,20 @@ const DomainDetail = () => {
                         gap: '0.4rem'
                       }}
                     >
-                      <Terminal size={14} style={{ color: 'var(--color-primary)' }} />
+                      <Terminal size={14} style={{ color: currentTheme.accent }} />
                       {tech}
                     </span>
                   ))}
                 </div>
               </div>
             )}
-          </Card>
+          </div>
 
           {/* 2. Key Terms & Concepts Section */}
-          <Card style={{ padding: '2.5rem', backgroundColor: '#ffffff', borderRadius: '16px', boxShadow: 'var(--shadow-md)' }}>
+          <div style={{ padding: '2.5rem', backgroundColor: 'var(--panel-solid)', borderRadius: '16px', border: '1px solid var(--color-border)', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-              <Layers size={24} style={{ color: 'var(--color-primary)' }} />
-              <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)', fontWeight: 700 }}>Key Technical Terms & Concepts</h2>
+              <Layers size={24} style={{ color: currentTheme.accent }} />
+              <h2 style={{ fontSize: '1.5rem', color: 'var(--color-text-main)', fontWeight: 700 }}>Key Technical Terms & Concepts</h2>
             </div>
             <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>
               Essential nomenclature and foundational principles explained for beginners and aspiring domain specialists.
@@ -279,42 +357,42 @@ const DomainDetail = () => {
                 <div
                   key={index}
                   style={{
-                    backgroundColor: 'var(--color-surface)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
                     border: '1px solid var(--color-border)',
                     borderRadius: '12px',
                     padding: '1.5rem',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    transition: 'transform 0.2s, border-color 0.2s',
                     position: 'relative'
                   }}
                   onMouseOver={(e) => {
                     e.currentTarget.style.transform = 'translateY(-3px)';
-                    e.currentTarget.style.borderColor = 'var(--color-primary)';
+                    e.currentTarget.style.borderColor = currentTheme.accentBorder;
                   }}
                   onMouseOut={(e) => {
                     e.currentTarget.style.transform = 'none';
-                    e.currentTarget.style.borderColor = 'var(--color-border)';
+                    e.currentTarget.style.borderColor = 'var(--color-border)' ;
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--color-primary)' }}></div>
-                    <h3 style={{ fontSize: '1.15rem', color: 'var(--color-secondary)', fontWeight: 700, margin: 0 }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: currentTheme.accent }}></div>
+                    <h3 style={{ fontSize: '1.15rem', color: 'var(--color-text-main)', fontWeight: 700, margin: 0 }}>
                       {item.term}
                     </h3>
                   </div>
-                  <p style={{ color: 'var(--color-text-main)', fontSize: '0.95rem', lineHeight: '1.65', margin: 0, fontWeight: 400 }}>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: '1.65', margin: 0, fontWeight: 400 }}>
                     {item.explanation}
                   </p>
                 </div>
               ))}
             </div>
-          </Card>
+          </div>
 
           {/* 3. Domain Learning Roadmap */}
           {domain.roadmap && domain.roadmap.length > 0 && (
-            <Card style={{ padding: '2.5rem', backgroundColor: '#ffffff', borderRadius: '16px', boxShadow: 'var(--shadow-md)' }}>
+            <div style={{ padding: '2.5rem', backgroundColor: 'var(--panel-solid)', borderRadius: '16px', border: '1px solid var(--color-border)', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-                <MapPin size={24} style={{ color: 'var(--color-primary)' }} />
-                <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)', fontWeight: 700 }}>Curriculum & Mentorship Roadmap</h2>
+                <MapPin size={24} style={{ color: currentTheme.accent }} />
+                <h2 style={{ fontSize: '1.5rem', color: 'var(--color-text-main)', fontWeight: 700 }}>Curriculum & Mentorship Roadmap</h2>
               </div>
               <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>
                 How we take you from core fundamentals to shipping advanced production implementations.
@@ -325,7 +403,7 @@ const DomainDetail = () => {
                   <div
                     key={idx}
                     style={{
-                      backgroundColor: 'var(--color-surface)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
                       border: '1px solid var(--color-border)',
                       borderRadius: '12px',
                       padding: '1.5rem',
@@ -335,8 +413,9 @@ const DomainDetail = () => {
                     }}
                   >
                     <div style={{
-                      backgroundColor: 'var(--color-primary)',
-                      color: '#ffffff',
+                      backgroundColor: currentTheme.accentBg,
+                      color: currentTheme.badgeText,
+                      border: `1px solid ${currentTheme.accentBorder}`,
                       fontWeight: 700,
                       fontSize: '0.85rem',
                       padding: '0.3rem 0.75rem',
@@ -351,33 +430,33 @@ const DomainDetail = () => {
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
           )}
 
           {/* 4. Benefits & Example Projects (2 Column Grid) */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '2.5rem' }}>
             
             {/* Why You Should Join */}
-            <Card style={{ padding: '2.5rem', backgroundColor: '#ffffff', borderRadius: '16px', boxShadow: 'var(--shadow-md)' }}>
+            <div style={{ padding: '2.5rem', backgroundColor: 'var(--panel-solid)', borderRadius: '16px', border: '1px solid var(--color-border)', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                <Rocket size={24} style={{ color: 'var(--color-primary)' }} />
-                <h2 style={{ fontSize: '1.35rem', color: 'var(--color-secondary)', fontWeight: 700 }}>Why Join This Domain?</h2>
+                <Rocket size={24} style={{ color: currentTheme.accent }} />
+                <h2 style={{ fontSize: '1.35rem', color: 'var(--color-text-main)', fontWeight: 700 }}>Why Join This Domain?</h2>
               </div>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 {(domain.whyJoin || ['Specialized Mentorship', 'Collaborative Environment']).map((reason, index) => (
                   <li key={index} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem', color: 'var(--color-text-main)', lineHeight: '1.6', fontSize: '0.95rem' }}>
-                    <CheckCircle2 size={20} style={{ color: 'var(--color-primary)', flexShrink: 0, marginTop: '0.2rem' }} />
+                    <CheckCircle2 size={20} style={{ color: currentTheme.accent, flexShrink: 0, marginTop: '0.2rem' }} />
                     <span>{reason}</span>
                   </li>
                 ))}
               </ul>
-            </Card>
+            </div>
 
             {/* Example Projects */}
-            <Card style={{ padding: '2.5rem', backgroundColor: '#ffffff', borderRadius: '16px', boxShadow: 'var(--shadow-md)' }}>
+            <div style={{ padding: '2.5rem', backgroundColor: 'var(--panel-solid)', borderRadius: '16px', border: '1px solid var(--color-border)', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                <Cpu size={24} style={{ color: 'var(--color-primary)' }} />
-                <h2 style={{ fontSize: '1.35rem', color: 'var(--color-secondary)', fontWeight: 700 }}>Hands-on Projects Built</h2>
+                <Cpu size={24} style={{ color: currentTheme.accent }} />
+                <h2 style={{ fontSize: '1.35rem', color: 'var(--color-text-main)', fontWeight: 700 }}>Hands-on Projects Built</h2>
               </div>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 {(domain.examples || ['Real-World Project Showcase']).map((example, index) => (
@@ -385,10 +464,11 @@ const DomainDetail = () => {
                     key={index}
                     style={{
                       padding: '1rem 1.25rem',
-                      backgroundColor: 'var(--color-surface)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
                       borderRadius: '10px',
-                      color: 'var(--color-secondary)',
-                      borderLeft: '4px solid var(--color-primary)',
+                      color: 'var(--color-text-main)',
+                      border: '1px solid var(--color-border)',
+                      borderLeft: `4px solid ${currentTheme.accent}`,
                       fontSize: '0.95rem',
                       fontWeight: 600,
                       lineHeight: '1.5'
@@ -398,13 +478,25 @@ const DomainDetail = () => {
                   </li>
                 ))}
               </ul>
-            </Card>
+            </div>
 
           </div>
 
           {/* Bottom Action Footer */}
           <div style={{ textAlign: 'center', marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <Link to="/#domains" className="btn btn-primary">
+            <Link
+              to="/#domains"
+              className="btn"
+              style={{
+                backgroundColor: currentTheme.buttonBg,
+                border: `1px solid ${currentTheme.buttonBorder}`,
+                color: '#ffffff',
+                boxShadow: `0 4px 14px ${currentTheme.glow}`,
+                transition: 'background-color 0.2s'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = currentTheme.buttonHover}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = currentTheme.buttonBg}
+            >
               <ArrowLeft size={18} style={{ marginRight: '0.5rem' }} /> Explore All Domains
             </Link>
           </div>
