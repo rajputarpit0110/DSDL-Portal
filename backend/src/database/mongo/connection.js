@@ -1,4 +1,12 @@
 const mongoose = require('mongoose');
+const dns = require('dns');
+
+// Fix for Windows / ISP DNS querySrv ECONNREFUSED when resolving mongodb+srv://
+try {
+  dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1', '1.0.0.1']);
+} catch (e) {
+  console.warn('Could not set custom DNS servers:', e.message);
+}
 
 const connectDB = async () => {
   try {
@@ -9,8 +17,7 @@ const connectDB = async () => {
     }
 
     const conn = await mongoose.connect(mongoURI, {
-      // Modern mongoose defaults are usually sufficient, but we can explicitly state the DB name if needed.
-      // dbName is derived from the URI by default.
+      serverSelectionTimeoutMS: 10000,
     });
 
     console.log(`✅ MongoDB Atlas Connected: ${conn.connection.host}`);

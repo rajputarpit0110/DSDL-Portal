@@ -3,10 +3,29 @@ const { generateTokenAndSetCookie } = require('../utils/generateToken');
 const ApiResponse = require('../utils/apiResponse');
 const asyncHandler = require('../utils/asyncHandler');
 
+const jwt = require('jsonwebtoken');
+
 exports.register = asyncHandler(async (req, res) => {
   const safeUser = await authService.registerUser(req.body);
   
-  generateTokenAndSetCookie(res, safeUser.id, safeUser.role);
+  // Check if caller is already an admin adding a user
+  let callerIsAdmin = false;
+  const token = req.cookies?.dsdl_token;
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_do_not_use_in_prod');
+      if (decoded && decoded.role === 'admin') {
+        callerIsAdmin = true;
+      }
+    } catch {
+      // Ignored for unauthenticated users
+    }
+  }
+
+  // Only auto-login if it is a self-registration (not admin creating an account)
+  if (!callerIsAdmin) {
+    generateTokenAndSetCookie(res, safeUser.id, safeUser.role);
+  }
 
   res.status(201).json(new ApiResponse(201, 'User registered successfully', { user: safeUser }));
 });

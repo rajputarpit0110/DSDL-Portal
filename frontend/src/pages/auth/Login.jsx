@@ -3,10 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../common/Button';
 import Card from '../../common/Card';
-import { Mail, Lock, AlertCircle } from 'lucide-react';
+import { Mail, Lock } from 'lucide-react';
+import Alert from '../../common/Alert';
+import { useToast } from '../../context/ToastContext';
 
 const Login = () => {
   const { login } = useAuth();
+  const toast = useToast();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,10 +22,13 @@ const Login = () => {
     setLoading(true);
     try {
       const user = await login(email, password);
+      toast.success(`Welcome back, ${user.name || 'User'}!`);
       if (user.role === 'admin') navigate('/admin/dashboard');
       else navigate('/member/dashboard');
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      const msg = err.message || 'Invalid email or password. Please try again.';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -33,10 +39,13 @@ const Login = () => {
     setLoading(true);
     try {
       const user = await login(quickEmail, quickPassword);
+      toast.success(`Logged in as ${user.name} (${user.role})`);
       if (user.role === 'admin') navigate('/admin/dashboard');
       else navigate('/member/dashboard');
     } catch (err) {
-      setError('Quick login failed. Make sure the backend is running.');
+      const msg = err.message || 'Quick login failed. Make sure the backend is running.';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -81,8 +90,10 @@ const Login = () => {
 
           <Card style={{ padding: '2.5rem', boxShadow: 'var(--shadow-md)' }}>
             {error && (
-              <div style={{ backgroundColor: '#fef2f2', color: '#b91c1c', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
-                <AlertCircle size={18} /> {error}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <Alert variant="error" onClose={() => setError('')}>
+                  {error}
+                </Alert>
               </div>
             )}
 

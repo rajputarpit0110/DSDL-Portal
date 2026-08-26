@@ -8,7 +8,7 @@ exports.validateAnnouncementInput = (data) => {
   if (!content || content.trim().length === 0) {
     throw new ApiError(400, 'Content is required');
   }
-  if (type && !['NEWS', 'UPDATE', 'ALERT', 'ACHIEVEMENT'].includes(type)) {
+  if (type && !['NEWS', 'UPDATE', 'ALERT', 'ACHIEVEMENT', 'EVENT', 'OPPORTUNITY'].includes(type)) {
     throw new ApiError(400, 'Invalid type');
   }
   if (priority && !['LOW', 'NORMAL', 'HIGH', 'URGENT'].includes(priority)) {
