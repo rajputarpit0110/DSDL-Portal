@@ -1,34 +1,85 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Bell } from 'lucide-react';
-import { apiClient } from '../../utils/apiClient';
+import { useNotifications } from '../../context/NotificationContext';
+import NotificationPanel from './NotificationPanel';
 
 const NotificationBell = () => {
-  const [unreadCount, setUnreadCount] = useState(0);
+  const { unreadCount, isPanelOpen, togglePanel, closePanel } = useNotifications();
+  const bellContainerRef = useRef(null);
 
+  // Close panel on outside click
   useEffect(() => {
-    const fetchUnreadCount = async () => {
-      try {
-        const response = await apiClient.get('/notifications/unread-count');
-        setUnreadCount(response.count || 0);
-      } catch (error) {
-        console.error('Failed to fetch unread notifications', error);
+    const handleClickOutside = (event) => {
+      if (bellContainerRef.current && !bellContainerRef.current.contains(event.target)) {
+        closePanel();
       }
     };
-    fetchUnreadCount();
-  }, []);
+
+    if (isPanelOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isPanelOpen, closePanel]);
 
   return (
-    <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => window.location.href = '/notifications'}>
-      <Bell size={20} color='var(--color-text-muted)' />
-      {unreadCount > 0 && (
-        <div style={{ 
-          position: 'absolute', top: '-6px', right: '-6px', 
-          backgroundColor: '#e11d48', color: 'white', fontSize: '10px', 
-          borderRadius: '50%', padding: '2px 5px', fontWeight: 'bold' 
-        }}>
-          {unreadCount}
-        </div>
-      )}
+    <div ref={bellContainerRef} style={{ position: 'relative' }}>
+      <button
+        onClick={togglePanel}
+        aria-label="Toggle notifications panel"
+        style={{
+          background: isPanelOpen ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+          border: '1px solid',
+          borderColor: isPanelOpen ? 'var(--color-primary)' : 'transparent',
+          borderRadius: '10px',
+          padding: '0.5rem',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          transition: 'all 0.2s ease'
+        }}
+        onMouseOver={(e) => {
+          if (!isPanelOpen) e.currentTarget.style.backgroundColor = 'var(--color-surface)';
+        }}
+        onMouseOut={(e) => {
+          if (!isPanelOpen) e.currentTarget.style.backgroundColor = 'transparent';
+        }}
+      >
+        <Bell
+          size={20}
+          color={isPanelOpen ? 'var(--color-primary)' : 'var(--color-secondary)'}
+          style={{ transition: 'color 0.2s' }}
+        />
+
+        {unreadCount > 0 && (
+          <span
+            style={{
+              position: 'absolute',
+              top: '-4px',
+              right: '-4px',
+              backgroundColor: '#e11d48',
+              color: 'white',
+              fontSize: '11px',
+              lineHeight: '1',
+              borderRadius: '10px',
+              padding: '3px 6px',
+              fontWeight: '700',
+              boxShadow: '0 0 0 2px #ffffff',
+              minWidth: '18px',
+              textAlign: 'center',
+              animation: 'pulse 2s infinite'
+            }}
+          >
+            {unreadCount > 99 ? '99+' : unreadCount}
+          </span>
+        )}
+      </button>
+
+      {/* Notification Dropdown Panel */}
+      {isPanelOpen && <NotificationPanel />}
     </div>
   );
 };

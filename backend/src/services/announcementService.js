@@ -41,16 +41,14 @@ class AnnouncementService {
         const notificationRepository = require('../repositories/notificationRepository');
         const users = await userRepository.findAll();
         for (const user of users) {
-          if (user.id !== authorId) {
-            await notificationRepository.create({
-              receiver: user.id,
-              type: 'ANNOUNCEMENT',
-              title: 'New Announcement: ' + newAnnouncement.title,
-              message: 'Check out the new announcement on the portal.',
-              relatedEntity: 'Announcement',
-              relatedEntityId: newAnnouncement.id
-            });
-          }
+          await notificationRepository.create({
+            receiver: user.id || user._id,
+            type: 'ANNOUNCEMENT',
+            title: newAnnouncement.title,
+            message: newAnnouncement.summary || (newAnnouncement.content ? newAnnouncement.content.slice(0, 140) + '...' : 'Check out the new announcement on the portal.'),
+            relatedEntity: 'Announcement',
+            relatedEntityId: newAnnouncement.id || newAnnouncement._id
+          });
         }
       } catch(err) {
         console.error('Failed to notify users', err);
@@ -104,16 +102,14 @@ class AnnouncementService {
         const notificationRepository = require('../repositories/notificationRepository');
         const users = await userRepository.findAll();
         for (const user of users) {
-          if (user.id !== item.authorId) {
-            await notificationRepository.create({
-              receiver: user.id,
-              type: 'ANNOUNCEMENT',
-              title: 'New Announcement: ' + updated.title,
-              message: 'Check out the new announcement on the portal.',
-              relatedEntity: 'Announcement',
-              relatedEntityId: updated.id
-            });
-          }
+          await notificationRepository.create({
+            receiver: user.id || user._id,
+            type: 'ANNOUNCEMENT',
+            title: updated.title,
+            message: updated.summary || (updated.content ? updated.content.slice(0, 140) + '...' : 'Check out the new announcement on the portal.'),
+            relatedEntity: 'Announcement',
+            relatedEntityId: updated.id || updated._id
+          });
         }
       } catch(err) {
         console.error('Failed to notify users', err);

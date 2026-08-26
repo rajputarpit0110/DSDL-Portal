@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Container from '../../common/Container';
 import SectionHeading from '../../common/SectionHeading';
@@ -297,10 +297,12 @@ const Home = () => {
   const [activeAchievement, setActiveAchievement] = useState(null);
   const [selectedMember, setSelectedMember] = useState(null);
 
-  const displayAchievements = achievements.length > 0 ? achievements.map((ach, idx) => ({
-    ...ach,
-    image: ach.image || mockAchievements[idx % mockAchievements.length]?.image || '/achievements/innotech22.png'
-  })) : mockAchievements;
+  const displayAchievements = useMemo(() => {
+    return achievements.length > 0 ? achievements.map((ach, idx) => ({
+      ...ach,
+      image: ach.image || mockAchievements[idx % mockAchievements.length]?.image || '/achievements/innotech22.png'
+    })) : mockAchievements;
+  }, [achievements]);
 
   const mockProjects = [
     {
@@ -771,7 +773,6 @@ const Home = () => {
 
   return (
     <div style={{ backgroundColor: 'var(--color-background)', position: 'relative' }}>
-
       {/* Homepage Premium Animated Background */}
       <div className="homepage-bg">
         <canvas id="net-canvas"></canvas>

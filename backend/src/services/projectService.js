@@ -32,7 +32,8 @@ class ProjectService {
       ...data,
       slug,
       leadId: submitterId,
-      status: 'PROPOSED' // Enforce PROPOSED state initially
+      domainId: data.domainId || undefined,
+      status: data.status || 'ACTIVE'
     };
 
     return await projectRepository.create(projectData);

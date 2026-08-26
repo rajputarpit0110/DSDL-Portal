@@ -26,6 +26,7 @@ import ManageEvents from '../pages/admin/ManageEvents';
 import ManageProjects from '../pages/admin/ManageProjects';
 import ManageDomains from '../pages/admin/ManageDomains';
 import ManageAnnouncements from '../pages/admin/ManageAnnouncements';
+import Notifications from '../pages/common/Notifications';
 
 const AppRoutes = () => {
   return (
@@ -47,6 +48,7 @@ const AppRoutes = () => {
         </RoleRoute>
       }>
         <Route path="dashboard" element={<MemberDashboard />} />
+        <Route path="notifications" element={<Notifications />} />
         <Route path="events" element={<MemberEvents />} />
         <Route path="teams" element={<MemberTeams />} />
         <Route path="projects" element={<MemberProjects />} />
@@ -60,6 +62,7 @@ const AppRoutes = () => {
         </RoleRoute>
       }>
         <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="notifications" element={<Notifications />} />
         <Route path="users" element={<ManageUsers />} />
         <Route path="events" element={<ManageEvents />} />
         <Route path="projects" element={<ManageProjects />} />

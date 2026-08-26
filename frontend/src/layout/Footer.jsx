@@ -8,7 +8,7 @@ const Footer = () => {
         
         {/* Left Column */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', backgroundColor: '#fff', padding: '0.5rem', borderRadius: '4px', display: 'inline-flex', marginBottom: '1rem' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '1rem', backgroundColor: '#fff', padding: '0.5rem', borderRadius: '4px', marginBottom: '1rem' }}>
             <img src="/logo/kiet-logo.webp" alt="KIET" style={{ height: '30px' }} />
             <div style={{ width: '1px', height: '30px', backgroundColor: 'var(--color-border)' }}></div>
             <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '30px' }} />

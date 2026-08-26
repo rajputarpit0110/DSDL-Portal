@@ -60,14 +60,27 @@ const DriftWall = ({
   const [containerHeight, setContainerHeight] = useState(600);
   const [activeId, setActiveId] = useState(null);
   const activeIdRef = useRef(null);
-  const [reduced, setReduced] = useState(false);
+  const [reduced, setReduced] = useState(prefersReducedMotion);
+  const isVisibleRef = useRef(true);
 
   useEffect(() => {
-    setReduced(prefersReducedMotion());
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     const onChange = e => setReduced(e.matches);
     mq.addEventListener('change', onChange);
     return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry?.isIntersecting ?? true;
+      },
+      { threshold: 0 }
+    );
+    observer.observe(container);
+    return () => observer.disconnect();
   }, []);
 
   const columnItems = useMemo(() => {
@@ -121,6 +134,9 @@ const DriftWall = ({
 
   useEffect(() => {
     const animate = ts => {
+      rafRef.current = requestAnimationFrame(animate);
+      if (!isVisibleRef.current || document.hidden) return;
+
       if (lastTsRef.current === null) lastTsRef.current = ts;
       const dt = Math.min(0.05, Math.max(0, ts - lastTsRef.current) / 1000);
       lastTsRef.current = ts;
@@ -157,8 +173,6 @@ const DriftWall = ({
           if (el && meta) el.style.transform = `translate3d(0, ${-(offsetsRef.current[c] ?? 0)}px, 0)`;
         }
       }
-
-      rafRef.current = requestAnimationFrame(animate);
     };
 
     rafRef.current = requestAnimationFrame(animate);
@@ -170,10 +184,11 @@ const DriftWall = ({
   }, [baseVelocities, columnMeta, pauseOnHover, parallax, reduced, applyPlaneTransform]);
 
   const activate = useCallback((id, index, itemIdx) => {
+    if (activeIdRef.current === id) return;
     activeIdRef.current = id;
     hoveredColRef.current = index;
     setActiveId(id);
-    if (onActiveItemChange) {
+    if (onActiveItemChange && items[itemIdx]) {
       onActiveItemChange(items[itemIdx]);
     }
   }, [onActiveItemChange, items]);
@@ -194,22 +209,8 @@ const DriftWall = ({
           y: (e.clientY - rect.top) / rect.height - 0.5
         };
       }
-      const hit = document.elementFromPoint(e.clientX, e.clientY);
-      const tile = hit && hit.closest ? hit.closest('[data-tile-id]') : null;
-      if (!tile) return;
-      const id = tile.dataset.tileId;
-      if (id === activeIdRef.current) return;
-      activeIdRef.current = id;
-      hoveredColRef.current = Number(tile.dataset.col);
-      setActiveId(id);
-      if (onActiveItemChange) {
-        const itemIdx = Number(tile.dataset.itemIdx);
-        if (!isNaN(itemIdx) && items[itemIdx]) {
-          onActiveItemChange(items[itemIdx]);
-        }
-      }
     },
-    [parallax, reduced, items, onActiveItemChange]
+    [parallax, reduced]
   );
 
   const handlePointerLeaveWall = useCallback(() => {
@@ -247,6 +248,7 @@ const DriftWall = ({
       'data-tile-id': id,
       'data-col': colIndex,
       'data-item-idx': itemIdx,
+      onPointerEnter: () => activate(id, colIndex, itemIdx),
       onFocus: () => activate(id, colIndex, itemIdx),
       onBlur: release
     };
