@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Layouts
 import PublicLayout from '../layout/PublicLayout';
@@ -8,6 +8,7 @@ import DashboardLayout from '../layout/DashboardLayout';
 // Public Pages
 import Home from '../pages/public/Home';
 import DomainDetail from '../pages/public/DomainDetail';
+import NotFound from '../pages/public/NotFound';
 
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
@@ -65,6 +66,14 @@ const AppRoutes = () => {
         <Route path="projects" element={<ManageProjects />} />
         <Route path="domains" element={<ManageDomains />} />
         <Route path="announcements" element={<ManageAnnouncements />} />
+      </Route>
+
+      {/* Notifications redirect */}
+      <Route path="/notifications" element={<Navigate to="/member/events" replace />} />
+
+      {/* Fallback 404 Route */}
+      <Route element={<PublicLayout />}>
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

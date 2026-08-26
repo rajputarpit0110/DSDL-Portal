@@ -4,7 +4,7 @@ import Button from '../../common/Button';
 import Badge from '../../common/Badge';
 import ConfirmModal from '../../common/ConfirmModal';
 import CreateProjectModal from '../../components/admin/CreateProjectModal';
-import { Plus, Trash2, Edit3, Check, X, FolderGit2, Github, Globe } from 'lucide-react';
+import { Plus, Trash2, Edit3, Check, X, FolderGit2, GitBranch, Globe } from 'lucide-react';
 import { apiClient } from '../../utils/apiClient';
 import { useToast } from '../../context/ToastContext';
 
@@ -142,7 +142,7 @@ const ManageProjects = () => {
                       <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.4rem', fontSize: '0.8rem' }}>
                         {project.githubUrl && (
                           <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                            <Github size={12} /> GitHub
+                            <GitBranch size={12} /> GitHub
                           </a>
                         )}
                         {project.liveUrl && (
