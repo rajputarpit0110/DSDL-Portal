@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useNotifications } from '../../context/NotificationContext';
 import Card from '../../common/Card';
 import Badge from '../../common/Badge';
 import Button from '../../common/Button';
 import { apiClient } from '../../utils/apiClient';
-import { Calendar, Bell, ChevronRight } from 'lucide-react';
+import { Calendar, Bell, ChevronRight, Megaphone, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const MemberDashboard = () => {
   const { user } = useAuth();
+  const { openAnnouncement } = useNotifications();
   const [events, setEvents] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,17 +45,39 @@ const MemberDashboard = () => {
           <h2 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'white' }}>{user?.domainName || 'General'}</h2>
         </Card>
 
-        <Card style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-secondary)', marginBottom: '1rem' }}>
-            <Bell size={20} />
-            <h3 style={{ fontSize: '1.125rem' }}>Latest Announcement</h3>
+        <Card
+          style={{
+            padding: '2rem',
+            display: 'flex',
+            flexDirection: 'column',
+            cursor: latestAnnouncement ? 'pointer' : 'default',
+            transition: 'transform 0.2s, box-shadow 0.2s'
+          }}
+          onClick={() => {
+            if (latestAnnouncement) {
+              openAnnouncement(latestAnnouncement);
+            }
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-secondary)' }}>
+              <Megaphone size={20} color="var(--color-primary)" />
+              <h3 style={{ fontSize: '1.125rem', margin: 0 }}>Latest Announcement</h3>
+            </div>
+            {latestAnnouncement && (
+              <span style={{ fontSize: '0.8rem', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '0.2rem', fontWeight: 600 }}>
+                Read <ArrowUpRight size={14} />
+              </span>
+            )}
           </div>
           {latestAnnouncement ? (
             <>
-              <p style={{ color: 'var(--color-text-main)', fontSize: '0.9375rem', lineHeight: '1.5', flex: 1 }}>
+              <p style={{ color: 'var(--color-text-main)', fontSize: '0.9375rem', lineHeight: '1.5', flex: 1, margin: '0 0 1rem 0' }}>
                 "{latestAnnouncement.summary || latestAnnouncement.title}"
               </p>
-              <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Posted {new Date(latestAnnouncement.publishedAt).toLocaleDateString()}</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                Posted {new Date(latestAnnouncement.publishedAt || latestAnnouncement.createdAt || Date.now()).toLocaleDateString()}
+              </span>
             </>
           ) : (
             <p style={{ color: 'var(--color-text-muted)' }}>No recent announcements.</p>
