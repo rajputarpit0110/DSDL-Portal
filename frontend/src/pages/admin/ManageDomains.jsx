@@ -92,52 +92,63 @@ const ManageDomains = () => {
         onCancel={() => setDeleteTarget(null)}
       />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>Manage Domains</h2>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-            Add, configure, and customize technical club domains and specializations.
+          <h2 style={{ fontSize: '1.75rem', color: 'var(--color-text-main)', fontWeight: 700, margin: 0 }}>
+            Domain Registry
+          </h2>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', margin: '0.25rem 0 0 0' }}>
+            Configure technical verticals, descriptions, and assign domain leads.
           </p>
         </div>
         <Button
           variant="primary"
           onClick={() => setShowCreateModal(true)}
-          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1.25rem' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 1.15rem' }}
         >
           <Plus size={16} /> Create Domain
         </Button>
       </div>
 
-      <Card style={{ overflow: 'hidden' }}>
+      <Card style={{ overflow: 'hidden', padding: 0 }}>
         <div style={{ overflowX: 'auto' }}>
           {domains.length === 0 ? (
             <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
               <Layers size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.4 }} />
-              <p style={{ fontWeight: 500 }}>No domains found.</p>
-              <p style={{ fontSize: '0.875rem' }}>Click "Create Domain" to add your first domain.</p>
+              <p style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>No domains found.</p>
+              <p style={{ fontSize: '0.875rem' }}>Click "Create Domain" to add your first domain vertical.</p>
             </div>
           ) : (
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead style={{ backgroundColor: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)' }}>
+              <thead style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', borderBottom: '1px solid var(--color-border)' }}>
                 <tr>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Domain</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Slug</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Icon</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500', textAlign: 'right' }}>Actions</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Domain</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Slug</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Icon</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {domains.map((dom, i) => (
-                  <tr key={dom.id || dom._id} style={{ borderBottom: i === domains.length - 1 ? 'none' : '1px solid var(--color-border)' }}>
+                  <tr
+                    key={dom.id || dom._id}
+                    style={{
+                      borderBottom: i === domains.length - 1 ? 'none' : '1px solid var(--color-border)',
+                      transition: 'background-color 0.15s ease'
+                    }}
+                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)')}
+                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                  >
                     <td style={{ padding: '1.125rem 1.5rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
                         <div
                           style={{
-                            width: '36px',
-                            height: '36px',
+                            width: '38px',
+                            height: '38px',
                             borderRadius: '10px',
-                            backgroundColor: '#eff6ff',
-                            color: 'var(--color-primary)',
+                            backgroundColor: 'rgba(220, 38, 38, 0.12)',
+                            border: '1px solid rgba(220, 38, 38, 0.3)',
+                            color: 'var(--color-primary-hover)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -147,7 +158,7 @@ const ManageDomains = () => {
                           {getDomainIconComponent(dom.icon)}
                         </div>
                         <div>
-                          <span style={{ color: 'var(--color-secondary)', fontWeight: '600', fontSize: '0.95rem' }}>{dom.name}</span>
+                          <span style={{ color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.95rem' }}>{dom.name}</span>
                           <div style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginTop: '0.2rem', maxWidth: '380px' }}>
                             {dom.description || 'No description provided.'}
                           </div>
@@ -155,7 +166,7 @@ const ManageDomains = () => {
                       </div>
                     </td>
                     <td style={{ padding: '1.125rem 1.5rem' }}>
-                      <Badge color="#64748b">{dom.slug}</Badge>
+                      <Badge color="#94a3b8">{dom.slug}</Badge>
                     </td>
                     <td style={{ padding: '1.125rem 1.5rem' }}>
                       <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
@@ -163,37 +174,41 @@ const ManageDomains = () => {
                       </span>
                     </td>
                     <td style={{ padding: '1.125rem 1.5rem', textAlign: 'right' }}>
-                      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <button
                           onClick={() => setDomainToEdit(dom)}
                           style={{
-                            background: 'none',
+                            background: 'rgba(255, 255, 255, 0.05)',
                             border: '1px solid var(--color-border)',
                             borderRadius: '6px',
                             cursor: 'pointer',
-                            color: 'var(--color-secondary)',
-                            padding: '6px 8px',
-                            display: 'flex',
+                            color: 'var(--color-text-main)',
+                            padding: '6px 10px',
+                            display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '4px',
+                            gap: '5px',
                             fontSize: '0.8rem',
-                            fontWeight: 500,
+                            fontWeight: 600,
+                            transition: 'all 0.15s ease'
                           }}
                           title="Edit Domain"
+                          onMouseOver={(e) => (e.currentTarget.style.color = 'var(--color-primary-hover)')}
+                          onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-main)')}
                         >
                           <Edit3 size={14} /> Edit
                         </button>
                         <button
                           onClick={() => setDeleteTarget(dom)}
                           style={{
-                            background: 'none',
-                            border: '1px solid #fee2e2',
+                            background: 'rgba(220, 38, 38, 0.1)',
+                            border: '1px solid rgba(220, 38, 38, 0.3)',
                             borderRadius: '6px',
                             cursor: 'pointer',
-                            color: '#dc2626',
+                            color: '#f87171',
                             padding: '6px 8px',
-                            display: 'flex',
+                            display: 'inline-flex',
                             alignItems: 'center',
+                            transition: 'all 0.15s ease'
                           }}
                           title="Delete Domain"
                         >

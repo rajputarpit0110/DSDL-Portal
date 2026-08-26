@@ -50,7 +50,7 @@ const NotificationBell = () => {
       >
         <Bell
           size={20}
-          color={isPanelOpen ? 'var(--color-primary)' : 'var(--color-secondary)'}
+          color={isPanelOpen ? 'var(--color-primary-hover)' : 'var(--color-text-main)'}
           style={{ transition: 'color 0.2s' }}
         />
 
@@ -60,17 +60,16 @@ const NotificationBell = () => {
               position: 'absolute',
               top: '-4px',
               right: '-4px',
-              backgroundColor: '#e11d48',
+              backgroundColor: '#dc2626',
               color: 'white',
               fontSize: '11px',
               lineHeight: '1',
               borderRadius: '10px',
               padding: '3px 6px',
               fontWeight: '700',
-              boxShadow: '0 0 0 2px #ffffff',
+              boxShadow: '0 0 0 2px var(--void)',
               minWidth: '18px',
-              textAlign: 'center',
-              animation: 'pulse 2s infinite'
+              textAlign: 'center'
             }}
           >
             {unreadCount > 99 ? '99+' : unreadCount}

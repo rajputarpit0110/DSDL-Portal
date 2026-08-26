@@ -154,9 +154,10 @@ const NotificationPanel = () => {
         right: 0,
         width: '380px',
         maxWidth: '90vw',
-        backgroundColor: '#ffffff',
+        backgroundColor: 'var(--panel-solid)',
         borderRadius: '16px',
-        boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08)',
+        border: '1px solid var(--color-border)',
+        boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05)',
         zIndex: 1000,
         display: 'flex',
         flexDirection: 'column',
@@ -173,20 +174,20 @@ const NotificationPanel = () => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          backgroundColor: '#fafbfc'
+          backgroundColor: 'rgba(255, 255, 255, 0.02)'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <Bell size={18} color="var(--color-primary)" />
-            <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--color-secondary)' }}>
+            <Bell size={18} color="var(--color-primary-hover)" />
+            <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--color-text-main)' }}>
               Notifications
             </h3>
           </div>
           {unreadCount > 0 && (
             <span
               style={{
-                backgroundColor: '#e11d48',
+                backgroundColor: '#dc2626',
                 color: 'white',
                 fontSize: '0.7rem',
                 fontWeight: 700,
@@ -210,7 +211,7 @@ const NotificationPanel = () => {
                 gap: '0.25rem',
                 background: 'none',
                 border: 'none',
-                color: 'var(--color-primary)',
+                color: 'var(--color-primary-hover)',
                 fontSize: '0.75rem',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -218,7 +219,7 @@ const NotificationPanel = () => {
                 borderRadius: '6px',
                 transition: 'background-color 0.2s'
               }}
-              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.1)')}
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.12)')}
               onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
             >
               <CheckCheck size={15} />
@@ -242,7 +243,7 @@ const NotificationPanel = () => {
               justifyContent: 'center',
               transition: 'all 0.2s'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.05)')}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)')}
             onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
           >
             <RotateCw size={14} className={loading ? 'animate-spin' : ''} />
@@ -255,7 +256,7 @@ const NotificationPanel = () => {
         style={{
           display: 'flex',
           padding: '0.4rem 0.75rem',
-          backgroundColor: '#f1f5f9',
+          backgroundColor: 'rgba(0, 0, 0, 0.25)',
           gap: '0.35rem',
           borderBottom: '1px solid var(--color-border)'
         }}
@@ -270,9 +271,8 @@ const NotificationPanel = () => {
             fontSize: '0.78rem',
             fontWeight: 600,
             cursor: 'pointer',
-            backgroundColor: activeTab === 'all' ? '#ffffff' : 'transparent',
-            color: activeTab === 'all' ? 'var(--color-secondary)' : 'var(--color-text-muted)',
-            boxShadow: activeTab === 'all' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+            backgroundColor: activeTab === 'all' ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+            color: activeTab === 'all' ? '#ffffff' : 'var(--color-text-muted)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -294,9 +294,8 @@ const NotificationPanel = () => {
             fontSize: '0.78rem',
             fontWeight: 600,
             cursor: 'pointer',
-            backgroundColor: activeTab === 'announcements' ? '#ffffff' : 'transparent',
-            color: activeTab === 'announcements' ? 'var(--color-primary)' : 'var(--color-text-muted)',
-            boxShadow: activeTab === 'announcements' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+            backgroundColor: activeTab === 'announcements' ? 'rgba(220, 38, 38, 0.15)' : 'transparent',
+            color: activeTab === 'announcements' ? 'var(--color-primary-hover)' : 'var(--color-text-muted)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -304,7 +303,7 @@ const NotificationPanel = () => {
             transition: 'all 0.15s'
           }}
         >
-          📢 Announcements
+          📢 Notices
           <span style={{ fontSize: '0.7rem', opacity: 0.8 }}>({announcementsList.length})</span>
         </button>
 
@@ -318,9 +317,8 @@ const NotificationPanel = () => {
             fontSize: '0.78rem',
             fontWeight: 600,
             cursor: 'pointer',
-            backgroundColor: activeTab === 'unread' ? '#ffffff' : 'transparent',
-            color: activeTab === 'unread' ? '#e11d48' : 'var(--color-text-muted)',
-            boxShadow: activeTab === 'unread' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+            backgroundColor: activeTab === 'unread' ? 'rgba(220, 38, 38, 0.15)' : 'transparent',
+            color: activeTab === 'unread' ? '#f87171' : 'var(--color-text-muted)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -359,23 +357,23 @@ const NotificationPanel = () => {
                 width: '48px',
                 height: '48px',
                 borderRadius: '50%',
-                backgroundColor: 'var(--color-surface)',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}
             >
-              <Bell size={22} color="#94a3b8" />
+              <Bell size={22} color="#a1a1aa" />
             </div>
             <div>
-              <p style={{ margin: 0, fontWeight: 600, color: 'var(--color-secondary)', fontSize: '0.9rem' }}>
+              <p style={{ margin: 0, fontWeight: 600, color: 'var(--color-text-main)', fontSize: '0.9rem' }}>
                 {activeTab === 'unread'
                   ? 'All caught up!'
                   : activeTab === 'announcements'
                   ? 'No announcements yet'
                   : 'No notifications'}
               </p>
-              <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.78rem' }}>
+              <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>
                 {activeTab === 'unread'
                   ? 'You have read all incoming announcements & updates.'
                   : 'New club notices will appear here automatically.'}
@@ -397,16 +395,16 @@ const NotificationPanel = () => {
                   gap: '0.75rem',
                   alignItems: 'flex-start',
                   borderBottom: '1px solid var(--color-border)',
-                  backgroundColor: item.isRead ? '#ffffff' : 'rgba(59, 130, 246, 0.04)',
+                  backgroundColor: item.isRead ? 'transparent' : 'rgba(220, 38, 38, 0.05)',
                   cursor: 'pointer',
                   position: 'relative',
                   transition: 'background-color 0.15s ease'
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = item.isRead ? '#f8fafc' : 'rgba(59, 130, 246, 0.08)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = item.isRead ? '#ffffff' : 'rgba(59, 130, 246, 0.04)';
+                  e.currentTarget.style.backgroundColor = item.isRead ? 'transparent' : 'rgba(220, 38, 38, 0.05)';
                 }}
               >
                 {/* Unread Glow Dot */}
@@ -441,7 +439,7 @@ const NotificationPanel = () => {
                       style={{
                         fontSize: '0.85rem',
                         fontWeight: item.isRead ? 600 : 700,
-                        color: 'var(--color-secondary)',
+                        color: 'var(--color-text-main)',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
@@ -464,7 +462,7 @@ const NotificationPanel = () => {
                   <p
                     style={{
                       fontSize: '0.78rem',
-                      color: 'var(--color-text-main)',
+                      color: 'var(--color-text-muted)',
                       margin: '0 0 0.4rem 0',
                       lineHeight: 1.4,
                       display: '-webkit-box',
@@ -481,7 +479,7 @@ const NotificationPanel = () => {
                       <span
                         style={{
                           fontSize: '0.72rem',
-                          color: 'var(--color-primary)',
+                          color: 'var(--color-primary-hover)',
                           fontWeight: 600,
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -514,7 +512,7 @@ const NotificationPanel = () => {
                           display: 'flex',
                           alignItems: 'center'
                         }}
-                        onMouseOver={(e) => (e.currentTarget.style.color = '#e11d48')}
+                        onMouseOver={(e) => (e.currentTarget.style.color = '#f87171')}
                         onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
                       >
                         <Trash2 size={13} />
@@ -533,7 +531,7 @@ const NotificationPanel = () => {
         style={{
           padding: '0.75rem 1.25rem',
           borderTop: '1px solid var(--color-border)',
-          backgroundColor: '#fafbfc',
+          backgroundColor: 'rgba(255, 255, 255, 0.02)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center'
@@ -548,7 +546,7 @@ const NotificationPanel = () => {
           onClick={closePanel}
           style={{
             fontSize: '0.78rem',
-            color: 'var(--color-primary)',
+            color: 'var(--color-primary-hover)',
             fontWeight: 600,
             textDecoration: 'none',
             display: 'flex',
@@ -556,7 +554,7 @@ const NotificationPanel = () => {
             gap: '0.25rem'
           }}
         >
-          View all notifications <ExternalLink size={12} />
+          View all <ExternalLink size={12} />
         </Link>
       </div>
     </div>

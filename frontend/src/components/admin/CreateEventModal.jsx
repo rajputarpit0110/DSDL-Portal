@@ -54,7 +54,7 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
         backdropFilter: 'blur(8px)',
         display: 'flex',
         alignItems: 'center',
@@ -66,12 +66,14 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
     >
       <div
         style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--panel-solid)',
           borderRadius: '16px',
+          border: '1px solid var(--color-border)',
           width: '100%',
           maxWidth: '500px',
           padding: '2rem',
-          boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+          animation: 'scaleIn 0.2s ease-out'
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -83,8 +85,9 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
                 width: '42px',
                 height: '42px',
                 borderRadius: '12px',
-                backgroundColor: '#eff6ff',
-                color: 'var(--color-primary)',
+                backgroundColor: 'rgba(220, 38, 38, 0.12)',
+                border: '1px solid rgba(220, 38, 38, 0.3)',
+                color: 'var(--color-primary-hover)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -94,10 +97,10 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
               <CalendarPlus size={22} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--color-secondary)', margin: 0 }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--color-text-main)', margin: 0 }}>
                 Create New Event
               </h3>
-              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginTop: '0.2rem' }}>
+              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginTop: '0.2rem' }}>
                 Organize a workshop, hackathon, or meetup.
               </p>
             </div>
@@ -113,6 +116,8 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
               borderRadius: '6px',
             }}
             aria-label="Close dialog"
+            onMouseOver={(e) => (e.currentTarget.style.color = '#ffffff')}
+            onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
           >
             <X size={20} />
           </button>
@@ -129,8 +134,8 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
-              Event Title <span style={{ color: '#ef4444' }}>*</span>
+            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
+              Event Title <span style={{ color: '#f87171' }}>*</span>
             </label>
             <div style={{ position: 'relative' }}>
               <Type size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
@@ -144,7 +149,9 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
                   padding: '0.75rem 1rem 0.75rem 2.6rem',
                   borderRadius: '10px',
                   border: '1px solid var(--color-border)',
-                  fontSize: '0.925rem',
+                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                  color: 'var(--color-text-main)',
+                  fontSize: '0.9rem',
                   outline: 'none',
                   boxSizing: 'border-box',
                 }}
@@ -154,7 +161,7 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div>
-              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
                 Event Type
               </label>
               <select
@@ -165,9 +172,10 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
                   padding: '0.75rem 1rem',
                   borderRadius: '10px',
                   border: '1px solid var(--color-border)',
-                  fontSize: '0.925rem',
+                  backgroundColor: '#1f0d0d',
+                  color: 'var(--color-text-main)',
+                  fontSize: '0.9rem',
                   outline: 'none',
-                  backgroundColor: '#ffffff',
                   boxSizing: 'border-box',
                 }}
               >
@@ -179,8 +187,8 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
             </div>
 
             <div>
-              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
-                Date <span style={{ color: '#ef4444' }}>*</span>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
+                Date <span style={{ color: '#f87171' }}>*</span>
               </label>
               <input
                 required
@@ -192,7 +200,9 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
                   padding: '0.75rem 1rem',
                   borderRadius: '10px',
                   border: '1px solid var(--color-border)',
-                  fontSize: '0.925rem',
+                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                  color: 'var(--color-text-main)',
+                  fontSize: '0.9rem',
                   outline: 'none',
                   boxSizing: 'border-box',
                 }}
@@ -201,7 +211,7 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
               Venue / Location
             </label>
             <div style={{ position: 'relative' }}>
@@ -215,7 +225,9 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
                   padding: '0.75rem 1rem 0.75rem 2.6rem',
                   borderRadius: '10px',
                   border: '1px solid var(--color-border)',
-                  fontSize: '0.925rem',
+                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                  color: 'var(--color-text-main)',
+                  fontSize: '0.9rem',
                   outline: 'none',
                   boxSizing: 'border-box',
                 }}
@@ -232,8 +244,8 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
                 padding: '0.65rem 1.25rem',
                 borderRadius: '8px',
                 border: '1px solid var(--color-border)',
-                background: '#ffffff',
-                color: 'var(--color-secondary)',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                color: 'var(--color-text-main)',
                 fontWeight: '500',
                 fontSize: '0.9rem',
                 cursor: 'pointer',
@@ -256,6 +268,7 @@ const CreateEventModal = ({ onClose, onSuccess }) => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
+                boxShadow: '0 2px 10px rgba(220, 38, 38, 0.3)',
               }}
             >
               {loading ? (

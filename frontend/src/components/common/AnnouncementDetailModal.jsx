@@ -43,8 +43,8 @@ const AnnouncementDetailModal = ({ isOpen, announcement, onClose }) => {
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(6px)',
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        backdropFilter: 'blur(8px)',
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
@@ -55,11 +55,11 @@ const AnnouncementDetailModal = ({ isOpen, announcement, onClose }) => {
     >
       <div
         style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--panel-solid)',
           borderRadius: '16px',
           maxWidth: '600px',
           width: '100%',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
           border: '1px solid var(--color-border)',
           overflow: 'hidden',
           animation: 'modalSlideUp 0.2s ease-out'
@@ -74,7 +74,7 @@ const AnnouncementDetailModal = ({ isOpen, announcement, onClose }) => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            backgroundColor: 'var(--color-surface)'
+            backgroundColor: 'rgba(255, 255, 255, 0.02)'
           }}
         >
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
@@ -83,7 +83,8 @@ const AnnouncementDetailModal = ({ isOpen, announcement, onClose }) => {
                 width: '42px',
                 height: '42px',
                 borderRadius: '10px',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                backgroundColor: 'rgba(220, 38, 38, 0.12)',
+                border: '1px solid rgba(220, 38, 38, 0.3)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
@@ -109,7 +110,7 @@ const AnnouncementDetailModal = ({ isOpen, announcement, onClose }) => {
                   {announcement.type || 'ANNOUNCEMENT'}
                 </Badge>
               </div>
-              <h3 style={{ fontSize: '1.25rem', color: 'var(--color-secondary)', margin: 0, fontWeight: 700, lineHeight: 1.3 }}>
+              <h3 style={{ fontSize: '1.25rem', color: 'var(--color-text-main)', margin: 0, fontWeight: 700, lineHeight: 1.3 }}>
                 {announcement.title}
               </h3>
             </div>
@@ -130,8 +131,8 @@ const AnnouncementDetailModal = ({ isOpen, announcement, onClose }) => {
               justifyContent: 'center',
               transition: 'background-color 0.2s'
             }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.05)'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+            onMouseOver={(e) => (e.currentTarget.style.color = '#ffffff')}
+            onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
           >
             <X size={20} />
           </button>
@@ -143,13 +144,13 @@ const AnnouncementDetailModal = ({ isOpen, announcement, onClose }) => {
             <div
               style={{
                 padding: '0.85rem 1rem',
-                backgroundColor: 'rgba(59, 130, 246, 0.06)',
+                backgroundColor: 'rgba(220, 38, 38, 0.08)',
                 borderRadius: '8px',
                 borderLeft: '3px solid var(--color-primary)',
                 marginBottom: '1.25rem',
                 fontSize: '0.925rem',
                 fontWeight: 500,
-                color: 'var(--color-secondary)'
+                color: 'var(--color-text-main)'
               }}
             >
               {announcement.summary}
@@ -186,9 +187,9 @@ const AnnouncementDetailModal = ({ isOpen, announcement, onClose }) => {
                 Posted {announcement.publishedAt ? new Date(announcement.publishedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : new Date().toLocaleDateString()}
               </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--color-primary)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--color-primary-hover)' }}>
               <CheckCircle2 size={14} />
-              <span>Official DSDL Broadcast</span>
+              <span>Official KRIVA Broadcast</span>
             </div>
           </div>
         </div>
@@ -198,7 +199,7 @@ const AnnouncementDetailModal = ({ isOpen, announcement, onClose }) => {
           style={{
             padding: '1rem 1.75rem',
             borderTop: '1px solid var(--color-border)',
-            backgroundColor: 'var(--color-surface)',
+            backgroundColor: 'rgba(255, 255, 255, 0.02)',
             display: 'flex',
             justifyContent: 'flex-end',
             gap: '0.75rem'

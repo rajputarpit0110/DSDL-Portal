@@ -149,23 +149,134 @@ const Login = () => {
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <button
-                  onClick={() => quickLogin('admin@kriva.local', 'admin123')}
+                  type="button"
+                  onClick={() => quickLogin('admin@dsdl.local', 'admin123')}
                   disabled={loading}
-                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--panel-solid)', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                  style={{
+                    padding: '0.65rem',
+                    borderRadius: '8px',
+                    border: '1px solid #3b82f6',
+                    backgroundColor: '#1e40af',
+                    color: '#ffffff',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    fontSize: '0.85rem',
+                    fontWeight: '600',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.4rem',
+                    transition: 'all 0.15s ease',
+                    boxShadow: '0 2px 8px rgba(30, 64, 175, 0.35)',
+                  }}
+                  onMouseOver={(e) => {
+                    if (!loading) {
+                      e.currentTarget.style.backgroundColor = '#1d4ed8';
+                      e.currentTarget.style.borderColor = '#60a5fa';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(37, 99, 235, 0.45)';
+                    }
+                  }}
+                  onMouseOut={(e) => {
+                    if (!loading) {
+                      e.currentTarget.style.backgroundColor = '#1e40af';
+                      e.currentTarget.style.borderColor = '#3b82f6';
+                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(30, 64, 175, 0.35)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.outline = 'none';
+                    e.currentTarget.style.boxShadow = '0 0 0 2px rgba(96, 165, 250, 0.6)';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(30, 64, 175, 0.35)';
+                  }}
                 >
                   🔑 Login as Admin
                 </button>
                 <button
-                  onClick={() => quickLogin('lead@kriva.local', 'password123')}
+                  type="button"
+                  onClick={() => quickLogin('lead@dsdl.local', 'password123')}
                   disabled={loading}
-                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--accent-dim)', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                  style={{
+                    padding: '0.65rem',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(220, 38, 38, 0.5)',
+                    backgroundColor: '#991b1b',
+                    color: '#ffffff',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    fontSize: '0.85rem',
+                    fontWeight: '600',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.4rem',
+                    transition: 'all 0.15s ease',
+                    boxShadow: '0 2px 8px rgba(153, 27, 27, 0.35)',
+                  }}
+                  onMouseOver={(e) => {
+                    if (!loading) {
+                      e.currentTarget.style.backgroundColor = '#b91c1c';
+                      e.currentTarget.style.borderColor = '#f87171';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(220, 38, 38, 0.45)';
+                    }
+                  }}
+                  onMouseOut={(e) => {
+                    if (!loading) {
+                      e.currentTarget.style.backgroundColor = '#991b1b';
+                      e.currentTarget.style.borderColor = 'rgba(220, 38, 38, 0.5)';
+                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(153, 27, 27, 0.35)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.outline = 'none';
+                    e.currentTarget.style.boxShadow = '0 0 0 2px rgba(248, 113, 113, 0.6)';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(153, 27, 27, 0.35)';
+                  }}
                 >
                   🎯 Login as Domain Lead
                 </button>
                 <button
-                  onClick={() => quickLogin('member@kriva.com', 'member123')}
+                  type="button"
+                  onClick={() => quickLogin('member@dsdl.com', 'member123')}
                   disabled={loading}
-                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: '#166534', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                  style={{
+                    padding: '0.65rem',
+                    borderRadius: '8px',
+                    border: '1px solid #22c55e',
+                    backgroundColor: '#166534',
+                    color: '#ffffff',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    fontSize: '0.85rem',
+                    fontWeight: '600',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.4rem',
+                    transition: 'all 0.15s ease',
+                    boxShadow: '0 2px 8px rgba(22, 101, 52, 0.35)',
+                  }}
+                  onMouseOver={(e) => {
+                    if (!loading) {
+                      e.currentTarget.style.backgroundColor = '#15803d';
+                      e.currentTarget.style.borderColor = '#4ade80';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(34, 197, 94, 0.45)';
+                    }
+                  }}
+                  onMouseOut={(e) => {
+                    if (!loading) {
+                      e.currentTarget.style.backgroundColor = '#166534';
+                      e.currentTarget.style.borderColor = '#22c55e';
+                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(22, 101, 52, 0.35)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.outline = 'none';
+                    e.currentTarget.style.boxShadow = '0 0 0 2px rgba(74, 222, 128, 0.6)';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(22, 101, 52, 0.35)';
+                  }}
                 >
                   👤 Login as Member
                 </button>

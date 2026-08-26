@@ -151,8 +151,8 @@ const Notifications = () => {
       {/* Top Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--color-secondary)', margin: 0 }}>
-            Notifications & Announcements
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--color-text-main)', margin: 0 }}>
+            Notifications & Broadcasts
           </h1>
           <p style={{ color: 'var(--color-text-muted)', margin: '0.25rem 0 0 0', fontSize: '0.9rem' }}>
             Stay updated with club announcements, events, team activities, and domain notices.
@@ -164,9 +164,9 @@ const Notifications = () => {
             <Button
               variant="outline"
               onClick={markAllAsRead}
-              style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.5rem 1rem', fontSize: '0.875rem' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.5rem 1rem', fontSize: '0.85rem' }}
             >
-              <CheckCheck size={16} /> Mark All as Read
+              <CheckCheck size={16} /> Mark All Read
             </Button>
           )}
 
@@ -174,7 +174,7 @@ const Notifications = () => {
             onClick={fetchNotifications}
             disabled={loading}
             style={{
-              background: 'white',
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
               border: '1px solid var(--color-border)',
               borderRadius: '8px',
               padding: '0.5rem',
@@ -182,11 +182,14 @@ const Notifications = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'var(--color-text-muted)'
+              color: 'var(--color-text-muted)',
+              transition: 'all 0.15s ease'
             }}
             title="Refresh"
+            onMouseOver={(e) => (e.currentTarget.style.color = '#ffffff')}
+            onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
           >
-            <RotateCw size={18} />
+            <RotateCw size={18} className={loading ? 'animate-spin' : ''} />
           </button>
         </div>
       </div>
@@ -194,29 +197,29 @@ const Notifications = () => {
       {/* Metric / Stat Overview Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
         <Card style={{ padding: '1.25rem', borderLeft: '4px solid var(--color-primary)' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>TOTAL ALERTS</span>
-          <h2 style={{ fontSize: '1.75rem', margin: '0.35rem 0 0 0', color: 'var(--color-secondary)' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>TOTAL ALERTS</span>
+          <h2 style={{ fontSize: '1.85rem', margin: '0.25rem 0 0 0', color: 'var(--color-text-main)', fontWeight: 800 }}>
             {notifications.length}
           </h2>
         </Card>
 
-        <Card style={{ padding: '1.25rem', borderLeft: '4px solid #e11d48' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>UNREAD</span>
-          <h2 style={{ fontSize: '1.75rem', margin: '0.35rem 0 0 0', color: '#e11d48' }}>
+        <Card style={{ padding: '1.25rem', borderLeft: '4px solid #f87171' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>UNREAD</span>
+          <h2 style={{ fontSize: '1.85rem', margin: '0.25rem 0 0 0', color: '#f87171', fontWeight: 800 }}>
             {unreadCount}
           </h2>
         </Card>
 
-        <Card style={{ padding: '1.25rem', borderLeft: '4px solid #3b82f6' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>ANNOUNCEMENTS</span>
-          <h2 style={{ fontSize: '1.75rem', margin: '0.35rem 0 0 0', color: '#3b82f6' }}>
+        <Card style={{ padding: '1.25rem', borderLeft: '4px solid #38bdf8' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>ANNOUNCEMENTS</span>
+          <h2 style={{ fontSize: '1.85rem', margin: '0.25rem 0 0 0', color: '#38bdf8', fontWeight: 800 }}>
             {announcements.length}
           </h2>
         </Card>
 
-        <Card style={{ padding: '1.25rem', borderLeft: '4px solid #10b981' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>EVENT UPDATES</span>
-          <h2 style={{ fontSize: '1.75rem', margin: '0.35rem 0 0 0', color: '#10b981' }}>
+        <Card style={{ padding: '1.25rem', borderLeft: '4px solid #34d399' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>EVENT UPDATES</span>
+          <h2 style={{ fontSize: '1.85rem', margin: '0.25rem 0 0 0', color: '#34d399', fontWeight: 800 }}>
             {eventNotifications.length}
           </h2>
         </Card>
@@ -230,7 +233,7 @@ const Notifications = () => {
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               {[
                 { id: 'ALL', label: 'All', count: notifications.length },
-                { id: 'ANNOUNCEMENT', label: '📢 Announcements', count: announcements.length },
+                { id: 'ANNOUNCEMENT', label: '📢 Notices', count: announcements.length },
                 { id: 'UNREAD', label: 'Unread', count: unreadCount },
                 { id: 'EVENT', label: 'Events', count: eventNotifications.length }
               ].map((tab) => (
@@ -238,12 +241,12 @@ const Notifications = () => {
                   key={tab.id}
                   onClick={() => setFilterType(tab.id)}
                   style={{
-                    padding: '0.5rem 1rem',
+                    padding: '0.45rem 0.9rem',
                     borderRadius: '8px',
                     border: '1px solid',
-                    borderColor: filterType === tab.id ? 'var(--color-primary)' : 'var(--color-border)',
-                    backgroundColor: filterType === tab.id ? 'var(--color-primary)' : 'white',
-                    color: filterType === tab.id ? 'white' : 'var(--color-secondary)',
+                    borderColor: filterType === tab.id ? 'rgba(220, 38, 38, 0.5)' : 'var(--color-border)',
+                    backgroundColor: filterType === tab.id ? 'rgba(220, 38, 38, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                    color: filterType === tab.id ? 'var(--color-primary-hover)' : 'var(--color-text-muted)',
                     fontWeight: 600,
                     fontSize: '0.85rem',
                     cursor: 'pointer',
@@ -256,11 +259,11 @@ const Notifications = () => {
                   {tab.label}
                   <span
                     style={{
-                      fontSize: '0.75rem',
+                      fontSize: '0.72rem',
                       padding: '1px 6px',
                       borderRadius: '10px',
-                      backgroundColor: filterType === tab.id ? 'rgba(255,255,255,0.25)' : 'var(--color-surface)',
-                      color: filterType === tab.id ? 'white' : 'var(--color-text-muted)'
+                      backgroundColor: filterType === tab.id ? 'rgba(220, 38, 38, 0.35)' : 'rgba(255, 255, 255, 0.08)',
+                      color: filterType === tab.id ? '#ffffff' : 'var(--color-text-muted)'
                     }}
                   >
                     {tab.count}
@@ -291,6 +294,8 @@ const Notifications = () => {
                   padding: '0.5rem 0.75rem 0.5rem 2.25rem',
                   borderRadius: '8px',
                   border: '1px solid var(--color-border)',
+                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                  color: 'var(--color-text-main)',
                   fontSize: '0.875rem',
                   outline: 'none'
                 }}
@@ -309,17 +314,17 @@ const Notifications = () => {
                 width: '60px',
                 height: '60px',
                 borderRadius: '50%',
-                backgroundColor: 'var(--color-surface)',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: '1rem'
               }}
             >
-              <Bell size={28} color="#94a3b8" />
+              <Bell size={28} color="#71717a" />
             </div>
-            <h3 style={{ color: 'var(--color-secondary)', marginBottom: '0.5rem' }}>No notifications found</h3>
-            <p style={{ margin: 0, fontSize: '0.9rem', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto' }}>
+            <h3 style={{ color: 'var(--color-text-main)', marginBottom: '0.5rem', fontWeight: 700 }}>No notifications found</h3>
+            <p style={{ margin: 0, fontSize: '0.9rem', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto', color: 'var(--color-text-muted)' }}>
               {searchTerm
                 ? `No notifications matching "${searchTerm}". Try a different keyword.`
                 : 'You have no notifications in this view.'}
@@ -335,9 +340,9 @@ const Notifications = () => {
                 key={itemId}
                 style={{
                   padding: '1.25rem 1.5rem',
-                  borderLeft: item.isRead ? '4px solid transparent' : '4px solid var(--color-primary)',
-                  backgroundColor: item.isRead ? 'white' : 'rgba(59, 130, 246, 0.02)',
-                  transition: 'box-shadow 0.2s',
+                  borderLeft: item.isRead ? '4px solid var(--color-border)' : '4px solid var(--color-primary)',
+                  backgroundColor: item.isRead ? 'var(--panel-solid)' : 'rgba(220, 38, 38, 0.04)',
+                  transition: 'border-color 0.2s',
                   position: 'relative'
                 }}
               >
@@ -358,22 +363,22 @@ const Notifications = () => {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <h4
                           style={{
-                            fontSize: '1rem',
+                            fontSize: '1.05rem',
                             fontWeight: item.isRead ? 600 : 700,
-                            color: 'var(--color-secondary)',
+                            color: 'var(--color-text-main)',
                             margin: 0
                           }}
                         >
                           {item.title}
                         </h4>
                         {isAnnouncement && (
-                          <Badge color="var(--color-primary)">Announcement</Badge>
+                          <Badge color="var(--color-primary)">Broadcast</Badge>
                         )}
                         {!item.isRead && (
                           <span
                             style={{
-                              backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                              color: 'var(--color-primary)',
+                              backgroundColor: 'rgba(220, 38, 38, 0.15)',
+                              color: 'var(--color-primary-hover)',
                               fontSize: '0.72rem',
                               fontWeight: 700,
                               padding: '2px 8px',
@@ -392,7 +397,7 @@ const Notifications = () => {
 
                     <p
                       style={{
-                        color: 'var(--color-text-main)',
+                        color: 'var(--color-text-muted)',
                         fontSize: '0.9rem',
                         lineHeight: '1.6',
                         margin: '0 0 1rem 0'
@@ -425,7 +430,7 @@ const Notifications = () => {
                           <button
                             onClick={() => markAsRead(itemId)}
                             style={{
-                              background: 'none',
+                              background: 'rgba(255, 255, 255, 0.04)',
                               border: '1px solid var(--color-border)',
                               borderRadius: '6px',
                               padding: '0.35rem 0.75rem',
@@ -435,11 +440,12 @@ const Notifications = () => {
                               cursor: 'pointer',
                               display: 'flex',
                               alignItems: 'center',
-                              gap: '0.3rem'
+                              gap: '0.3rem',
+                              transition: 'all 0.15s ease'
                             }}
                             onMouseOver={(e) => {
-                              e.currentTarget.style.color = 'var(--color-primary)';
-                              e.currentTarget.style.borderColor = 'var(--color-primary)';
+                              e.currentTarget.style.color = 'var(--color-primary-hover)';
+                              e.currentTarget.style.borderColor = 'rgba(220, 38, 38, 0.4)';
                             }}
                             onMouseOut={(e) => {
                               e.currentTarget.style.color = 'var(--color-text-muted)';
@@ -454,23 +460,15 @@ const Notifications = () => {
                           onClick={() => deleteNotification(itemId)}
                           title="Delete notification"
                           style={{
-                            background: 'none',
-                            border: '1px solid var(--color-border)',
+                            background: 'rgba(220, 38, 38, 0.1)',
+                            border: '1px solid rgba(220, 38, 38, 0.3)',
                             borderRadius: '6px',
                             padding: '0.35rem 0.6rem',
                             fontSize: '0.78rem',
-                            color: 'var(--color-text-muted)',
+                            color: '#f87171',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center'
-                          }}
-                          onMouseOver={(e) => {
-                            e.currentTarget.style.color = '#e11d48';
-                            e.currentTarget.style.borderColor = '#e11d48';
-                          }}
-                          onMouseOut={(e) => {
-                            e.currentTarget.style.color = 'var(--color-text-muted)';
-                            e.currentTarget.style.borderColor = 'var(--color-border)';
                           }}
                         >
                           <Trash2 size={14} />

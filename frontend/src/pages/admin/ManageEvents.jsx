@@ -97,52 +97,75 @@ const ManageEvents = () => {
         onCancel={() => setPublishTarget(null)}
       />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>Manage Events</h2>
-        <Button variant="primary" onClick={() => setShowCreate(true)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <h2 style={{ fontSize: '1.75rem', color: 'var(--color-text-main)', fontWeight: 700, margin: 0 }}>
+            Manage Events
+          </h2>
+          <p style={{ color: 'var(--color-text-muted)', margin: '0.25rem 0 0 0', fontSize: '0.9rem' }}>
+            Create, schedule, and publish club workshops and events.
+          </p>
+        </div>
+        <Button variant="primary" onClick={() => setShowCreate(true)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 1.15rem' }}>
           <Plus size={16} /> Create Event
         </Button>
       </div>
 
-      <Card style={{ overflow: 'hidden' }}>
+      <Card style={{ overflow: 'hidden', padding: 0 }}>
         <div style={{ overflowX: 'auto' }}>
           {events.length === 0 ? (
-            <div style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>No events found.</div>
+            <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>
+              No events scheduled yet. Click "Create Event" to get started.
+            </div>
           ) : (
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead style={{ backgroundColor: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)' }}>
+              <thead style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', borderBottom: '1px solid var(--color-border)' }}>
                 <tr>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Event Name</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Date & Time</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Status</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Actions</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Event Name</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Date & Time</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Status</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {events.map((event, i) => (
-                  <tr key={event.id || event._id} style={{ borderBottom: i === events.length - 1 ? 'none' : '1px solid var(--color-border)' }}>
+                  <tr
+                    key={event.id || event._id}
+                    style={{
+                      borderBottom: i === events.length - 1 ? 'none' : '1px solid var(--color-border)',
+                      transition: 'background-color 0.15s ease'
+                    }}
+                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)')}
+                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                  >
                     <td style={{ padding: '1rem 1.5rem' }}>
-                      <span style={{ color: 'var(--color-secondary)', fontWeight: '500' }}>{event.title}</span>
-                      <div style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', marginTop: '0.25rem' }}>{event.venue || 'No venue specified'}</div>
+                      <span style={{ color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.95rem' }}>{event.title}</span>
+                      <div style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', marginTop: '0.2rem' }}>{event.venue || 'Main Auditorium / Online'}</div>
                     </td>
-                    <td style={{ padding: '1rem 1.5rem', color: 'var(--color-text-main)' }}>
-                      {new Date(event.date).toLocaleDateString()} <br/> <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{event.startTime || 'TBD'}</span>
-                    </td>
-                    <td style={{ padding: '1rem 1.5rem' }}>
-                      <Badge color={event.status === 'published' ? 'var(--color-primary)' : '#64748b'}>{event.status}</Badge>
+                    <td style={{ padding: '1rem 1.5rem', color: 'var(--color-text-main)', fontSize: '0.875rem' }}>
+                      {new Date(event.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })} <br/>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{event.startTime || '10:00 AM'}</span>
                     </td>
                     <td style={{ padding: '1rem 1.5rem' }}>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      <Badge color={event.status === 'published' ? '#34d399' : '#a1a1aa'}>
+                        {event.status === 'published' ? 'Published' : 'Draft'}
+                      </Badge>
+                    </td>
+                    <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <button
                           onClick={() => setPublishTarget(event)}
                           style={{
-                            padding: '5px 10px',
-                            fontSize: '12px',
-                            fontWeight: '500',
+                            padding: '0.35rem 0.75rem',
+                            fontSize: '0.78rem',
+                            fontWeight: 600,
                             border: '1px solid var(--color-border)',
                             borderRadius: '6px',
-                            backgroundColor: '#ffffff',
+                            backgroundColor: event.status === 'published' ? 'rgba(245, 158, 11, 0.12)' : 'rgba(16, 185, 129, 0.12)',
+                            color: event.status === 'published' ? '#fbbf24' : '#34d399',
+                            borderColor: event.status === 'published' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(16, 185, 129, 0.3)',
                             cursor: 'pointer',
+                            transition: 'all 0.15s ease'
                           }}
                         >
                           {event.status === 'published' ? 'Unpublish' : 'Publish'}
@@ -151,15 +174,28 @@ const ManageEvents = () => {
                           onClick={() => setDeleteTarget(event)}
                           style={{
                             background: 'none',
-                            border: 'none',
+                            border: '1px solid var(--color-border)',
                             cursor: 'pointer',
-                            color: '#dc2626',
-                            padding: '4px',
-                            borderRadius: '4px',
+                            color: 'var(--color-text-muted)',
+                            padding: '0.35rem 0.5rem',
+                            borderRadius: '6px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            transition: 'all 0.15s ease'
                           }}
                           title="Delete Event"
+                          onMouseOver={(e) => {
+                            e.currentTarget.style.color = '#f87171';
+                            e.currentTarget.style.borderColor = 'rgba(220, 38, 38, 0.4)';
+                            e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.1)';
+                          }}
+                          onMouseOut={(e) => {
+                            e.currentTarget.style.color = 'var(--color-text-muted)';
+                            e.currentTarget.style.borderColor = 'var(--color-border)';
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                          }}
                         >
-                          <Trash2 size={18} />
+                          <Trash2 size={15} />
                         </button>
                       </div>
                     </td>

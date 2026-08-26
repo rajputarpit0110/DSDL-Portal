@@ -105,22 +105,16 @@ const developersData = [
     github: 'https://github.com/rajputarpit0110'
   },
   {
-    name: 'Ujjawal Bansal',
-    photo: '/developer/Ujjawal Bansal.png',
-    linkedin: 'https://www.linkedin.com/in/ujjawal-bansal-02329b373',
-    github: 'https://github.com/ujjawalbansal1002'
-  },
-  {
     name: 'Gauri Mishra',
     photo: '/developer/Gauri Mishra.jpeg',
     linkedin: 'https://www.linkedin.com/in/gauri-mshra/',
     github: 'https://github.com/gaurimshra'
   },
   {
-    name: 'Rishit Mathur',
-    photo: '/developer/Rishit Mathur.png',
-    linkedin: 'https://www.linkedin.com/in/rishit-mathur-020312309',
-    github: 'https://github.com/rishitmathur8-hub'
+    name: 'Aditya Agarwal',
+    photo: '/developer/Aditya Agarwal.jpeg',
+    linkedin: 'https://www.linkedin.com/in/aditya-agarwal-502546367',
+    github: 'https://github.com/Adii-847'
   },
   {
     name: 'Kartik Yadav',
@@ -129,10 +123,16 @@ const developersData = [
     github: 'https://github.com/kartikDevS'
   },
   {
-    name: 'Aditya Agarwal',
-    photo: '/developer/Aditya Agarwal.jpeg',
-    linkedin: 'https://www.linkedin.com/in/aditya-agarwal-502546367',
-    github: 'https://github.com/Adii-847'
+    name: 'Ujjawal Bansal',
+    photo: '/developer/Ujjawal Bansal.png',
+    linkedin: 'https://www.linkedin.com/in/ujjawal-bansal-02329b373',
+    github: 'https://github.com/ujjawalbansal1002'
+  },
+  {
+    name: 'Rishit Mathur',
+    photo: '/developer/Rishit Mathur.png',
+    linkedin: 'https://www.linkedin.com/in/rishit-mathur-020312309',
+    github: 'https://github.com/rishitmathur8-hub'
   }
 ];
 
@@ -761,6 +761,24 @@ const Home = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (window.location.hash) {
+      const targetId = window.location.hash.replace('#', '');
+      const el = document.getElementById(targetId);
+      if (el) {
+        setTimeout(() => {
+          const navHeight = 70;
+          const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - navHeight;
+          window.scrollTo({
+            top: offsetPosition > 0 ? offsetPosition : 0,
+            behavior: 'smooth'
+          });
+        }, 150);
+      }
+    }
+  }, []);
+
   const getDomainIcon = (iconName) => {
     switch (iconName) {
       case 'Brain': return <Brain size={32} />;
@@ -804,11 +822,11 @@ const Home = () => {
       <section id="about" style={{ padding: '6rem 2rem', position: 'relative', zIndex: 1 }}>
         <Container>
           <SectionHeading title="Who We Are" subtitle="Mentorship, Community, Innovation" />
-          <div style={{ backgroundColor: 'white', padding: '3rem', borderRadius: '16px', boxShadow: 'var(--shadow-sm)', textAlign: 'center', maxWidth: '800px', margin: '0 auto', border: '1px solid var(--color-border)' }}>
+          <div style={{ backgroundColor: 'var(--panel-solid)', padding: '3rem', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)', textAlign: 'center', maxWidth: '800px', margin: '0 auto', border: '1px solid var(--color-border)' }}>
             <p style={{ fontSize: '1.125rem', lineHeight: '1.8', color: 'var(--color-text-main)', marginBottom: '1.5rem', fontWeight: '500' }}>
-              We are a collective of passionate students dedicated to teaching and guiding our peers in <strong style={{ color: 'var(--color-secondary)' }}>AI, ML, Deep Learning, and Web Development</strong>. We believe in learning by doing.
+              We are a collective of passionate students dedicated to teaching and guiding our peers in <strong style={{ color: 'var(--color-primary-hover)' }}>AI, ML, Deep Learning, and Web Development</strong>. We believe in learning by doing.
             </p>
-            <p style={{ fontSize: '1.125rem', lineHeight: '1.8', color: 'var(--color-text-main)', fontWeight: '500' }}>
+            <p style={{ fontSize: '1.125rem', lineHeight: '1.8', color: 'var(--color-text-muted)', fontWeight: '500' }}>
               Whether you need help fixing a bug, want to form a team for an upcoming hackathon, or just want to explore the latest tech trends with like-minded builders—KRIVA is your community.
             </p>
           </div>

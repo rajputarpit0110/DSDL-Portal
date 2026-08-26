@@ -31,10 +31,10 @@ const MemberAchievements = () => {
   const handleAddNew = async () => {
     try {
       await apiClient.post('/achievements', {
-        title: 'New Milestone ' + Date.now(),
-        description: 'We achieved something great today!',
+        title: 'Domain Milestone ' + (achievements.length + 1),
+        description: 'Completed cross-domain initiative and deployed production prototype.',
         date: new Date().toISOString().split('T')[0],
-        category: 'Milestone',
+        category: 'Innovation Milestone',
       });
       toast.success('New achievement recorded!');
       fetchAchievements();
@@ -58,7 +58,13 @@ const MemberAchievements = () => {
     }
   };
 
-  if (loading && achievements.length === 0) return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading achievements...</div>;
+  if (loading && achievements.length === 0) {
+    return (
+      <div style={{ maxWidth: '1000px', margin: '0 auto', color: 'var(--color-text-muted)', textAlign: 'center', padding: '3rem' }}>
+        Loading club milestones...
+      </div>
+    );
+  }
 
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
@@ -73,40 +79,100 @@ const MemberAchievements = () => {
         onCancel={() => setDeleteTarget(null)}
       />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>Log Achievement</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <h2 style={{ fontSize: '1.75rem', color: 'var(--color-text-main)', fontWeight: 700, margin: 0 }}>
+            Club Milestones & Awards
+          </h2>
+          <p style={{ color: 'var(--color-text-muted)', margin: '0.25rem 0 0 0', fontSize: '0.9rem' }}>
+            Recognizing hackathon winners, research publications, and domain accomplishments.
+          </p>
+        </div>
         {isLead && (
-          <Button variant="primary" onClick={handleAddNew} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
-            <Plus size={16} /> Add Mock
+          <Button variant="primary" onClick={handleAddNew} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 1.15rem' }}>
+            <Plus size={16} /> Log Milestone
           </Button>
         )}
       </div>
 
-      <Card style={{ padding: '2rem' }}>
-        <h3 style={{ fontSize: '1.125rem', color: 'var(--color-secondary)', marginBottom: '1.5rem' }}>Recent Club Achievements</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {achievements.map((achievement) => (
-            <div key={achievement.id || achievement._id} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)', paddingBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', gap: '1rem' }}>
-                <div style={{ color: '#d97706', marginTop: '0.25rem' }}>
-                  <Trophy size={20} />
+      <Card style={{ padding: '2rem', border: '1px solid var(--color-border)' }}>
+        <h3 style={{ fontSize: '1.2rem', color: 'var(--color-text-main)', marginBottom: '1.5rem', fontWeight: 700 }}>
+          Hall of Achievements
+        </h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          {achievements.length === 0 ? (
+            <p style={{ color: 'var(--color-text-muted)', textAlign: 'center', padding: '2rem' }}>
+              No milestones recorded yet. Check back after upcoming competitions!
+            </p>
+          ) : (
+            achievements.map((achievement, i) => (
+              <div
+                key={achievement.id || achievement._id}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  borderBottom: i === achievements.length - 1 ? 'none' : '1px solid var(--color-border)',
+                  paddingBottom: i === achievements.length - 1 ? '0' : '1.25rem'
+                }}
+              >
+                <div style={{ display: 'flex', gap: '1.25rem' }}>
+                  <div style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(245, 158, 11, 0.15)',
+                    border: '1px solid rgba(245, 158, 11, 0.35)',
+                    color: '#fbbf24',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <Trophy size={20} />
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: '1.05rem', color: 'var(--color-text-main)', margin: '0 0 0.25rem 0', fontWeight: 700 }}>
+                      {achievement.title}
+                    </h4>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--color-primary-hover)', fontWeight: 600 }}>
+                      {achievement.category || 'Milestone'} • {achievement.date}
+                    </span>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginTop: '0.4rem', lineHeight: 1.5 }}>
+                      {achievement.description}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 style={{ fontSize: '1rem', color: 'var(--color-secondary)' }}>{achievement.title}</h4>
-                  <span style={{ fontSize: '0.875rem', color: 'var(--color-primary)' }}>{achievement.category} • {achievement.date}</span>
-                  <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-main)', marginTop: '0.5rem' }}>{achievement.description}</p>
-                </div>
+                {isLead && (
+                  <button
+                    onClick={() => setDeleteTarget(achievement)}
+                    style={{
+                      background: 'none',
+                      border: '1px solid var(--color-border)',
+                      color: 'var(--color-text-muted)',
+                      cursor: 'pointer',
+                      padding: '6px',
+                      borderRadius: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      transition: 'all 0.15s ease'
+                    }}
+                    title="Delete milestone"
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.color = '#f87171';
+                      e.currentTarget.style.borderColor = 'rgba(220, 38, 38, 0.4)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.color = 'var(--color-text-muted)';
+                      e.currentTarget.style.borderColor = 'var(--color-border)';
+                    }}
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                )}
               </div>
-              {isLead && (
-                <button
-                  onClick={() => setDeleteTarget(achievement)}
-                  style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', height: 'fit-content' }}
-                >
-                  <Trash2 size={18} />
-                </button>
-              )}
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </Card>
     </div>

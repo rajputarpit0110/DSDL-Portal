@@ -99,38 +99,114 @@ h3 {
 }
 
 .btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: #ffffff;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
 }
 
 .btn-primary:hover {
-  background-color: var(--color-primary-hover);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
   transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
 }
 
 .btn-secondary {
-  background-color: var(--color-background);
+  background-color: var(--color-surface);
   color: var(--color-text-main);
   border: 1px solid var(--color-border);
 }
 
 .btn-secondary:hover {
+  background-color: var(--color-surface-hover);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-text-main);
+  border: 1px solid var(--color-border);
+}
+
+.btn-outline:hover {
   background-color: var(--color-surface);
+  border-color: rgba(220, 38, 38, 0.4);
+  color: var(--color-primary-hover);
 }
 
 /* Cards */
 .card {
-  background-color: var(--color-background);
+  background-color: var(--color-surface);
+  color: var(--color-text-main);
   border-radius: var(--radius-md);
   padding: var(--spacing-6);
   border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Base Form Controls */
+input, select, textarea {
+  color: var(--color-text-main);
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border);
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.85;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-hover);
+  background-color: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+}
+
+select option {
+  background-color: #170707;
+  color: var(--color-text-main);
+}
+
+/* Keyframes for Modals and Transitions */
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Responsive adjustments */

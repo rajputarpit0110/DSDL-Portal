@@ -95,45 +95,55 @@ const ManageAnnouncements = () => {
         onCancel={() => setDeleteTarget(null)}
       />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>Manage Announcements</h2>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+          <h2 style={{ fontSize: '1.75rem', color: 'var(--color-text-main)', fontWeight: 700, margin: 0 }}>
+            Manage Announcements
+          </h2>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', margin: '0.25rem 0 0 0' }}>
             Publish alerts, opportunities, news, and notifications to club members.
           </p>
         </div>
         <Button
           variant="primary"
           onClick={() => setShowCreateModal(true)}
-          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1.25rem' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 1.15rem' }}
         >
           <Plus size={16} /> Create Announcement
         </Button>
       </div>
 
-      <Card style={{ overflow: 'hidden' }}>
+      <Card style={{ overflow: 'hidden', padding: 0 }}>
         <div style={{ overflowX: 'auto' }}>
           {announcements.length === 0 ? (
             <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
               <Megaphone size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.4 }} />
-              <p style={{ fontWeight: 500 }}>No announcements found.</p>
+              <p style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>No announcements found.</p>
               <p style={{ fontSize: '0.875rem' }}>Click "Create Announcement" to post your first update.</p>
             </div>
           ) : (
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead style={{ backgroundColor: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)' }}>
+              <thead style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', borderBottom: '1px solid var(--color-border)' }}>
                 <tr>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Title</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Type</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Status</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500', textAlign: 'right' }}>Actions</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Title</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Type & Priority</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Status</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {announcements.map((ann, i) => (
-                  <tr key={ann.id || ann._id} style={{ borderBottom: i === announcements.length - 1 ? 'none' : '1px solid var(--color-border)' }}>
+                  <tr
+                    key={ann.id || ann._id}
+                    style={{
+                      borderBottom: i === announcements.length - 1 ? 'none' : '1px solid var(--color-border)',
+                      transition: 'background-color 0.15s ease'
+                    }}
+                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)')}
+                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                  >
                     <td style={{ padding: '1.125rem 1.5rem' }}>
-                      <span style={{ color: 'var(--color-secondary)', fontWeight: '600', fontSize: '0.95rem' }}>{ann.title}</span>
+                      <span style={{ color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.95rem' }}>{ann.title}</span>
                       <div style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginTop: '0.2rem', maxWidth: '380px' }}>
                         {ann.summary || ann.content}
                       </div>
@@ -141,24 +151,29 @@ const ManageAnnouncements = () => {
                     <td style={{ padding: '1.125rem 1.5rem' }}>
                       <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
                         <Badge color={getPriorityBadgeColor(ann.priority)}>{ann.type}</Badge>
-                        {ann.priority === 'URGENT' && <Badge color="#e11d48">URGENT</Badge>}
+                        {ann.priority === 'URGENT' && <Badge color="#f87171">URGENT</Badge>}
                       </div>
                     </td>
                     <td style={{ padding: '1.125rem 1.5rem' }}>
-                      <Badge color={ann.status === 'published' ? 'var(--color-primary)' : '#64748b'}>{ann.status}</Badge>
+                      <Badge color={ann.status === 'published' ? '#34d399' : '#a1a1aa'}>
+                        {ann.status === 'published' ? 'Published' : 'Draft'}
+                      </Badge>
                     </td>
                     <td style={{ padding: '1.125rem 1.5rem', textAlign: 'right' }}>
                       <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <button
                           onClick={() => handleTogglePublish(ann.id || ann._id, ann.status === 'published')}
                           style={{
-                            padding: '5px 10px',
-                            fontSize: '12px',
-                            fontWeight: '500',
+                            padding: '0.35rem 0.75rem',
+                            fontSize: '0.78rem',
+                            fontWeight: 600,
                             border: '1px solid var(--color-border)',
                             borderRadius: '6px',
-                            backgroundColor: '#ffffff',
+                            backgroundColor: ann.status === 'published' ? 'rgba(245, 158, 11, 0.12)' : 'rgba(16, 185, 129, 0.12)',
+                            color: ann.status === 'published' ? '#fbbf24' : '#34d399',
+                            borderColor: ann.status === 'published' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(16, 185, 129, 0.3)',
                             cursor: 'pointer',
+                            transition: 'all 0.15s ease'
                           }}
                         >
                           {ann.status === 'published' ? 'Unpublish' : 'Publish'}
@@ -166,30 +181,34 @@ const ManageAnnouncements = () => {
                         <button
                           onClick={() => setAnnouncementToEdit(ann)}
                           style={{
-                            background: 'none',
+                            background: 'rgba(255, 255, 255, 0.05)',
                             border: '1px solid var(--color-border)',
                             borderRadius: '6px',
                             cursor: 'pointer',
-                            color: 'var(--color-secondary)',
+                            color: 'var(--color-text-main)',
                             padding: '6px 8px',
-                            display: 'flex',
+                            display: 'inline-flex',
                             alignItems: 'center',
+                            transition: 'all 0.15s ease'
                           }}
                           title="Edit Announcement"
+                          onMouseOver={(e) => (e.currentTarget.style.color = 'var(--color-primary-hover)')}
+                          onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-main)')}
                         >
                           <Edit3 size={14} />
                         </button>
                         <button
                           onClick={() => setDeleteTarget(ann)}
                           style={{
-                            background: 'none',
-                            border: '1px solid #fee2e2',
+                            background: 'rgba(220, 38, 38, 0.1)',
+                            border: '1px solid rgba(220, 38, 38, 0.3)',
                             borderRadius: '6px',
                             cursor: 'pointer',
-                            color: '#dc2626',
+                            color: '#f87171',
                             padding: '6px 8px',
-                            display: 'flex',
+                            display: 'inline-flex',
                             alignItems: 'center',
+                            transition: 'all 0.15s ease'
                           }}
                           title="Delete Announcement"
                         >

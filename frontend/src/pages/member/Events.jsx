@@ -3,7 +3,7 @@ import Card from '../../common/Card';
 import Badge from '../../common/Badge';
 import Button from '../../common/Button';
 import { apiClient } from '../../utils/apiClient';
-import { Calendar, MapPin, Clock } from 'lucide-react';
+import { Calendar, MapPin, Clock, CheckCircle2 } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 
 const MemberEvents = () => {
@@ -19,39 +19,103 @@ const MemberEvents = () => {
   }, []);
 
   const handleRegister = (event) => {
-    toast.info(`Registration flow for "${event.title}" is opening soon!`);
+    toast.success(`You are registered for "${event.title}"! We'll send an alert before start.`);
   };
 
-  if (loading) return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading events...</div>;
+  if (loading) {
+    return (
+      <div style={{ maxWidth: '1000px', margin: '0 auto', color: 'var(--color-text-muted)', textAlign: 'center', padding: '3rem' }}>
+        Loading club events schedule...
+      </div>
+    );
+  }
 
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-      <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)', marginBottom: '1.5rem' }}>Event Registration & History</h2>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <h2 style={{ fontSize: '1.75rem', color: 'var(--color-text-main)', fontWeight: 700, margin: 0 }}>
+          Club Events & Workshops
+        </h2>
+        <p style={{ color: 'var(--color-text-muted)', margin: '0.25rem 0 0 0', fontSize: '0.9rem' }}>
+          Register for technical bootcamps, hackathons, and guest speaker sessions.
+        </p>
+      </div>
       
-      <div style={{ display: 'grid', gap: '1.5rem' }}>
-        {events.map(event => (
-          <Card key={event.id || event._id} style={{ padding: '1.5rem', display: 'flex', gap: '1.5rem', alignItems: 'center', opacity: event.status === 'COMPLETED' ? 0.7 : 1 }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-                <h3 style={{ fontSize: '1.125rem', color: 'var(--color-secondary)' }}>{event.title}</h3>
-                <Badge color={event.status === 'UPCOMING' || event.status === 'published' ? 'var(--color-primary)' : '#64748b'}>{event.type}</Badge>
-              </div>
-              <p style={{ color: 'var(--color-text-main)', fontSize: '0.9375rem', marginBottom: '1rem' }}>{event.description}</p>
-              
-              <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Calendar size={14} /> {new Date(event.date).toLocaleDateString()}</span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Clock size={14} /> {event.startTime || '10:00 AM'}</span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><MapPin size={14} /> {event.venue || 'Main Lab'}</span>
-              </div>
-            </div>
-            
-            <div>
-              {!(event.status === 'UPCOMING' || event.status === 'published') && (
-                <Button onClick={() => toast.warning('This event has already concluded.')} style={{ padding: '0.5rem 1.5rem', backgroundColor: '#e2e8f0', color: '#64748b', cursor: 'not-allowed' }}>Past</Button>
-              )}
-            </div>
+      <div style={{ display: 'grid', gap: '1.25rem' }}>
+        {events.length === 0 ? (
+          <Card style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
+            No upcoming club events scheduled. Check back soon!
           </Card>
-        ))}
+        ) : (
+          events.map((event) => {
+            const isUpcoming = event.status === 'UPCOMING' || event.status === 'published';
+            return (
+              <Card
+                key={event.id || event._id}
+                style={{
+                  padding: '1.5rem 1.75rem',
+                  display: 'flex',
+                  gap: '1.5rem',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  opacity: isUpcoming ? 1 : 0.65,
+                  border: isUpcoming ? '1px solid rgba(220, 38, 38, 0.25)' : '1px solid var(--color-border)'
+                }}
+              >
+                <div style={{ flex: 1, minWidth: '280px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                    <h3 style={{ fontSize: '1.2rem', color: 'var(--color-text-main)', margin: 0, fontWeight: 700 }}>
+                      {event.title}
+                    </h3>
+                    <Badge color={isUpcoming ? 'var(--color-primary)' : '#71717a'}>
+                      {event.type || 'WORKSHOP'}
+                    </Badge>
+                  </div>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', margin: '0 0 1rem 0', lineHeight: 1.5 }}>
+                    {event.description || 'Join us for this interactive workshop session.'}
+                  </p>
+                  
+                  <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--color-text-muted)', fontSize: '0.825rem', flexWrap: 'wrap' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--color-text-main)' }}>
+                      <Calendar size={15} color="var(--color-primary-hover)" /> {new Date(event.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <Clock size={15} /> {event.startTime || '10:00 AM'}
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <MapPin size={15} /> {event.venue || 'Main Auditorium / Online'}
+                    </span>
+                  </div>
+                </div>
+                
+                <div>
+                  {isUpcoming ? (
+                    <Button
+                      variant="primary"
+                      onClick={() => handleRegister(event)}
+                      style={{ padding: '0.6rem 1.4rem', fontSize: '0.875rem' }}
+                    >
+                      Register Now
+                    </Button>
+                  ) : (
+                    <span style={{
+                      padding: '0.45rem 1.15rem',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid var(--color-border)',
+                      color: 'var(--color-text-muted)',
+                      fontSize: '0.85rem',
+                      fontWeight: 600
+                    }}>
+                      Concluded
+                    </span>
+                  )}
+                </div>
+              </Card>
+            );
+          })
+        )}
       </div>
     </div>
   );

@@ -68,7 +68,7 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
         backdropFilter: 'blur(8px)',
         display: 'flex',
         alignItems: 'center',
@@ -80,14 +80,16 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
     >
       <div
         style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--panel-solid)',
           borderRadius: '16px',
+          border: '1px solid var(--color-border)',
           width: '100%',
           maxWidth: '540px',
           maxHeight: '90vh',
           overflowY: 'auto',
           padding: '2rem',
-          boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+          animation: 'scaleIn 0.2s ease-out'
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -99,8 +101,9 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
                 width: '42px',
                 height: '42px',
                 borderRadius: '12px',
-                backgroundColor: '#eff6ff',
-                color: 'var(--color-primary)',
+                backgroundColor: 'rgba(220, 38, 38, 0.12)',
+                border: '1px solid rgba(220, 38, 38, 0.3)',
+                color: 'var(--color-primary-hover)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -110,10 +113,10 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
               <Megaphone size={22} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--color-secondary)', margin: 0 }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--color-text-main)', margin: 0 }}>
                 {isEditing ? 'Edit Announcement' : 'Create New Announcement'}
               </h3>
-              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginTop: '0.2rem' }}>
+              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginTop: '0.2rem' }}>
                 {isEditing ? 'Modify announcement information.' : 'Broadcast news, opportunities, or urgent alerts to club members.'}
               </p>
             </div>
@@ -129,6 +132,8 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
               borderRadius: '6px',
             }}
             aria-label="Close dialog"
+            onMouseOver={(e) => (e.currentTarget.style.color = '#ffffff')}
+            onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
           >
             <X size={20} />
           </button>
@@ -146,8 +151,8 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
           {/* Title */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
-              Title <span style={{ color: '#ef4444' }}>*</span>
+            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
+              Title <span style={{ color: '#f87171' }}>*</span>
             </label>
             <div style={{ position: 'relative' }}>
               <Type size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
@@ -161,7 +166,9 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
                   padding: '0.75rem 1rem 0.75rem 2.6rem',
                   borderRadius: '10px',
                   border: '1px solid var(--color-border)',
-                  fontSize: '0.925rem',
+                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                  color: 'var(--color-text-main)',
+                  fontSize: '0.9rem',
                   outline: 'none',
                   boxSizing: 'border-box',
                 }}
@@ -172,7 +179,7 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
           {/* Type, Priority, Status 3-col Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
             <div>
-              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.825rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
                 Type
               </label>
               <select
@@ -183,9 +190,10 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
                   padding: '0.65rem 0.5rem',
                   borderRadius: '8px',
                   border: '1px solid var(--color-border)',
+                  backgroundColor: '#1f0d0d',
+                  color: 'var(--color-text-main)',
                   fontSize: '0.85rem',
                   outline: 'none',
-                  backgroundColor: '#ffffff',
                   boxSizing: 'border-box',
                 }}
               >
@@ -199,7 +207,7 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
             </div>
 
             <div>
-              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.825rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
                 Priority
               </label>
               <select
@@ -210,9 +218,10 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
                   padding: '0.65rem 0.5rem',
                   borderRadius: '8px',
                   border: '1px solid var(--color-border)',
+                  backgroundColor: '#1f0d0d',
+                  color: 'var(--color-text-main)',
                   fontSize: '0.85rem',
                   outline: 'none',
-                  backgroundColor: '#ffffff',
                   boxSizing: 'border-box',
                 }}
               >
@@ -224,7 +233,7 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
             </div>
 
             <div>
-              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.825rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
                 Status
               </label>
               <select
@@ -235,9 +244,10 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
                   padding: '0.65rem 0.5rem',
                   borderRadius: '8px',
                   border: '1px solid var(--color-border)',
+                  backgroundColor: '#1f0d0d',
+                  color: 'var(--color-text-main)',
                   fontSize: '0.85rem',
                   outline: 'none',
-                  backgroundColor: '#ffffff',
                   boxSizing: 'border-box',
                 }}
               >
@@ -249,7 +259,7 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
 
           {/* Short Summary */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
+            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
               Short Summary / Teaser
             </label>
             <input
@@ -261,7 +271,9 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
                 padding: '0.75rem 1rem',
                 borderRadius: '10px',
                 border: '1px solid var(--color-border)',
-                fontSize: '0.925rem',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                color: 'var(--color-text-main)',
+                fontSize: '0.9rem',
                 outline: 'none',
                 boxSizing: 'border-box',
               }}
@@ -270,8 +282,8 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
 
           {/* Full Content */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.875rem', fontWeight: '600', color: 'var(--color-secondary)' }}>
-              Full Announcement Content <span style={{ color: '#ef4444' }}>*</span>
+            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-main)' }}>
+              Full Announcement Content <span style={{ color: '#f87171' }}>*</span>
             </label>
             <div style={{ position: 'relative' }}>
               <FileText size={18} style={{ position: 'absolute', left: '1rem', top: '0.85rem', color: 'var(--color-text-muted)' }} />
@@ -286,7 +298,9 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
                   padding: '0.75rem 1rem 0.75rem 2.6rem',
                   borderRadius: '10px',
                   border: '1px solid var(--color-border)',
-                  fontSize: '0.925rem',
+                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                  color: 'var(--color-text-main)',
+                  fontSize: '0.9rem',
                   outline: 'none',
                   boxSizing: 'border-box',
                   fontFamily: 'inherit',
@@ -306,8 +320,8 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
                 padding: '0.65rem 1.25rem',
                 borderRadius: '8px',
                 border: '1px solid var(--color-border)',
-                background: '#ffffff',
-                color: 'var(--color-secondary)',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                color: 'var(--color-text-main)',
                 fontWeight: '500',
                 fontSize: '0.9rem',
                 cursor: 'pointer',
@@ -330,6 +344,7 @@ const CreateAnnouncementModal = ({ announcementToEdit = null, onClose, onSuccess
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
+                boxShadow: '0 2px 10px rgba(220, 38, 38, 0.3)',
               }}
             >
               {loading ? (

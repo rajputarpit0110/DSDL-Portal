@@ -20,8 +20,8 @@ const ConfirmModal = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.6)',
-        backdropFilter: 'blur(6px)',
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        backdropFilter: 'blur(8px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -32,12 +32,13 @@ const ConfirmModal = ({
     >
       <div
         style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--panel-solid)',
           borderRadius: '16px',
+          border: '1px solid var(--color-border)',
           width: '100%',
           maxWidth: '440px',
           padding: '1.75rem',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.6)',
           animation: 'scaleIn 0.2s ease-out',
         }}
         onClick={(e) => e.stopPropagation()}
@@ -49,8 +50,9 @@ const ConfirmModal = ({
                 width: '38px',
                 height: '38px',
                 borderRadius: '10px',
-                backgroundColor: confirmVariant === 'danger' ? '#fee2e2' : '#eff6ff',
-                color: confirmVariant === 'danger' ? '#dc2626' : '#2563eb',
+                backgroundColor: confirmVariant === 'danger' ? 'rgba(220, 38, 38, 0.15)' : 'rgba(59, 130, 246, 0.15)',
+                border: `1px solid ${confirmVariant === 'danger' ? 'rgba(220, 38, 38, 0.35)' : 'rgba(59, 130, 246, 0.35)'}`,
+                color: confirmVariant === 'danger' ? '#f87171' : '#60a5fa',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -58,7 +60,7 @@ const ConfirmModal = ({
             >
               <AlertTriangle size={20} />
             </div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--color-secondary)' }}>{title}</h3>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--color-text-main)' }}>{title}</h3>
           </div>
           <button
             onClick={onCancel}
@@ -75,7 +77,7 @@ const ConfirmModal = ({
           </button>
         </div>
 
-        <p style={{ color: '#475569', fontSize: '0.925rem', lineHeight: '1.5', marginBottom: '1.75rem' }}>
+        <p style={{ color: 'var(--color-text-muted)', fontSize: '0.925rem', lineHeight: '1.5', marginBottom: '1.75rem' }}>
           {message}
         </p>
 
@@ -88,8 +90,8 @@ const ConfirmModal = ({
               padding: '0.625rem 1.25rem',
               borderRadius: '8px',
               border: '1px solid var(--color-border)',
-              background: '#ffffff',
-              color: 'var(--color-secondary)',
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              color: 'var(--color-text-main)',
               fontWeight: 500,
               fontSize: '0.9rem',
               cursor: 'pointer',
@@ -107,12 +109,13 @@ const ConfirmModal = ({
               border: 'none',
               backgroundColor: confirmVariant === 'danger' ? '#dc2626' : 'var(--color-primary)',
               color: '#ffffff',
-              fontWeight: 500,
+              fontWeight: 600,
               fontSize: '0.9rem',
               cursor: loading ? 'not-allowed' : 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
+              boxShadow: '0 2px 10px rgba(220, 38, 38, 0.3)',
             }}
           >
             {loading ? 'Processing...' : confirmText}

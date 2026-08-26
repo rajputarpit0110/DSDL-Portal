@@ -10,12 +10,12 @@ import { useToast } from '../../context/ToastContext';
 
 const getStatusBadgeColor = (status) => {
   switch (status) {
-    case 'ACTIVE': return '#10b981';
-    case 'IN_PROGRESS': return '#0a66c2';
-    case 'PROPOSED': return '#f59e0b';
-    case 'COMPLETED': return '#6366f1';
-    case 'CANCELLED': return '#ef4444';
-    default: return '#64748b';
+    case 'ACTIVE': return '#34d399';
+    case 'IN_PROGRESS': return '#60a5fa';
+    case 'PROPOSED': return '#fbbf24';
+    case 'COMPLETED': return '#c084fc';
+    case 'CANCELLED': return '#f87171';
+    default: return '#a1a1aa';
   }
 };
 
@@ -65,7 +65,13 @@ const ManageProjects = () => {
     }
   };
 
-  if (loading && projects.length === 0) return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading projects...</div>;
+  if (loading && projects.length === 0) {
+    return (
+      <div style={{ maxWidth: '1000px', margin: '0 auto', color: 'var(--color-text-muted)', textAlign: 'center', padding: '3rem' }}>
+        Loading global projects...
+      </div>
+    );
+  }
 
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
@@ -97,63 +103,73 @@ const ManageProjects = () => {
         onCancel={() => setDeleteTarget(null)}
       />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>Global Projects</h2>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+          <h2 style={{ fontSize: '1.75rem', color: 'var(--color-text-main)', fontWeight: 700, margin: 0 }}>
+            Global Projects
+          </h2>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', margin: '0.25rem 0 0 0' }}>
             Assign, monitor, and manage cross-domain engineering projects.
           </p>
         </div>
         <Button
           variant="primary"
           onClick={() => setShowCreateModal(true)}
-          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1.25rem' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 1.15rem' }}
         >
           <Plus size={16} /> Assign Project
         </Button>
       </div>
 
-      <Card style={{ overflow: 'hidden' }}>
+      <Card style={{ overflow: 'hidden', padding: 0 }}>
         <div style={{ overflowX: 'auto' }}>
           {projects.length === 0 ? (
             <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
               <FolderGit2 size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.4 }} />
-              <p style={{ fontWeight: 500 }}>No projects found.</p>
+              <p style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>No projects found.</p>
               <p style={{ fontSize: '0.875rem' }}>Click "Assign Project" to create your first global project.</p>
             </div>
           ) : (
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead style={{ backgroundColor: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)' }}>
+              <thead style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', borderBottom: '1px solid var(--color-border)' }}>
                 <tr>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Project Title</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Domain</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>Status</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: '500', textAlign: 'right' }}>Actions</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Project Title</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Domain</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Status</th>
+                  <th style={{ padding: '1rem 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {projects.map((project, i) => (
-                  <tr key={project.id || project._id} style={{ borderBottom: i === projects.length - 1 ? 'none' : '1px solid var(--color-border)' }}>
+                  <tr
+                    key={project.id || project._id}
+                    style={{
+                      borderBottom: i === projects.length - 1 ? 'none' : '1px solid var(--color-border)',
+                      transition: 'background-color 0.15s ease'
+                    }}
+                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)')}
+                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                  >
                     <td style={{ padding: '1.125rem 1.5rem' }}>
-                      <span style={{ color: 'var(--color-secondary)', fontWeight: '600', fontSize: '0.95rem' }}>{project.title}</span>
+                      <span style={{ color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.95rem' }}>{project.title}</span>
                       <div style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginTop: '0.2rem', maxWidth: '380px' }}>
                         {project.description || 'No description provided.'}
                       </div>
                       <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.4rem', fontSize: '0.8rem' }}>
                         {project.githubUrl && (
-                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                            <GitBranch size={12} /> GitHub
+                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary-hover)', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+                            <GitBranch size={13} /> GitHub
                           </a>
                         )}
                         {project.liveUrl && (
-                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                            <Globe size={12} /> Live Demo
+                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+                            <Globe size={13} /> Live Demo
                           </a>
                         )}
                       </div>
                     </td>
                     <td style={{ padding: '1.125rem 1.5rem', color: 'var(--color-text-main)' }}>
-                      <Badge color="#64748b">{project.domain_name || 'Cross-Domain'}</Badge>
+                      <Badge color="#94a3b8">{project.domain_name || 'Cross-Domain'}</Badge>
                     </td>
                     <td style={{ padding: '1.125rem 1.5rem' }}>
                       <Badge color={getStatusBadgeColor(project.status)}>{project.status}</Badge>
@@ -163,30 +179,32 @@ const ManageProjects = () => {
                         <button
                           title="Mark Active"
                           onClick={() => handleUpdateStatus(project.id || project._id, 'ACTIVE')}
-                          style={{ background: '#dcfce7', border: '1px solid #86efac', borderRadius: '6px', padding: '0.35rem', cursor: 'pointer', color: '#16a34a' }}
+                          style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.35)', borderRadius: '6px', padding: '0.4rem', cursor: 'pointer', color: '#34d399', display: 'inline-flex', alignItems: 'center' }}
                         >
-                          <Check size={15} />
+                          <Check size={14} />
                         </button>
                         <button
                           title="Mark Cancelled"
                           onClick={() => handleUpdateStatus(project.id || project._id, 'CANCELLED')}
-                          style={{ background: '#fee2e2', border: '1px solid #fca5a5', borderRadius: '6px', padding: '0.35rem', cursor: 'pointer', color: '#dc2626' }}
+                          style={{ background: 'rgba(220, 38, 38, 0.15)', border: '1px solid rgba(220, 38, 38, 0.35)', borderRadius: '6px', padding: '0.4rem', cursor: 'pointer', color: '#f87171', display: 'inline-flex', alignItems: 'center' }}
                         >
-                          <X size={15} />
+                          <X size={14} />
                         </button>
                         <button
                           title="Edit Project"
                           onClick={() => setProjectToEdit(project)}
-                          style={{ background: 'none', border: '1px solid var(--color-border)', borderRadius: '6px', padding: '0.35rem 0.5rem', cursor: 'pointer', color: 'var(--color-secondary)' }}
+                          style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--color-border)', borderRadius: '6px', padding: '0.4rem 0.55rem', cursor: 'pointer', color: 'var(--color-text-main)', display: 'inline-flex', alignItems: 'center' }}
+                          onMouseOver={(e) => (e.currentTarget.style.color = 'var(--color-primary-hover)')}
+                          onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-main)')}
                         >
-                          <Edit3 size={15} />
+                          <Edit3 size={14} />
                         </button>
                         <button
                           title="Delete Project"
                           onClick={() => setDeleteTarget(project)}
-                          style={{ background: 'none', border: '1px solid #fee2e2', borderRadius: '6px', padding: '0.35rem 0.5rem', cursor: 'pointer', color: '#dc2626' }}
+                          style={{ background: 'rgba(220, 38, 38, 0.1)', border: '1px solid rgba(220, 38, 38, 0.3)', borderRadius: '6px', padding: '0.4rem 0.55rem', cursor: 'pointer', color: '#f87171', display: 'inline-flex', alignItems: 'center' }}
                         >
-                          <Trash2 size={15} />
+                          <Trash2 size={14} />
                         </button>
                       </div>
                     </td>
