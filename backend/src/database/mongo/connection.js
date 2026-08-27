@@ -8,22 +8,29 @@ try {
   console.warn('Could not set custom DNS servers:', e.message);
 }
 
-const connectDB = async () => {
-  try {
-    const mongoURI = process.env.MONGO_URI;
-    if (!mongoURI) {
-      console.error('❌ MONGO_URI is not defined in environment variables.');
-      process.exit(1);
-    }
-
-    const conn = await mongoose.connect(mongoURI, {
-      serverSelectionTimeoutMS: 10000,
-    });
-
-    console.log(`✅ MongoDB Atlas Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error(`❌ Error connecting to MongoDB: ${error.message}`);
+const connectDB = async (retries = 3, delay = 2000) => {
+  const mongoURI = process.env.MONGO_URI;
+  if (!mongoURI) {
+    console.error('❌ MONGO_URI is not defined in environment variables.');
     process.exit(1);
+  }
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const conn = await mongoose.connect(mongoURI, {
+        serverSelectionTimeoutMS: 20000,
+      });
+
+      console.log(`✅ MongoDB Atlas Connected: ${conn.connection.host}`);
+      return conn;
+    } catch (error) {
+      console.error(`⚠️ MongoDB connection attempt ${attempt}/${retries} failed: ${error.message}`);
+      if (attempt === retries) {
+        console.error('❌ Could not connect to MongoDB after multiple attempts.');
+        process.exit(1);
+      }
+      await new Promise(res => setTimeout(res, delay));
+    }
   }
 };
 

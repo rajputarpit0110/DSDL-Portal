@@ -29,3 +29,76 @@ exports.exportReport = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getAllUsers = async (req, res, next) => {
+  try {
+    const users = await adminService.getAllUsers();
+    res.status(200).json(new ApiResponse(200, 'Users fetched successfully', users));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getUserById = async (req, res, next) => {
+  try {
+    const user = await adminService.getUserById(req.params.id);
+    res.status(200).json(new ApiResponse(200, 'User details fetched', user));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.createUser = async (req, res, next) => {
+  try {
+    const user = await adminService.createUser(req.user.userId, req.body);
+    res.status(201).json(new ApiResponse(201, 'User created successfully', user));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateUser = async (req, res, next) => {
+  try {
+    const user = await adminService.updateUser(req.user.userId, req.params.id, req.body);
+    res.status(200).json(new ApiResponse(200, 'User updated successfully', user));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateUserRole = async (req, res, next) => {
+  try {
+    const user = await adminService.updateUserRole(req.user.userId, req.params.id, req.body.role);
+    res.status(200).json(new ApiResponse(200, 'User role updated successfully', user));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateUserStatus = async (req, res, next) => {
+  try {
+    const user = await adminService.updateUserStatus(req.user.userId, req.params.id, req.body.isActive);
+    res.status(200).json(new ApiResponse(200, 'User status updated successfully', user));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.resetUserPassword = async (req, res, next) => {
+  try {
+    const result = await adminService.resetUserPassword(req.user.userId, req.params.id, req.body.password);
+    res.status(200).json(new ApiResponse(200, result.message, result));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const result = await adminService.deleteUser(req.user.userId, req.params.id);
+    res.status(200).json(new ApiResponse(200, result.message, result));
+  } catch (error) {
+    next(error);
+  }
+};
+

@@ -316,7 +316,7 @@ const CreateProjectModal = ({ projectToEdit = null, onClose, onSuccess }) => {
                 GitHub Repository
               </label>
               <div style={{ position: 'relative' }}>
-                <Github size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
+                <GitBranch size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
                 <input
                   placeholder="https://github.com/..."
                   value={formData.githubUrl}
