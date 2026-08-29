@@ -4,17 +4,24 @@ import Button from '../../common/Button';
 import Badge from '../../common/Badge';
 import { Search, Plus, MoreVertical } from 'lucide-react';
 import { apiClient } from '../../utils/apiClient';
+import AddMemberModal from '../../components/admin/AddMemberModal';
 
 const ManageUsers = () => {
   const [members, setMembers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
 
-  useEffect(() => {
+  const fetchMembers = () => {
+    setLoading(true);
     apiClient.get('/members')
       .then(setMembers)
       .catch(console.error)
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchMembers();
   }, []);
 
   const filteredMembers = members.filter(m => 
@@ -22,14 +29,15 @@ const ManageUsers = () => {
     m.role.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div>Loading...</div>;
+  if (loading && members.length === 0) return <div>Loading...</div>;
 
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+      {showAdd && <AddMemberModal onClose={() => setShowAdd(false)} onSuccess={() => { setShowAdd(false); fetchMembers(); }} />}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h2 style={{ fontSize: '1.5rem', color: 'var(--color-secondary)' }}>Manage Users</h2>
-        <Button variant="primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
-          <Plus size={16} /> Invite User
+        <Button variant="primary" onClick={() => setShowAdd(true)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
+          <Plus size={16} /> Add Member
         </Button>
       </div>
 

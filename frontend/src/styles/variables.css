@@ -1,20 +1,35 @@
 :root {
   /* Colors */
-  --color-primary: #0A66C2; /* DSDL Blue */
-  --color-primary-hover: #08529B;
-  --color-secondary: #0F172A; /* Deep Navy */
-  --color-secondary-hover: #1E293B;
-  --color-accent: #FF7043; /* Warm Orange - use sparingly */
+  --void: #0a0303;
+  --panel: rgba(255,255,255,0.035);
+  --panel-solid: #170707;
+  --accent: #dc2626;
+  --accent-soft: #f87171;
+  --accent-dim: #7f1d1d;
+  --cyan: #18181b;
+  --violet: #450a0a;
+  --text-primary: #fdf1f1;
+  --text-muted: #ad8686;
+  --line: rgba(255,255,255,0.09);
+
+  /* Mappings to existing semantic variables */
+  --color-primary: var(--accent);
+  --color-primary-hover: var(--accent-soft);
+  --color-secondary: var(--text-primary);
+  --color-secondary-hover: var(--text-primary);
+  --color-accent: var(--accent);
   
-  --color-background: #FFFFFF;
-  --color-surface: #F8FAFC; /* Very Light Blue/Grey */
-  --color-surface-hover: #F1F5F9;
-  --color-border: #E2E8F0;
+  --color-background: var(--void);
+  --color-surface: var(--panel-solid);
+  --color-surface-hover: var(--panel);
+  --color-border: var(--line);
+  --background-secondary: var(--panel-solid);
+  --deep-violet: var(--violet);
   
   /* Text */
-  --color-text-main: #0F172A;
-  --color-text-muted: #64748B;
-  --color-text-inverse: #FFFFFF;
+  --color-text-main: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverse: var(--void);
 
   /* Typography */
   --font-family: 'Plus Jakarta Sans', sans-serif;

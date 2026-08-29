@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'http://localhost:8000/api';
 
 async function request(endpoint, options = {}) {
   const url = `${BASE_URL}${endpoint}`;
@@ -22,17 +22,31 @@ async function request(endpoint, options = {}) {
     config.body = JSON.stringify(config.body);
   }
 
-  const response = await fetch(url, config);
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || 'An error occurred');
+  let response;
+  try {
+    response = await fetch(url, config);
+  } catch (networkError) {
+    const err = new Error('Unable to connect to the backend server. Please make sure the backend is running.');
+    err.isNetworkError = true;
+    throw err;
   }
 
-  // Our backend uses a standard ApiResponse format
-  // { statusCode: 200, message: "Success", data: {...}, success: true }
-  // We can return the nested data directly for easier usage
-  return data.data;
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    data = { message: response.statusText || `Request failed (${response.status})` };
+  }
+
+  if (!response.ok) {
+    const errorMsg = data?.message || data?.error || `Server responded with status ${response.status}`;
+    const err = new Error(errorMsg);
+    err.status = response.status;
+    err.data = data;
+    throw err;
+  }
+
+  return data?.data !== undefined ? data.data : data;
 }
 
 export const apiClient = {

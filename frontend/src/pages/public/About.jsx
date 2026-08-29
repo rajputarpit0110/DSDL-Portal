@@ -6,10 +6,10 @@ const About = () => {
   return (
     <div style={{ padding: '6rem 2rem' }}>
       <Container>
-        <SectionHeading title='About DSDL' subtitle='Data Science & Deep Learning Club' />
+        <SectionHeading title='About KRIVA' subtitle='Data Science & Deep Learning Club' />
         <div style={{ backgroundColor: 'white', padding: '3rem', borderRadius: '16px', boxShadow: 'var(--shadow-sm)', lineHeight: '1.8', color: 'var(--color-text-main)' }}>
           <p style={{ marginBottom: '1.5rem' }}>
-            The Data Science & Deep Learning (DSDL) Club at KIET Group of Institutions is a vibrant community of passionate tech enthusiasts dedicated to exploring the realms of AI, ML, Data Science, and modern Web/App Development.
+            The Data Science & Deep Learning (KRIVA) Club at KIET Group of Institutions is a vibrant community of passionate tech enthusiasts dedicated to exploring the realms of AI, ML, Data Science, and modern Web/App Development.
           </p>
           <p style={{ marginBottom: '1.5rem' }}>
             Established to bridge the gap between academic theory and practical engineering, we focus on hands-on learning. We conduct workshops, host hackathons, and build open-source projects that solve real-world problems.

@@ -3,10 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../common/Button';
 import Card from '../../common/Card';
-import { Mail, Lock, AlertCircle } from 'lucide-react';
+import { Mail, Lock } from 'lucide-react';
+import Alert from '../../common/Alert';
+import { useToast } from '../../context/ToastContext';
 
 const Login = () => {
   const { login } = useAuth();
+  const toast = useToast();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,10 +22,30 @@ const Login = () => {
     setLoading(true);
     try {
       const user = await login(email, password);
+      toast.success(`Welcome back, ${user.name || 'User'}!`);
       if (user.role === 'admin') navigate('/admin/dashboard');
       else navigate('/member/dashboard');
     } catch (err) {
-      setError('Invalid credentials. Please check and try again.');
+      const msg = err.message || 'Invalid email or password. Please try again.';
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const quickLogin = async (quickEmail, quickPassword) => {
+    setError('');
+    setLoading(true);
+    try {
+      const user = await login(quickEmail, quickPassword);
+      toast.success(`Logged in as ${user.name} (${user.role})`);
+      if (user.role === 'admin') navigate('/admin/dashboard');
+      else navigate('/member/dashboard');
+    } catch (err) {
+      const msg = err.message || 'Quick login failed. Make sure the backend is running.';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -36,7 +59,7 @@ const Login = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 1 }}>
           <img src="/logo/kiet-logo.webp" alt="KIET" style={{ height: '50px', objectFit: 'contain' }} />
           <div style={{ width: '1px', height: '40px', backgroundColor: 'var(--color-border)' }}></div>
-          <img src="/logo/dsdl-logo.webp" alt="DSDL" style={{ height: '50px', objectFit: 'contain' }} />
+          <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '50px', objectFit: 'contain' }} />
         </div>
         <div style={{ marginTop: 'auto', marginBottom: 'auto', zIndex: 1 }}>
           <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem', lineHeight: '1.2', fontWeight: 'bold' }}>Empowering <br /> Future Engineers</h1>
@@ -45,7 +68,7 @@ const Login = () => {
           </p>
         </div>
         <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>© {new Date().getFullYear()} DSDL Club. All rights reserved.</p>
+          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>© {new Date().getFullYear()} KRIVA Club. All rights reserved.</p>
           <Link to="/" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontWeight: 'bold' }}>
             ← Back to Public Site
           </Link>
@@ -57,7 +80,7 @@ const Login = () => {
         <div style={{ width: '100%', maxWidth: '400px' }}>
           
           <div className="show-on-mobile" style={{ display: 'none', marginBottom: '3rem', textAlign: 'center' }}>
-            <img src="/logo/dsdl-logo.webp" alt="DSDL" style={{ height: '50px' }} />
+            <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '50px' }} />
           </div>
 
           <div style={{ marginBottom: '2.5rem' }}>
@@ -67,8 +90,10 @@ const Login = () => {
 
           <Card style={{ padding: '2.5rem', boxShadow: 'var(--shadow-md)' }}>
             {error && (
-              <div style={{ backgroundColor: '#fef2f2', color: '#b91c1c', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
-                <AlertCircle size={18} /> {error}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <Alert variant="error" onClose={() => setError('')}>
+                  {error}
+                </Alert>
               </div>
             )}
 
@@ -80,7 +105,7 @@ const Login = () => {
                   <input 
                     type='email' 
                     required
-                    placeholder='name@dsdl.com' 
+                    placeholder='name@kriva.com' 
                     value={email} 
                     onChange={e => setEmail(e.target.value)} 
                     style={{ width: '100%', padding: '0.75rem 1rem 0.75rem 2.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', outline: 'none', fontSize: '1rem', fontFamily: 'inherit' }} 
@@ -115,6 +140,36 @@ const Login = () => {
                   Register here
                 </Link>
               </p>
+            </div>
+
+            {/* Quick Login Buttons for Development/Testing */}
+            <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--color-border)' }}>
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', textAlign: 'center', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '600' }}>
+                🚀 Quick Access (Dev Mode)
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <button
+                  onClick={() => quickLogin('admin@kriva.local', 'admin123')}
+                  disabled={loading}
+                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--panel-solid)', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                >
+                  🔑 Login as Admin
+                </button>
+                <button
+                  onClick={() => quickLogin('lead@kriva.local', 'password123')}
+                  disabled={loading}
+                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--accent-dim)', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                >
+                  🎯 Login as Domain Lead
+                </button>
+                <button
+                  onClick={() => quickLogin('member@kriva.com', 'member123')}
+                  disabled={loading}
+                  style={{ padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: '#166534', color: 'white', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
+                >
+                  👤 Login as Member
+                </button>
+              </div>
             </div>
           </Card>
         </div>

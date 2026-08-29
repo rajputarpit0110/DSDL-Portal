@@ -56,7 +56,7 @@ const Register = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 1 }}>
           <img src="/logo/kiet-logo.webp" alt="KIET" style={{ height: '50px', objectFit: 'contain' }} />
           <div style={{ width: '1px', height: '40px', backgroundColor: 'var(--color-border)' }}></div>
-          <img src="/logo/dsdl-logo.webp" alt="DSDL" style={{ height: '50px', objectFit: 'contain' }} />
+          <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '50px', objectFit: 'contain' }} />
         </div>
         <div style={{ marginTop: 'auto', marginBottom: 'auto', zIndex: 1 }}>
           <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem', lineHeight: '1.2', fontWeight: 'bold' }}>Join The <br /> Community</h1>
@@ -65,7 +65,7 @@ const Register = () => {
           </p>
         </div>
         <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>&copy; {new Date().getFullYear()} DSDL Club. All rights reserved.</p>
+          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>&copy; {new Date().getFullYear()} KRIVA Club. All rights reserved.</p>
           <Link to="/" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontWeight: 'bold' }}>
             &larr; Back to Public Site
           </Link>
@@ -77,7 +77,7 @@ const Register = () => {
         <div style={{ width: '100%', maxWidth: '450px' }}>
           
           <div className="show-on-mobile" style={{ display: 'none', marginBottom: '3rem', textAlign: 'center' }}>
-            <img src="/logo/dsdl-logo.webp" alt="DSDL" style={{ height: '50px' }} />
+            <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '50px' }} />
           </div>
 
           <div style={{ marginBottom: '2.5rem' }}>
@@ -117,7 +117,7 @@ const Register = () => {
                     type='email' 
                     name='email'
                     required
-                    placeholder='name@dsdl.com' 
+                    placeholder='name@kriva.com' 
                     value={formData.email} 
                     onChange={handleChange} 
                     style={{ width: '100%', padding: '0.75rem 1rem 0.75rem 2.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', outline: 'none', fontSize: '1rem', fontFamily: 'inherit' }} 

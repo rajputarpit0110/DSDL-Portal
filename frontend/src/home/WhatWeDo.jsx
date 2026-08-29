@@ -7,7 +7,7 @@ import SectionHeading from '../common/SectionHeading';
 const WhatWeDo = () => (
   <section style={{ padding: '5rem 2rem' }}>
     <Container style={{ textAlign: 'center' }}>
-      <SectionHeading badge='WHAT DSDL OFFERS' title='Empowering Students to Become Practical Engineers' subtitle='DSDL (Data Science & Deep Learning Club) provides first-year students with hands-on technical projects, collaborative teamwork, and real mentorship beyond classroom theory.' />
+      <SectionHeading badge='WHAT KRIVA OFFERS' title='Empowering Students to Become Practical Engineers' subtitle='KRIVA (Data Science & Deep Learning Club) provides first-year students with hands-on technical projects, collaborative teamwork, and real mentorship beyond classroom theory.' />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', textAlign: 'left' }}>
         <Card style={{ padding: '2rem' }}>
           <div style={{ width: '48px', height: '48px', backgroundColor: '#e0f2fe', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem', color: '#0284c7' }}><Code size={24} /></div>
