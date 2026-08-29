@@ -11,7 +11,7 @@ const Footer = () => {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '1rem', backgroundColor: '#fff', padding: '0.5rem', borderRadius: '4px', marginBottom: '1rem' }}>
             <img src="/logo/kiet-logo.webp" alt="KIET" style={{ height: '30px' }} />
             <div style={{ width: '1px', height: '30px', backgroundColor: 'var(--color-border)' }}></div>
-            <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '30px' }} />
+            <img src="/logo/kriva-logo.jpeg" alt="KRIVA" style={{ height: '30px' }} />
           </div>
           <h3 style={{ color: 'white', marginBottom: '0.5rem' }}>KRIVA Technical Club</h3>
           <p style={{ color: 'var(--color-primary)', fontSize: '0.875rem', fontWeight: 'bold', marginBottom: '1rem' }}>KIET GROUP OF INSTITUTIONS • RECRUITMENT 2026</p>

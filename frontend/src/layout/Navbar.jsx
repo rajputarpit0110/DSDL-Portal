@@ -115,7 +115,7 @@ const Navbar = () => {
         >
           <img src="/logo/kiet-logo.webp" alt="KIET" style={{ height: '36px', objectFit: 'contain' }} />
           <div style={{ width: '1px', height: '30px', backgroundColor: 'var(--color-border)' }}></div>
-          <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '36px', objectFit: 'contain' }} />
+          <img src="/logo/kriva-logo.jpeg" alt="KRIVA" style={{ height: '36px', objectFit: 'contain' }} />
         </Link>
 
         {/* Desktop Navigation Links with GooeyNav */}

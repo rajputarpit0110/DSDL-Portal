@@ -804,7 +804,7 @@ const Home = () => {
       {/* 1. Hero / Banner */}
       <section id="hero" style={{ padding: '8rem 2rem', backgroundColor: 'var(--color-background)', textAlign: 'center', position: 'relative', zIndex: 1 }}>
         <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '120px', marginBottom: '2rem', objectFit: 'contain' }} />
+          <img src="/logo/kriva-logo.jpeg" alt="KRIVA" style={{ height: '120px', marginBottom: '2rem', objectFit: 'contain' }} />
           <h1 style={{ fontSize: '4rem', fontWeight: 'bold', marginBottom: '1.5rem', lineHeight: 1.1, color: 'var(--color-secondary)' }}>
             Build, Learn, <span style={{ color: 'var(--color-primary)' }}>Innovate</span>
           </h1>

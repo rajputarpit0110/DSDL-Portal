@@ -56,7 +56,7 @@ const Register = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 1 }}>
           <img src="/logo/kiet-logo.webp" alt="KIET" style={{ height: '50px', objectFit: 'contain' }} />
           <div style={{ width: '1px', height: '40px', backgroundColor: 'var(--color-border)' }}></div>
-          <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '50px', objectFit: 'contain' }} />
+          <img src="/logo/kriva-logo.jpeg" alt="KRIVA" style={{ height: '50px', objectFit: 'contain' }} />
         </div>
         <div style={{ marginTop: 'auto', marginBottom: 'auto', zIndex: 1 }}>
           <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem', lineHeight: '1.2', fontWeight: 'bold' }}>Join The <br /> Community</h1>
@@ -77,7 +77,7 @@ const Register = () => {
         <div style={{ width: '100%', maxWidth: '450px' }}>
           
           <div className="show-on-mobile" style={{ display: 'none', marginBottom: '3rem', textAlign: 'center' }}>
-            <img src="/logo/kriva-logo.webp" alt="KRIVA" style={{ height: '50px' }} />
+            <img src="/logo/kriva-logo.jpeg" alt="KRIVA" style={{ height: '50px' }} />
           </div>
 
           <div style={{ marginBottom: '2.5rem' }}>
